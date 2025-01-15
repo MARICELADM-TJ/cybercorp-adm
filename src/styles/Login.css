@@ -1,0 +1,80 @@
+/* Contenedor principal */
+.login-container {
+    position: relative;
+    height: 100vh;
+    width: 100vw; /* El contenedor ocupará todo el ancho de la pantalla */
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    background: #0e122b; /* Fondo oscuro */
+    overflow: hidden; /* Ocultar cualquier desbordamiento */
+    overflow-x: hidden; /* Prevenir desplazamiento horizontal */
+  }
+  
+  /* Ajustar el formulario */
+  .login-form-container {
+    position: relative;
+    z-index: 10;
+    background: rgba(0, 0, 0, 0.589); /* Fondo translúcido */
+    /*background: rgba(0, 0, 0, 0.589); */
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 217, 255, 0.5), 0 0 40px rgba(0, 217, 255, 0.3);
+    text-align: center;
+    width: 90%; /* Ocupa el 90% del ancho del contenedor en dispositivos pequeños */
+    max-width: 400px; /* Límite máximo para pantallas grandes */
+  }
+  
+  
+  /* Estilo del logo */
+  .login-logo {
+    width: 100px;
+    margin-bottom: 20px;
+  }
+  
+  /* Estilo de los inputs */
+  .login-input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px -10px;
+    border: 2px solid #00d9ff;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s ease;
+  }
+  
+  .login-input:focus {
+    border-color: #005bb5;
+  }
+  
+  /* Estilo del botón */
+  .login-button {
+    background: linear-gradient(90deg, #00d9ff, #005bb5);
+    border: 2px solid #00d9ff;
+    color: white;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 15px rgba(0, 217, 255, 0.5), 0 0 30px rgba(0, 217, 255, 0.25);
+  }
+  
+  .login-button:hover {
+    transform: scale(1.1);
+    background: linear-gradient(90deg, #005bb5, #00d9ff);
+  }
+  
+  /* Partículas detrás del contenido */
+  .particles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+  
