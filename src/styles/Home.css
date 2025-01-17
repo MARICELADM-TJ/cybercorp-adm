@@ -1,0 +1,21 @@
+/* Forzar que el contenido use el 100% del ancho */
+.home-page {
+    width: 100%; /* Asegura que use el 100% del ancho */
+    max-width: none; /* Evita límites de ancho */
+    margin: 0 auto; /* Centra el contenido */
+    padding: 20px; /* Ajusta los márgenes interiores */
+  }
+  
+  /* Asegura que el contenido se expanda */
+  .container,
+  .container-fluid {
+    width: 100% !important;
+    max-width: none !important;
+    padding: 0 !important; /* Quita el padding extra */
+  }
+  
+  /* Ajuste en el Navbar si es necesario */
+  .navbar {
+    width: 100%;
+    max-width: none;
+  }

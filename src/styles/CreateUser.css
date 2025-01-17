@@ -1,0 +1,124 @@
+.create-user-container {
+
+  background: linear-gradient(120deg, #1e1e2f, #282a36, #1e1e2f);
+  background-size: 300% 300%;
+  animation: gradientBG 8s ease infinite;
+  color: #fff;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.left-panel {
+  flex: 1;
+  display: flex;
+  width: 48vw;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(0, 0, 0);
+  border-right: 1px solid #444;
+  height: 100vh;
+  float: left;
+}
+
+.logo {
+  width: 200px;
+}
+
+.right-panel {
+  float: right;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 52vw;
+  background-color: #282a36;
+  height: 100vh;
+}
+
+.form-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.create-user-form {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-row {
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: row;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  margin-right: 1.5vw;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #444;
+  color: #fff;
+  font-size: 1rem;
+}
+
+input:disabled {
+  background-color: #555;
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-container label {
+  margin-left: 10px;
+}
+
+.form-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-button,
+.save-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.cancel-button {
+  background-color: #e74c3c;
+}
+
+.cancel-button:hover {
+  background-color: #c0392b;
+}
+
+.save-button {
+  background-color: #2ecc71;
+}
+
+.save-button:hover {
+  background-color: #27ae60;
+}
