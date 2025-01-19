@@ -14,6 +14,9 @@ import ProtectedRoute from "./ProtectedRoute";
 import AdminUsers from "../pages/admin/AdminUsers";
 import AdminTareas from "../pages/admin/AdminTareas";
 import CreateUser from "../pages/admin/CreateUser";
+import AdminInspecciones from "../pages/admin/AdminInspecciones";
+import AdminCreateInspeccion from "../pages/admin/AdminCreateInspeccion";
+import UserInspecciones from "../pages/UserInspecciones";
 
 const auth = getAuth(appFirebase);
 
@@ -69,10 +72,13 @@ function Rutas() {
           <Route path="/admin-users" element = { <AdminUsers /> } />
           <Route path="/admin-tareas" element = { <AdminTareas /> } />
           <Route path="/admin-createUser" element = { <CreateUser /> } />
+          <Route path="/admin-inspecciones" element = { <AdminInspecciones /> } />
+          <Route path="/admin-createInspeccion" element = { <AdminCreateInspeccion /> } />
         </Route>
 
         <Route element={<ProtectedRoute isAllowed={!!usuario} />}>
           <Route path="/home" element={<Home role={role} name={usuario} />} />
+          <Route path="/inspecciones" element = { <UserInspecciones role={role} name={usuario} /> } />
         </Route>
       </Routes>
     </BrowserRouter>

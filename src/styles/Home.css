@@ -1,21 +1,59 @@
-/* Forzar que el contenido use el 100% del ancho */
+/* Fondo fijo para la página principal */
 .home-page {
-    width: 100%; /* Asegura que use el 100% del ancho */
-    max-width: none; /* Evita límites de ancho */
-    margin: 0 auto; /* Centra el contenido */
-    padding: 20px; /* Ajusta los márgenes interiores */
+  width: 100vw;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #282c34, #1b1f23);
+  background-attachment: fixed;
+  background-size: cover;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Contenedor para filtros de búsqueda */
+.search-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.search-filters input {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  outline: none;
+  box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.5);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.search-filters input:focus {
+  box-shadow: 0px 5px 15px rgba(0, 123, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.date-filters input {
+  max-width: 120px;
+  text-align: center;
+}
+
+/* Mensaje cuando no hay tareas */
+.no-tasks-message {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.2rem;
+}
+
+/* Media queries para dispositivos pequeños */
+@media (max-width: 768px) {
+  .search-filters {
+    flex-direction: column;
   }
-  
-  /* Asegura que el contenido se expanda */
-  .container,
-  .container-fluid {
-    width: 100% !important;
-    max-width: none !important;
-    padding: 0 !important; /* Quita el padding extra */
-  }
-  
-  /* Ajuste en el Navbar si es necesario */
-  .navbar {
-    width: 100%;
-    max-width: none;
-  }
+}

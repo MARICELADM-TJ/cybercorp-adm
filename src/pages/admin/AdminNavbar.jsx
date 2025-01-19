@@ -44,7 +44,7 @@ const AdminNavbar = () => {
             </Link>
           </li>
           <li>
-            <Link to="/admin-dashboard">
+            <Link to="/admin-inspecciones">
               <FaClipboardList /> Inspecciones
             </Link>
           </li>

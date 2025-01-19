@@ -57,7 +57,7 @@ const Navbar = ({role}) => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/home" className="nav-link">
+                <Link to="/inspecciones" className="nav-link">
                   ✅ Ver Inspecciones
                 </Link>
               </li>
@@ -75,11 +75,9 @@ const Navbar = ({role}) => {
 
             {/* Botones a la derecha */}
             <div className="navbar-right d-flex align-items-center">
-            {role === "admin" && (
-              <Link to="/admin-dashboard" className="logout-button btn btn-danger">
+            {role === "admin"? <Link to="/admin-dashboard" className="logout-button btn btn-danger">
                 Admin
-              </Link>
-            )}
+              </Link> : null}
               <button
                 className="logout-button btn btn-danger"
                 onClick={handleLogout}

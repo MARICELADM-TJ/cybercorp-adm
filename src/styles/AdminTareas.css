@@ -1,57 +1,58 @@
 .edit-page{
-    width: 100vw;
-    background-color: black;
-    margin-top: 10vh;
+  width: 100vw;
+  background-color: black;
+  margin-top: 4.5vw;
+  color: white;
+  height: 100vh;
 }
 .open-modal-button {
-    background: linear-gradient(45deg, #0078ff, #00d4ff);
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: linear-gradient(45deg, #0078ff, #00d4ff);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.open-modal-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 20px rgba(0, 216, 255, 0.8);
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(15px);
+  padding: 30px;
+  border-radius: 20px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  .open-modal-button:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(0, 216, 255, 0.8);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .modal-content {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(15px);
-    padding: 30px;
-    border-radius: 20px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
-    animation: fadeIn 0.5s ease-out;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
+}

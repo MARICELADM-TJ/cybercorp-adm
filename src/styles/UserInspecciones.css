@@ -1,0 +1,115 @@
+.user-inspecciones {
+    padding: 20px;
+    font-family: "Arial", sans-serif;
+    background: #1a1a2e;
+    background-color: #1a1a2e;
+    color: #f0f0f0;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  h2, h3 {
+    text-align: center;
+    color: #00ffff;
+  }
+  
+  .search-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .search-container input {
+    padding: 8px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    width: 48%;
+  }
+  
+  .inspection-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .inspection-item {
+    background: #333;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+  }
+  
+  .in-progress {
+    border-left: 5px solid #ffcc00;
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
+  }
+  
+  .completed {
+    border-left: 5px solid #4caf50;
+  }
+  
+  .modal {
+    background: #2e2e3e;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 90%;
+    height: 35vh;
+    margin: 0 auto;
+    color: #f0f0f0;
+    text-align: center;
+    z-index: 1001;
+    position: relative;
+    display: block; /* Asegúrate de que el modal se muestre */
+  }
+  
+  .overlay {
+    background: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  
+  .modal input {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    background: #3e3e4e;
+    color: #f0f0f0;
+  }
+  
+  .modal button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: white;
+  }
+  
+  .modal button:first-child {
+    background: #4caf50;
+  }
+  
+  .modal button:last-child {
+    background: #f44336;
+  }
+  

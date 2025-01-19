@@ -1,9 +1,11 @@
-import React from 'react';
-import '../styles/TaskList.css';
+// TaskList.jsx
 
-const TaskList = ({ tasks, onDelete, onEdit, onStart, onComplete }) => {
+import React from "react";
+import "../styles/TaskList.css";
+
+const TaskList = ({ tasks, onDelete, onEdit, onStart, onComplete, onCancel }) => {
   const formatDate = (isoString) => {
-    if (!isoString) return 'Sin fecha';
+    if (!isoString) return "Sin fecha";
     const date = new Date(isoString);
     return date.toLocaleString();
   };
@@ -13,16 +15,18 @@ const TaskList = ({ tasks, onDelete, onEdit, onStart, onComplete }) => {
       {tasks.map((task) => (
         <li
           key={task.id}
-          className={`task-item ${task.priority ? 'important' : ''} ${
-            task.completed ? 'completed' : ''
-          }`}
+          className={`task-item ${task.priority ? "important" : ""} ${task.completed ? "completed" : ""}`}
         >
           <div>
-            <h3 style={{ textDecoration: task.completed ? 'line-through' : 'none' }}>
+            <h3
+              style={{ textDecoration: task.completed ? "line-through" : "none" }}
+            >
               {task.title}
             </h3>
             <p>{task.description}</p>
             <p>{`Fecha para realizar: ${formatDate(task.dueDate)}`}</p>
+            <p>{`Encargado: ${task.encargado}`}</p>
+            <p>{`Cliente: ${task.clientName} ${task.clientLastName} (${task.clientPhone})`}</p>
             {task.startDate && <p>{`Fecha de inicio: ${formatDate(task.startDate)}`}</p>}
             {task.endDate && <p>{`Fecha de fin: ${formatDate(task.endDate)}`}</p>}
           </div>
@@ -32,6 +36,9 @@ const TaskList = ({ tasks, onDelete, onEdit, onStart, onComplete }) => {
             )}
             {task.startDate && !task.completed && onComplete && (
               <button onClick={() => onComplete(task.id)}>Terminar Tarea</button>
+            )}
+            {task.startDate && !task.completed && onCancel && (
+              <button onClick={() => onCancel(task.id)}>Cancelar Tarea</button>
             )}
             {task.completed && <span className="completed-label">✔ Completada</span>}
             {onEdit && <button onClick={() => onEdit(task)}>Editar</button>}

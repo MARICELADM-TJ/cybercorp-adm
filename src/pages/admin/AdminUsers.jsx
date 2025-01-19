@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebaseConfig/Firebase";
 import "../../styles/AdminUsers.css";
+import { useNavigate } from "react-router-dom";
 
 import AdminNavbar from "./AdminNavbar";
 
@@ -10,6 +11,7 @@ const AdminUsers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const navigate = useNavigate();
   // Obtener usuarios desde Firestore
   useEffect(() => {
     const fetchUsers = async () => {
@@ -61,7 +63,7 @@ const AdminUsers = () => {
         <AdminNavbar />
       <h1>Gestión de Usuarios</h1>
       <div className="actions-container">
-        <button className="add-button">Agregar</button>
+        <button className="add-button" onClick={() => navigate('/admin-createUser')} >Agregar</button>
       </div>
 
       <h2>Administradores</h2>
