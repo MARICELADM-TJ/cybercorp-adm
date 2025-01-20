@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
 import Mapa from "../../components/Mapa";
 import { db } from "../../firebaseConfig/Firebase";
 import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "../../styles/createInspeccion.css";
 import logo from "../../assets/logo_share.png";
-import AdminNavbar from "./AdminNavbar";
+
 
 const AdminCreateInspeccion = () => {
   const [formData, setFormData] = useState({
@@ -20,15 +20,17 @@ const AdminCreateInspeccion = () => {
     celularCliente: "",
     encargado: "",
     linkCotizacion: "",
-    ubicacion: null,
+    ubicacion: [-21.5355, -64.7295], // Valor predeterminado
+    EstadoFinal: "seguimiento",
   });
-  const [isEditing, setIsEditing] = useState(false); // Para identificar si estamos editando
+
+  const [isEditing, setIsEditing] = useState(false);
+  const [locationLink, setLocationLink] = useState(""); // Link de ubicación para verificar
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const inspectionId = searchParams.get("edit"); // Obtener el ID de inspección desde la URL
+  const inspectionId = searchParams.get("edit");
 
-  // Cargar datos para edición
   useEffect(() => {
     const fetchInspection = async () => {
       if (inspectionId) {
@@ -36,8 +38,15 @@ const AdminCreateInspeccion = () => {
         try {
           const docRef = doc(db, "inspecciones", inspectionId);
           const docSnap = await getDoc(docRef);
+
           if (docSnap.exists()) {
-            setFormData(docSnap.data());
+            const data = docSnap.data();
+
+            // Configura los datos obtenidos y asegura un valor predeterminado para `ubicacion`
+            setFormData({
+              ...data,
+              ubicacion: data.ubicacion || [-21.5355, -64.7295],
+            });
           } else {
             toast.error("Inspección no encontrada");
           }
@@ -55,8 +64,39 @@ const AdminCreateInspeccion = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const verifyLocation = () => {
+    console.log("Verificando enlace...");
+    // Regex para extraer coordenadas de enlaces de Google Maps
+    const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/; // Detecta @lat,lng en enlaces
+    const match = locationLink.match(regex);
+  
+    if (match) {
+      console.log("Coordenadas encontradas:", match[1], match[2]);
+      const lat = parseFloat(match[1]);
+      const lng = parseFloat(match[2]);
+  
+      // Validación básica de latitud y longitud
+      if (!isNaN(lat) && !isNaN(lng)) {
+        setFormData((prevData) => ({
+          ...prevData,
+          ubicacion: [lat, lng],
+        }));
+        toast.success("Ubicación actualizada correctamente");
+        return;
+      }
+    }
+  
+    console.log("No se pudieron extraer coordenadas");
+    // Si el enlace no es válido, muestra un error
+    toast.error("No se pudo extraer la ubicación del link. Asegúrate de que sea válido.");
+  };
+  
+  
+  
+
   const handleSave = async (e) => {
     e.preventDefault();
+
     const {
       titulo,
       descripcion,
@@ -69,7 +109,6 @@ const AdminCreateInspeccion = () => {
       ubicacion,
     } = formData;
 
-    // Validar campos obligatorios
     if (
       !titulo ||
       !descripcion ||
@@ -87,12 +126,10 @@ const AdminCreateInspeccion = () => {
 
     try {
       if (isEditing) {
-        // Actualizar inspección existente
         const docRef = doc(db, "inspecciones", inspectionId);
         await updateDoc(docRef, formData);
         toast.success("Inspección actualizada exitosamente");
       } else {
-        // Crear nueva inspección
         await addDoc(collection(db, "inspecciones"), {
           ...formData,
           completada: false,
@@ -140,22 +177,41 @@ const AdminCreateInspeccion = () => {
         <div className="form-group">
           <label>Mapa (Ubicación)</label>
           <Mapa
-            onLocationChange={(coords) =>
-              setFormData({ ...formData, ubicacion: coords })
+          onLocationChange={(coords) =>
+              setFormData((prevData) => ({ ...prevData, ubicacion: coords }))
             }
             defaultLocation={formData.ubicacion}
           />
+
         </div>
         <div className="form-group">
-          <label htmlFor="descripcionUbicacion">
-            Descripción de la Ubicación
-          </label>
-          <textarea
-            id="descripcionUbicacion"
-            name="descripcionUbicacion"
-            value={formData.descripcionUbicacion}
+          <label htmlFor="locationLink">Link de Ubicación</label>
+          <div className="location-link-group">
+            <input
+              type="text"
+              id="locationLink"
+              value={locationLink}
+              onChange={(e) => setLocationLink(e.target.value)}
+              placeholder="Pega aquí el link de Google Maps"
+            />
+            <button type="button" onClick={verifyLocation}>
+              Verificar
+            </button>
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="EstadoFinal">Estado Final</label>
+          <select
+            id="EstadoFinal"
+            name="EstadoFinal"
+            value={formData.EstadoFinal}
             onChange={handleInputChange}
-          />
+            required
+          >
+            <option value="venta">Venta</option>
+            <option value="seguimiento">Seguimiento</option>
+            <option value="no le interesa">No le interesa</option>
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="fechaProgramada">Fecha Programada</label>
@@ -246,6 +302,7 @@ const AdminCreateInspeccion = () => {
           </button>
         </div>
       </form>
+      <ToastContainer />
     </div>
   );
 };

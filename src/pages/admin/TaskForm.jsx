@@ -48,7 +48,11 @@ const TaskForm = ({ onSubmit, existingTask, onCancel }) => {
     }
 
     try {
-      const fullDateTime = new Date($`{task.dueDate}T${task.dueTime}:00`).toISOString();
+      const fullDateTime = new Date(`${task.dueDate}T${task.dueTime}:00`).toISOString();
+      if (isNaN(new Date(fullDateTime))) {
+        alert('Fecha y hora no válidas, por favor verifica los campos.');
+        return;
+      }
       onSubmit({ ...task, dueDate: fullDateTime });
 
       if (!existingTask) {

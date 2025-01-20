@@ -1,9 +1,9 @@
 .edit-page{
   width: 100vw;
   background-color: black;
-  margin-top: 4.5vw;
+  margin-top: 70px;
   color: white;
-  height: 100vh;
+  min-height: 100vh;
 }
 .open-modal-button {
   background: linear-gradient(45deg, #0078ff, #00d4ff);

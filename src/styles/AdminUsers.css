@@ -6,7 +6,7 @@
   background: linear-gradient(120deg, #141e30, #243b55);
   color: #ffffff;
   animation: fadeIn 1.2s ease-in-out;
-  height: auto;
+  min-height: 100vh;
 }
 
 @keyframes fadeIn {

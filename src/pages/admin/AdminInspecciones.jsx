@@ -84,16 +84,15 @@ const AdminInspecciones = () => {
 
   return (
     <div className="admin-inspecciones">
-
       <h2>Administrar Inspecciones</h2>
-
+  
       <button
         className="futuristic-button"
         onClick={() => navigate("/admin-createInspeccion")}
       >
         Agregar Inspección
       </button>
-
+  
       {/* Buscadores */}
       <div className="search-container">
         <input
@@ -108,80 +107,84 @@ const AdminInspecciones = () => {
           onChange={(e) => setFilterMonth(e.target.value)}
         />
       </div>
-
+  
       {/* Lista de inspecciones */}
-      <ul className="inspections-list">
+      <ul className="inspection-list">
         {sortedInspections.map((inspection) => (
           <li
             key={inspection.id}
-            className={`inspection-item ${
-              inspection.inProgress ? "in-progress" : inspection.completada ? "completed" : ""
-            }`}
+            className={`inspection-item ${inspection.inProgress ? "in-progress" : inspection.completada ? "completed" : ""}`}
           >
-            {/* Columna Izquierda */}
-            <div className="inspection-details">
-              <h3>{inspection.titulo}</h3>
-              <p><strong>Descripción:</strong> {inspection.descripcion}</p>
-              <p><strong>Cliente:</strong> {`${inspection.nombreCliente} ${inspection.apellidoCliente}`}</p>
-              <p><strong>Celular:</strong> {inspection.celularCliente}</p>
-              <p><strong>Encargado:</strong> {inspection.encargado}</p>
-              <p><strong>Fecha Programada:</strong> {inspection.fechaProgramada}</p>
-              <p><strong>Hora Programada:</strong> {inspection.horaProgramada}</p>
-              <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion}</p>
-              <p><strong>Fecha y Hora de Inicio:</strong> {inspection.fechaInicio || "N/A"}</p>
-              <p><strong>Fecha y Hora de Fin:</strong> {inspection.fechaFin || "N/A"}</p>
-              
-              {inspection.linkCotizacion == ''? null :  <p><strong>Link de Cotización:</strong> <a href={inspection.linkCotizacion} target="_blank" rel="noreferrer">Ver Cotización</a></p>}
-            </div>
-
-            {/* Columna Central: Mapa */}
-            <div className="inspection-map">
-              <MapContainer
-                center={inspection.ubicacion || [-21.5355, -64.7295]} // Tarija, Bolivia por defecto
-                zoom={13}
-                style={{ height: "80%", width: "100%" }}
-              >
-                <TileLayer
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                />
-                {inspection.ubicacion && (
-                  <Marker position={inspection.ubicacion}></Marker>
+            <div className="inspection-content">
+              {/* Datos */}
+              <div className="inspection-details">
+                <h3>{inspection.titulo}</h3>
+                <p><strong>Descripción:</strong> {inspection.descripcion}</p>
+                <p><strong>Cliente:</strong> {`${inspection.nombreCliente} ${inspection.apellidoCliente}`}</p>
+                <p><strong>Celular:</strong> {inspection.celularCliente}</p>
+                <p><strong>Encargado:</strong> {inspection.encargado}</p>
+                <p><strong>Fecha Programada:</strong> {inspection.fechaProgramada}</p>
+                <p><strong>Hora Programada:</strong> {inspection.horaProgramada}</p>
+                <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion}</p>
+                <p><strong>Fecha y Hora de Inicio:</strong> {inspection.fechaInicio || "N/A"}</p>
+                <p><strong>Fecha y Hora de Fin:</strong> {inspection.fechaFin || "N/A"}</p>
+                <p><strong>Estado Final:</strong> {inspection.EstadoFinal || "N/A"}</p>
+                {inspection.linkCotizacion && ( 
+                  <p>
+                    <strong>Link de Cotización:</strong>{" "}
+                    <a href={inspection.linkCotizacion} target="_blank" rel="noreferrer">Ver Cotización</a>
+                  </p>
                 )}
-              </MapContainer>
-              <button
-                className="map-button"
-                onClick={() =>
-                  window.open(
-                    `https://www.google.com/maps?q=${inspection.ubicacion[0]},${inspection.ubicacion[1]}`,
-                    "_blank"
-                  )
-                }
-              >
-                Ver en Google Maps
-              </button>
-            </div>
-
-            {/* Columna Derecha: Botones */}
-            <div className="inspection-actions">
-              <button
-                className="edit-button"
-                onClick={() => navigate(`/admin-createInspeccion?edit=${inspection.id}`)}
-              >
-                Editar
-              </button>
-              <button
-                className="delete-button"
-                onClick={() => handleDelete(inspection.id)}
-              >
-                Eliminar
-              </button>
+              </div>
+  
+              {/* Mapa */}
+              <div className="inspection-map">
+                <MapContainer
+                  center={inspection.ubicacion || [-21.5355, -64.7295]}
+                  zoom={13}
+                  style={{ height: "300px", width: "100%" }}
+                >
+                  <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; OpenStreetMap contributors'
+                  />
+                  {inspection.ubicacion && <Marker position={inspection.ubicacion} />}
+                </MapContainer>
+                <button
+                  className="map-button"
+                  onClick={() =>
+                    window.open(
+                      `https://www.google.com/maps?q=${inspection.ubicacion[0]},${inspection.ubicacion[1]}`,
+                      "_blank"
+                    )
+                  }
+                >
+                  Ver en Google Maps
+                </button>
+              </div>
+  
+              {/* Botones */}
+              <div className="inspection-actions">
+                <button
+                  className="edit-button"
+                  onClick={() => navigate(`/admin-createInspeccion?edit=${inspection.id}`)}
+                >
+                  Editar
+                </button>
+                <button
+                  className="delete-button"
+                  onClick={() => handleDelete(inspection.id)}
+                >
+                  Eliminar
+                </button>
+              </div>
             </div>
           </li>
         ))}
       </ul>
     </div>
   );
+  
 };
 
 export default AdminInspecciones;

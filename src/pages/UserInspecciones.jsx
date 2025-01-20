@@ -167,6 +167,7 @@ const UserInspecciones = () => {
                   <p><strong>Fecha Programada:</strong> {inspection.fechaProgramada}</p>
                   <p><strong>Hora Programada:</strong> {inspection.horaProgramada}</p>
                   <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion}</p>
+                  <p><strong>Estado Final:</strong> {inspection.EstadoFinal || 'N/A'}</p>
                   <p><strong>Link de Cotización:</strong> {inspection.linkCotizacion || "N/A"}</p>
                 </div>
   
@@ -232,6 +233,7 @@ const UserInspecciones = () => {
                   <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion}</p>
                   <p><strong>Fecha Inicio:</strong> {inspection.fechaInicio || "N/A"}</p>
                   <p><strong>Fecha Fin:</strong> {inspection.fechaFin || "N/A"}</p>
+                  <p><strong>Estado Final:</strong> {inspection.EstadoFinal || "N/A"}</p>
                   <p>
                     <strong>Link de Cotización:</strong>{" "}
                     {inspection.linkCotizacion ? (
@@ -249,7 +251,7 @@ const UserInspecciones = () => {
                   <MapContainer
                     center={inspection.ubicacion || [-21.5355, -64.7295]}
                     zoom={13}
-                    style={{ height: "200px", width: "100%" }}
+                    style={{ height: "300px", width: "100%" }}
                   >
                     <TileLayer
                       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -273,7 +275,7 @@ const UserInspecciones = () => {
                     Ver en Google Maps
                 </button>
                   <button onClick={() => handleOpenModal(inspection.id, inspection.linkCotizacion)}>
-                    Actualizar Link
+                    Actualizar
                   </button>
                 </div>
               </div>
