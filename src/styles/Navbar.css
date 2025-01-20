@@ -9,7 +9,7 @@
   
   /* Espaciador para compensar el navbar fijo */
   .navbar-spacer {
-    height: 80px; /* Igual a la altura del navbar */
+    height: 0px; /* Igual a la altura del navbar */
   }
   
   /* Estilo del logo */

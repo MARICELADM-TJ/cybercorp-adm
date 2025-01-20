@@ -7,7 +7,6 @@ const AdminDashboard = () => {
   return (
     <>
       <div className="admin-panel">
-        <AdminNavbar />
         <div className="animated-background"></div>
         <div className="admin-content">
           <h1>Bienvenido al Panel de Administración</h1>

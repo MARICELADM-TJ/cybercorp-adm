@@ -1,91 +1,125 @@
+/* Estilos para AdminUsers */
 .admin-users {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    width: 100vw;
+  padding: 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 100vw;
+  background: linear-gradient(120deg, #141e30, #243b55);
+  color: #ffffff;
+  animation: fadeIn 1.2s ease-in-out;
+  height: auto;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  h1 {
-    color: #333;
+  to {
+    opacity: 1;
   }
-  
-  .actions-container {
-    display: flex;
-    justify-content: flex-end;
-    margin-bottom: 15px;
-  }
-  
-  .add-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .add-button:hover {
-    background-color: #0056b3;
-  }
-  
-  .users-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-  }
-  
-  .users-table th,
-  .users-table td {
-    border: 1px solid #ddd;
-    padding: 10px;
-    text-align: left;
-  }
-  
-  .users-table th {
-    background-color: #f4f4f4;
-    font-weight: bold;
-  }
-  
-  .users-table tr:nth-child(even) {
-    background-color: #f9f9f9;
-  }
-  
-  .users-table tr:hover {
-    background-color: #f1f1f1;
-  }
-  
-  .search-input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .toggle-button,
-  .edit-button {
-    padding: 8px 12px;
-    margin-right: 5px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .toggle-button.active {
-    background-color: #d9534f;
-    color: white;
-  }
-  
-  .toggle-button.inactive {
-    background-color: #5cb85c;
-    color: white;
-  }
-  
-  .edit-button {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .edit-button:hover {
-    background-color: #0056b3;
-  }
-  
+}
+
+h1 {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.actions-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.add-button {
+  background: linear-gradient(45deg, #ff416c, #ff4b2b);
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.add-button:hover {
+  transform: scale(1.1);
+  box-shadow: 0 8px 15px rgba(255, 75, 43, 0.3);
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+}
+
+.users-table th,
+.users-table td {
+  border: 1px solid #444;
+  padding: 15px;
+  text-align: left;
+  color: #ffffff;
+}
+
+.users-table th {
+  background: #243b55;
+  color: #ff9f43;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.users-table tr {
+  transition: transform 0.3s;
+}
+
+.users-table tr:hover {
+  background-color: #1e293b;
+  transform: scale(1.02);
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 50px;
+  margin-bottom: 20px;
+  font-size: 16px;
+  background: #2b2b2b;
+  color: #fff;
+}
+
+.toggle-button,
+.edit-button {
+  padding: 10px 15px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.toggle-button.active {
+  background: linear-gradient(45deg, #f12711, #f5af19);
+  color: white;
+}
+
+.toggle-button.inactive {
+  background: linear-gradient(45deg, #1d976c, #93f9b9);
+  color: white;
+}
+
+.toggle-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.edit-button {
+  background: linear-gradient(45deg, #6a11cb, #2575fc);
+  color: #fff;
+}
+
+.edit-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}

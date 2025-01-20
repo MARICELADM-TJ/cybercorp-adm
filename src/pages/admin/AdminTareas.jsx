@@ -152,7 +152,7 @@ const AdminTareas = () => {
 
   return (
     <div className="edit-page">
-      <AdminNavbar />
+
       <h2>Editar Tareas</h2>
       <div className="filters">
         <input

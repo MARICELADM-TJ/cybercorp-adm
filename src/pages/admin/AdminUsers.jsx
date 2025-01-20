@@ -60,7 +60,6 @@ const AdminUsers = () => {
 
   return (
     <div className="admin-users">
-        <AdminNavbar />
       <h1>Gestión de Usuarios</h1>
       <div className="actions-container">
         <button className="add-button" onClick={() => navigate('/admin-createUser')} >Agregar</button>
@@ -134,7 +133,7 @@ const AdminUsers = () => {
                 >
                   {user.active ? "Desactivar" : "Activar"}
                 </button>
-                <button className="edit-button">Editar</button>
+                {/* <button className="edit-button">Editar</button> */}
               </td>
             </tr>
           ))}

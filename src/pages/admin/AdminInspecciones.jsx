@@ -84,7 +84,7 @@ const AdminInspecciones = () => {
 
   return (
     <div className="admin-inspecciones">
-      <AdminNavbar />
+
       <h2>Administrar Inspecciones</h2>
 
       <button

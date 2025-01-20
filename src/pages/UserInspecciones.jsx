@@ -11,7 +11,7 @@ import Navbar from "./NavBar";
 
 Modal.setAppElement("#root");
 
-const UserInspecciones = ({role}) => {
+const UserInspecciones = () => {
   const [inspections, setInspections] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMonth, setFilterMonth] = useState("");
@@ -37,7 +37,6 @@ const UserInspecciones = ({role}) => {
     fetchInspections();
   }, []);
 
-  // Filtro de búsquedas
   useEffect(() => {
     const lowercasedTerm = searchTerm.toLowerCase();
     const filtered = inspections.filter(
@@ -109,13 +108,10 @@ const UserInspecciones = ({role}) => {
   };
 
   const handleOpenModal = (id, currentLink) => {
-    console.log("Opening modal for ID:", id);
     setCurrentInspectionId(id);
     setNewLink(currentLink || "");
     setModalIsOpen(true);
   };
-  console.log("Modal abierto:", modalIsOpen);
-
 
   const handleUpdateLink = async () => {
     try {
@@ -139,10 +135,8 @@ const UserInspecciones = ({role}) => {
 
   return (
     <div className="user-inspecciones">
-        <Navbar role={role} />
       <h2>Inspecciones</h2>
-
-      {/* Buscadores */}
+  
       <div className="search-container">
         <input
           type="text"
@@ -156,78 +150,162 @@ const UserInspecciones = ({role}) => {
           onChange={(e) => setFilterMonth(e.target.value)}
         />
       </div>
-
+  
       {/* Inspecciones no completadas */}
       <section>
         <h3>Inspecciones Pendientes</h3>
         <ul className="inspection-list">
           {incompletedInspections.map((inspection) => (
             <li key={inspection.id} className={`inspection-item ${inspection.inProgress ? "in-progress" : ""}`}>
-              <div className="inspection-details">
-                <h3>{inspection.titulo}</h3>
-                <p><strong>Cliente:</strong> {`${inspection.nombreCliente} ${inspection.apellidoCliente}`}</p>
-                <p><strong>Encargado:</strong> {inspection.encargado}</p>
-                <p><strong>Fecha:</strong> {inspection.fechaProgramada}</p>
-              </div>
-              <div className="inspection-actions">
-                {!inspection.inProgress ? (
-                  <button onClick={() => handleStartInspection(inspection.id)}>Iniciar</button>
-                ) : (
-                  <>
-                    <button onClick={() => handleFinishInspection(inspection.id)}>Terminar</button>
-                    <button onClick={() => handleCancelInspection(inspection.id)}>Cancelar</button>
-                  </>
-                )}
+              <div className="inspection-content">
+                {/* Datos */}
+                <div className="inspection-details">
+                  <h3>{inspection.titulo}</h3>
+                  <p><strong>Cliente:</strong> {`${inspection.nombreCliente} ${inspection.apellidoCliente}`}</p>
+                  <p><strong>Celular:</strong> {inspection.celularCliente}</p>
+                  <p><strong>Encargado:</strong> {inspection.encargado}</p>
+                  <p><strong>Fecha Programada:</strong> {inspection.fechaProgramada}</p>
+                  <p><strong>Hora Programada:</strong> {inspection.horaProgramada}</p>
+                  <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion}</p>
+                  <p><strong>Link de Cotización:</strong> {inspection.linkCotizacion || "N/A"}</p>
+                </div>
+  
+                {/* Mapa */}
+                <div className="inspection-map">
+                  <MapContainer
+                    center={inspection.ubicacion || [-21.5355, -64.7295]}
+                    zoom={13}
+                    style={{ height: "300px", width: "100%" }}
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; OpenStreetMap contributors'
+                    />
+                    {inspection.ubicacion && <Marker position={inspection.ubicacion} />}
+                  </MapContainer>
+                  
+                </div>
+  
+                {/* Botones */}
+                <div className="inspection-actions">
+                <button
+                    className="map-button"
+                    onClick={() =>
+                    window.open(
+                    `https://www.google.com/maps?q=${inspection.ubicacion[0]},${inspection.ubicacion[1]}`,
+                    "_blank"
+                    )
+                    }
+                >
+                    Ver en Google Maps
+                </button>
+                  {!inspection.inProgress ? (
+                    <button onClick={() => handleStartInspection(inspection.id)}>Iniciar</button>
+                  ) : (
+                    <>
+                      <button onClick={() => handleFinishInspection(inspection.id)}>Terminar</button>
+                      <button onClick={() => handleCancelInspection(inspection.id)}>Cancelar</button>
+                    </>
+                  )}
+                </div>
               </div>
             </li>
           ))}
         </ul>
       </section>
-
+  
       {/* Inspecciones completadas */}
       <section>
         <h3>Inspecciones Completadas</h3>
         <ul className="inspection-list">
           {completedInspections.map((inspection) => (
             <li key={inspection.id} className="inspection-item completed">
-              <div className="inspection-details">
-                <h3>{inspection.titulo}</h3>
-                <p><strong>Cliente:</strong> {`${inspection.nombreCliente} ${inspection.apellidoCliente}`}</p>
-                <p><strong>Encargado:</strong> {inspection.encargado}</p>
-                <p><strong>Fecha:</strong> {inspection.fechaProgramada}</p>
-                <button onClick={() => handleOpenModal(inspection.id, inspection.linkCotizacion)}>
-                  Actualizar Link
+              <div className="inspection-content">
+                {/* Datos */}
+                <div className="inspection-details">
+                  <h3>{inspection.titulo}</h3>
+                  <p><strong>Cliente:</strong> {`${inspection.nombreCliente} ${inspection.apellidoCliente}`}</p>
+                  <p><strong>Celular:</strong> {inspection.celularCliente}</p>
+                  <p><strong>Encargado:</strong> {inspection.encargado}</p>
+                  <p><strong>Fecha Programada:</strong> {inspection.fechaProgramada}</p>
+                  <p><strong>Hora Programada:</strong> {inspection.horaProgramada}</p>
+                  <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion}</p>
+                  <p><strong>Fecha Inicio:</strong> {inspection.fechaInicio || "N/A"}</p>
+                  <p><strong>Fecha Fin:</strong> {inspection.fechaFin || "N/A"}</p>
+                  <p>
+                    <strong>Link de Cotización:</strong>{" "}
+                    {inspection.linkCotizacion ? (
+                      <a href={inspection.linkCotizacion} target="_blank" rel="noreferrer">
+                        Ver Cotización
+                      </a>
+                    ) : (
+                      "N/A"
+                    )}
+                  </p>
+                </div>
+  
+                {/* Mapa */}
+                <div className="inspection-map">
+                  <MapContainer
+                    center={inspection.ubicacion || [-21.5355, -64.7295]}
+                    zoom={13}
+                    style={{ height: "200px", width: "100%" }}
+                  >
+                    <TileLayer
+                      url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                      attribution='&copy; OpenStreetMap contributors'
+                    />
+                    {inspection.ubicacion && <Marker position={inspection.ubicacion} />}
+                  </MapContainer>
+                </div>
+  
+                {/* Botones */}
+                <div className="inspection-actions">
+                <button
+                    className="map-button"
+                    onClick={() =>
+                    window.open(
+                    `https://www.google.com/maps?q=${inspection.ubicacion[0]},${inspection.ubicacion[1]}`,
+                    "_blank"
+                    )
+                    }
+                >
+                    Ver en Google Maps
                 </button>
+                  <button onClick={() => handleOpenModal(inspection.id, inspection.linkCotizacion)}>
+                    Actualizar Link
+                  </button>
+                </div>
               </div>
             </li>
           ))}
         </ul>
       </section>
-
+  
       {/* Modal para actualizar link */}
       <Modal
         isOpen={modalIsOpen}
         onRequestClose={() => setModalIsOpen(false)}
         className="modal"
         overlayClassName="overlay"
-        >
+      >
         <div>
-            <h3>Actualizar Link de Cotización</h3>
-            <input
+          <h3>Actualizar Link de Cotización</h3>
+          <input
             type="text"
             placeholder="Nuevo Link"
             value={newLink}
             onChange={(e) => setNewLink(e.target.value)}
-            />
-            <div>
+          />
+          <div>
             <button onClick={handleUpdateLink}>Guardar</button>
             <button onClick={() => setModalIsOpen(false)}>Cancelar</button>
-            </div>
+          </div>
         </div>
-        </Modal>
-
+      </Modal>
     </div>
   );
+  
 };
 
 export default UserInspecciones;

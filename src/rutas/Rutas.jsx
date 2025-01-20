@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import appFirebase from "../firebaseConfig/Firebase";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { db } from "../firebaseConfig/Firebase"; // Asegúrate de exportar `db` correctamente
+import { db } from "../firebaseConfig/Firebase";
 
 import Loading from "../components/Loading";
 import Login from "../login/Login";
@@ -17,12 +17,14 @@ import CreateUser from "../pages/admin/CreateUser";
 import AdminInspecciones from "../pages/admin/AdminInspecciones";
 import AdminCreateInspeccion from "../pages/admin/AdminCreateInspeccion";
 import UserInspecciones from "../pages/UserInspecciones";
+import AdminLayout from "./layouts/AdminLayout";
+import UserLayout from "./layouts/UserLayout";
 
 const auth = getAuth(appFirebase);
 
 function Rutas() {
   const [usuario, setUsuario] = useState(null);
-  const [role, setRole] = useState(null); // Almacena el rol del usuario
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -31,33 +33,30 @@ function Rutas() {
         setUsuario(usuarioFirebase);
 
         try {
-          // Obtén el rol del usuario desde Firestore
           const userDoc = doc(db, "users", usuarioFirebase.uid);
           const userSnap = await getDoc(userDoc);
 
           if (userSnap.exists()) {
-            const userRole = userSnap.data().role;
-            setRole(userRole); // Actualiza el estado del rol
+            setRole(userSnap.data().role);
           } else {
-            console.error("El documento del usuario no existe.");
-            setRole(null); // En caso de que no exista el documento
+            setRole(null);
           }
         } catch (error) {
           console.error("Error al obtener el rol:", error);
-          setRole(null); // Maneja el error estableciendo el rol como null
+          setRole(null);
         }
       } else {
         setUsuario(null);
         setRole(null);
       }
-      setLoading(false); // Detén la pantalla de carga
+      setLoading(false);
     });
 
-    return () => unsubscribe(); // Limpia el listener al desmontar el componente
+    return () => unsubscribe();
   }, []);
 
   if (loading) {
-    return <Loading />; // Pantalla de carga mientras se determina el rol
+    return <Loading />;
   }
 
   return (
@@ -66,19 +65,28 @@ function Rutas() {
         <Route index element={<Login />} />
         <Route path="/login" element={<Login />} />
 
-        {/* Rutas para roles específicos */}
-        <Route element={<ProtectedRoute isAllowed={!!usuario && role === "admin"} redirectPath="/home" />}>
-          <Route path="/admin-dashboard" element={<AdminDashboard role={role} />} />
-          <Route path="/admin-users" element = { <AdminUsers /> } />
-          <Route path="/admin-tareas" element = { <AdminTareas /> } />
-          <Route path="/admin-createUser" element = { <CreateUser /> } />
-          <Route path="/admin-inspecciones" element = { <AdminInspecciones /> } />
-          <Route path="/admin-createInspeccion" element = { <AdminCreateInspeccion /> } />
+        {/* Admin Routes */}
+        <Route
+          element={
+            <ProtectedRoute isAllowed={!!usuario && role === "admin"} redirectPath="/home" />
+          }
+        >
+          <Route element={<AdminLayout />}>
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/admin-users" element={<AdminUsers />} />
+            <Route path="/admin-tareas" element={<AdminTareas />} />
+            <Route path="/admin-createUser" element={<CreateUser />} />
+            <Route path="/admin-inspecciones" element={<AdminInspecciones />} />
+            <Route path="/admin-createInspeccion" element={<AdminCreateInspeccion />} />
+          </Route>
         </Route>
 
+        {/* User Routes */}
         <Route element={<ProtectedRoute isAllowed={!!usuario} />}>
-          <Route path="/home" element={<Home role={role} name={usuario} />} />
-          <Route path="/inspecciones" element = { <UserInspecciones role={role} name={usuario} /> } />
+          <Route element={<UserLayout role = {role}  />}>
+            <Route path="/home" element={<Home role={role} name={usuario} />} />
+            <Route path="/inspecciones" element={<UserInspecciones role={role} name={usuario} />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

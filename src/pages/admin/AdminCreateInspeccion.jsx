@@ -111,7 +111,6 @@ const AdminCreateInspeccion = () => {
 
   return (
     <div className="form-container">
-      <AdminNavbar />
       <div className="header">
         <img src={logo} alt="Logo" className="logo" />
         <h2>{isEditing ? "Editar Inspección" : "Crear Inspección"}</h2>
