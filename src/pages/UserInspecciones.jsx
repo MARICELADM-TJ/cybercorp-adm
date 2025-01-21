@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig/Firebase";
 import { collection, getDocs, doc, updateDoc } from "firebase/firestore";
 import "../styles/UserInspecciones.css";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import Modal from "react-modal";
@@ -69,11 +69,39 @@ const UserInspecciones = () => {
         prev.map((insp) => (insp.id === id ? { ...insp, inProgress: true, fechaInicio: startTime } : insp))
       );
       toast.success("Inspección iniciada correctamente");
+      console.log("inspeccion comenzada");
+      
     } catch (error) {
       console.error("Error al iniciar inspección:", error);
       toast.error("Error al iniciar la inspección");
     }
   };
+
+  const handleFinishInspection = async (id) => {
+    try {
+      const docRef = doc(db, "inspecciones", id);
+      const endTime = new Date().toISOString();
+      await updateDoc(docRef, {
+        completada: true,
+        fechaFin: endTime,
+        inProgress: false,
+      });
+  
+      setInspections((prev) =>
+        prev.map((insp) =>
+          insp.id === id
+            ? { ...insp, completada: true, fechaFin: endTime, inProgress: false }
+            : insp
+        )
+      );
+  
+      toast.success("Inspección finalizada correctamente");
+    } catch (error) {
+      console.error("Error al finalizar inspección:", error);
+      toast.error("Error al finalizar la inspección");
+    }
+  };
+  
 
   const handleUpdateInspection = async () => {
     try {
@@ -107,7 +135,7 @@ const UserInspecciones = () => {
           insp.id === id ? { ...insp, inProgress: false, fechaInicio: null } : insp
         )
       );
-      toast.success("Inspección cancelada correctamente");
+      toast.warn("Inspección cancelada");
     } catch (error) {
       console.error("Error al cancelar inspección:", error);
       toast.error("Error al cancelar la inspección");
@@ -325,6 +353,7 @@ const UserInspecciones = () => {
           </div>
         </div>
       </Modal>
+      <ToastContainer />
     </div>
   );
   
