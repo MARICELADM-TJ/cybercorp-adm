@@ -85,7 +85,8 @@ const AdminCreateInspeccion = () => {
         return;
       }
     }
-  
+
+
     console.log("No se pudieron extraer coordenadas");
     // Si el enlace no es válido, muestra un error
     toast.error("No se pudo extraer la ubicación del link. Asegúrate de que sea válido.");

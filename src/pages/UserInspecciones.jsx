@@ -19,6 +19,7 @@ const UserInspecciones = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [currentInspectionId, setCurrentInspectionId] = useState("");
   const [newLink, setNewLink] = useState("");
+  const [estadoFinal, setEstadoFinal] = useState("");
 
   useEffect(() => {
     const fetchInspections = async () => {
@@ -74,22 +75,28 @@ const UserInspecciones = () => {
     }
   };
 
-  const handleFinishInspection = async (id) => {
+  const handleUpdateInspection = async () => {
     try {
-      const docRef = doc(db, "inspecciones", id);
-      const endTime = new Date().toISOString();
-      await updateDoc(docRef, { inProgress: false, completada: true, fechaFin: endTime });
+      const docRef = doc(db, "inspecciones", currentInspectionId);
+      await updateDoc(docRef, {
+        linkCotizacion: newLink,
+        EstadoFinal: estadoFinal,
+      });
       setInspections((prev) =>
         prev.map((insp) =>
-          insp.id === id ? { ...insp, inProgress: false, completada: true, fechaFin: endTime } : insp
+          insp.id === currentInspectionId
+            ? { ...insp, linkCotizacion: newLink, EstadoFinal: estadoFinal }
+            : insp
         )
       );
-      toast.success("Inspección completada correctamente");
+      setModalIsOpen(false);
+      toast.success("Inspección actualizada correctamente");
     } catch (error) {
-      console.error("Error al finalizar inspección:", error);
-      toast.error("Error al finalizar la inspección");
+      console.error("Error al actualizar inspección:", error);
+      toast.error("Error al actualizar la inspección");
     }
   };
+  
 
   const handleCancelInspection = async (id) => {
     try {
@@ -107,9 +114,10 @@ const UserInspecciones = () => {
     }
   };
 
-  const handleOpenModal = (id, currentLink) => {
+  const handleOpenModal = (id, currentLink, currentEstadoFinal) => {
     setCurrentInspectionId(id);
     setNewLink(currentLink || "");
+    setEstadoFinal(currentEstadoFinal || "");
     setModalIsOpen(true);
   };
 
@@ -119,7 +127,7 @@ const UserInspecciones = () => {
       await updateDoc(docRef, { linkCotizacion: newLink });
       setInspections((prev) =>
         prev.map((insp) =>
-          insp.id === currentInspectionId ? { ...insp, linkCotizacion: newLink } : insp
+          insp.id === currentInspectionId ? { ...insp, linkCotizacion: newLink, EstadoFinal: estadoFinal } : insp
         )
       );
       setModalIsOpen(false);
@@ -274,7 +282,7 @@ const UserInspecciones = () => {
                 >
                     Ver en Google Maps
                 </button>
-                  <button onClick={() => handleOpenModal(inspection.id, inspection.linkCotizacion)}>
+                  <button onClick={() => handleOpenModal(inspection.id, inspection.linkCotizacion, inspection.EstadoFinal)}>
                     Actualizar
                   </button>
                 </div>
@@ -292,13 +300,25 @@ const UserInspecciones = () => {
         overlayClassName="overlay"
       >
         <div>
-          <h3>Actualizar Link de Cotización</h3>
+          <h3>Actualizar Cotización</h3>
           <input
             type="text"
             placeholder="Nuevo Link"
             value={newLink}
             onChange={(e) => setNewLink(e.target.value)}
           />
+
+
+          <select
+            value={estadoFinal}
+            onChange={(e) => setEstadoFinal(e.target.value)}
+          >
+            <option value="seguimiento">Seguimiento</option>
+            <option value="venta">Venta</option>
+            <option value="no le interesa">No le interesa</option>
+          </select>
+
+
           <div>
             <button onClick={handleUpdateLink}>Guardar</button>
             <button onClick={() => setModalIsOpen(false)}>Cancelar</button>
