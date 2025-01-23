@@ -63,6 +63,7 @@ const CreateUser = () => {
         lastLoginAt: "Nunca",
       });
 
+
       await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
 
       toast.success("Usuario creado exitosamente", {
@@ -73,6 +74,7 @@ const CreateUser = () => {
       });
 
       setTimeout(() => navigate("/admin-users"), 2000);
+      
     } catch (error) {
       toast.error("Error al crear el usuario: " + error.message, {
         position: "top-center",

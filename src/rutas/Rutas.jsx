@@ -19,6 +19,7 @@ import AdminCreateInspeccion from "../pages/admin/AdminCreateInspeccion";
 import UserInspecciones from "../pages/UserInspecciones";
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
+import TaskForm from "../pages/admin/TaskForm";
 
 const auth = getAuth(appFirebase);
 
@@ -78,6 +79,7 @@ function Rutas() {
             <Route path="/admin-createUser" element={<CreateUser />} />
             <Route path="/admin-inspecciones" element={<AdminInspecciones />} />
             <Route path="/admin-createInspeccion" element={<AdminCreateInspeccion />} />
+            <Route path="/admin-taskForm" element = {<TaskForm />} />
           </Route>
         </Route>
 

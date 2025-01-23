@@ -1,91 +1,133 @@
-// TaskForm.jsx
-
 import React, { useState, useEffect } from 'react';
+import { db } from '../../firebaseConfig/Firebase';
+import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
+import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/TaskForm.css';
-import '../../styles/TaskList.css';
+import {toast, ToastContainer} from 'react-toastify';
 
-const TaskForm = ({ onSubmit, existingTask, onCancel }) => {
+const TaskForm = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const taskToEdit = location.state?.task;
+
   const [task, setTask] = useState({
     title: '',
     description: '',
-    priority: false,
     dueDate: '',
     dueTime: '',
     encargado: '',
-    clientName: '',
-    clientLastName: '',
-    clientPhone: '',
+    nombreCliente: '',
+    apellidoCliente: '',
+    celularCliente: '',
   });
 
   useEffect(() => {
-    if (existingTask) {
-      const dueDateObj = new Date(existingTask.dueDate);
+    if (taskToEdit) {
+      const [date, time] = (taskToEdit.dueDate || '').split('T');
       setTask({
-        title: existingTask.title,
-        description: existingTask.description,
-        priority: existingTask.priority,
-        dueDate: dueDateObj.toISOString().split('T')[0],
-        dueTime: dueDateObj.toISOString().split('T')[1].slice(0, 5),
-        encargado: existingTask.encargado || '',
-        clientName: existingTask.clientName || '',
-        clientLastName: existingTask.clientLastName || '',
-        clientPhone: existingTask.clientPhone || '',
+        title: taskToEdit.title,
+        description: taskToEdit.description,
+        dueDate: date || '',
+        dueTime: time || '',
+        encargado: taskToEdit.encargado,
+        nombreCliente: taskToEdit.clientName || '',
+        apellidoCliente: taskToEdit.clientLastName || '',
+        celularCliente: taskToEdit.clientPhone || '',
       });
-    } else {
-      setTask({ title: '', description: '', priority: false, dueDate: '', dueTime: '', encargado: '', clientName: '', clientLastName: '', clientPhone: '' });
     }
-  }, [existingTask]);
+  }, [taskToEdit]);
 
-  const handleSubmit = (e) => {
+  const handleSave = async (e) => {
     e.preventDefault();
-    if (!task.title || !task.encargado || !task.clientName || !task.clientLastName || !task.clientPhone) {
-      alert('Todos los campos son obligatorios');
+    if (!task.title || !task.description || !task.dueDate || !task.dueTime || !task.encargado) {
+      let message = 'Los campos ';
+      if (!task.title) message += 'Título, ';
+      if (!task.description) message += 'Descripción, ';
+      if (!task.dueDate) message += 'Fecha, ';
+      if (!task.dueTime) message += 'Hora, ';
+      if (!task.encargado) message += 'Encargado, ';
+
+      message += 'son obligatorios.';
+
+      toast.warn(message);
       return;
     }
-    if (!task.dueDate || !task.dueTime) {
-      alert('La fecha y hora son obligatorias');
-      return;
-    }
+
+    const dueDate = `${task.dueDate}T${task.dueTime}:00`;
 
     try {
-      const fullDateTime = new Date(`${task.dueDate}T${task.dueTime}:00`).toISOString();
-      if (isNaN(new Date(fullDateTime))) {
-        alert('Fecha y hora no válidas, por favor verifica los campos.');
-        return;
+      if (taskToEdit) {
+        const taskRef = doc(db, 'tasks', taskToEdit.id);
+        await updateDoc(taskRef, { ...task, dueDate });
+        toast.update('Tarea actualizada con éxito.');
+      } else {
+        await addDoc(collection(db, 'tasks'), { ...task, dueDate, completed: false });
+        toast.success('Tarea agregada con éxito.');
       }
-      onSubmit({ ...task, dueDate: fullDateTime });
-
-      if (!existingTask) {
-        setTask({ title: '', description: '', priority: false, dueDate: '', dueTime: '', encargado: '', clientName: '', clientLastName: '', clientPhone: '' });
-      }
+      navigate('/admin-tareas');
     } catch (error) {
-      console.error('Error al procesar la fecha y hora:', error);
-      alert('Ha ocurrido un error al procesar la fecha y hora. Verifique los datos ingresados.');
+      console.error('Error al guardar tarea:', error);
     }
   };
 
   return (
-    <form className="task-form" onSubmit={handleSubmit}>
-      <h3>{existingTask ? 'Editar Tarea' : 'Nueva Tarea'}</h3>
-      <input type="text" placeholder="Título" value={task.title} onChange={(e) => setTask({ ...task, title: e.target.value })} />
-      <textarea placeholder="Descripción" value={task.description} onChange={(e) => setTask({ ...task, description: e.target.value })} />
-      <input type="date" value={task.dueDate} onChange={(e) => setTask({ ...task, dueDate: e.target.value })} placeholder="Fecha para realizar" />
-      <input type="time" value={task.dueTime} onChange={(e) => setTask({ ...task, dueTime: e.target.value })} placeholder="Hora para realizar" />
-      <input type="text" placeholder="Encargado" value={task.encargado} onChange={(e) => setTask({ ...task, encargado: e.target.value })} />
-      <input type="text" placeholder="Nombre del Cliente" value={task.clientName} onChange={(e) => setTask({ ...task, clientName: e.target.value })} />
-      <input type="text" placeholder="Apellido del Cliente" value={task.clientLastName} onChange={(e) => setTask({ ...task, clientLastName: e.target.value })} />
-      <input type="text" placeholder="Celular del Cliente" value={task.clientPhone} onChange={(e) => setTask({ ...task, clientPhone: e.target.value })} />
-
-      <label>
-        <input type="checkbox" checked={task.priority} onChange={(e) => setTask({ ...task, priority: e.target.checked })} />
-        Importante
-      </label>
-
-      <div className="form-buttons">
-        <button id="myButton" type="submit">{existingTask ? 'Actualizar' : 'Agregar'}</button>
-        {existingTask && <button type="button" onClick={onCancel}>Cancelar</button>}
-      </div>
-    </form>
+    <div className="task-form-view">
+      <h2>{taskToEdit ? 'Editar Tarea' : 'Nueva Tarea'}</h2>
+      <form className="task-form" onSubmit={handleSave}>
+        <input
+          type="text"
+          placeholder="Título"
+          value={task.title}
+          onChange={(e) => setTask({ ...task, title: e.target.value })}
+        />
+        <textarea
+          placeholder="Descripción"
+          value={task.description}
+          onChange={(e) => setTask({ ...task, description: e.target.value })}
+        />
+        <input
+          type="date"
+          value={task.dueDate}
+          onChange={(e) => setTask({ ...task, dueDate: e.target.value })}
+        />
+        <input
+          type="time"
+          value={task.dueTime}
+          onChange={(e) => setTask({ ...task, dueTime: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Encargado"
+          value={task.encargado}
+          onChange={(e) => setTask({ ...task, encargado: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Nombre del Cliente (opcional)"
+          value={task.nombreCliente}
+          onChange={(e) => setTask({ ...task, nombreCliente: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Apellido del Cliente (opcional)"
+          value={task.apellidoCliente}
+          onChange={(e) => setTask({ ...task, apellidoCliente: e.target.value })}
+        />
+        <input
+          type="text"
+          placeholder="Celular del Cliente (opcional)"
+          value={task.celularCliente}
+          onChange={(e) => setTask({ ...task, celularCliente: e.target.value })}
+        />
+        <div className="buttons">
+          <button type="submit">Guardar</button>
+          <button type="button" onClick={() => navigate('/admin-tareas')}>
+            Cancelar
+          </button>
+        </div>
+      </form>
+      <ToastContainer />
+    </div>
   );
 };
 

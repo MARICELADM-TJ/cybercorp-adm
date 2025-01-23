@@ -159,7 +159,7 @@ const UserInspecciones = () => {
         )
       );
       setModalIsOpen(false);
-      toast.success("Link de cotización actualizado correctamente");
+      toast.success("Actualizado correctamente");
     } catch (error) {
       console.error("Error al actualizar el link:", error);
       toast.error("Error al actualizar el link");

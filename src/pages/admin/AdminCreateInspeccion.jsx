@@ -65,7 +65,7 @@ const AdminCreateInspeccion = () => {
   };
 
   const verifyLocation = () => {
-    console.log("Verificando enlace...");
+    //console.log("Verificando enlace...");
     // Regex para extraer coordenadas de enlaces de Google Maps
     const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/; // Detecta @lat,lng en enlaces
     const match = locationLink.match(regex);
@@ -87,7 +87,7 @@ const AdminCreateInspeccion = () => {
     }
 
 
-    console.log("No se pudieron extraer coordenadas");
+    //console.log("No se pudieron extraer coordenadas");
     // Si el enlace no es válido, muestra un error
     toast.error("No se pudo extraer la ubicación del link. Asegúrate de que sea válido.");
   };
@@ -101,6 +101,7 @@ const AdminCreateInspeccion = () => {
     const {
       titulo,
       descripcion,
+      descripcionUbicacion,
       fechaProgramada,
       horaProgramada,
       nombreCliente,
@@ -121,7 +122,18 @@ const AdminCreateInspeccion = () => {
       !encargado ||
       !ubicacion
     ) {
-      toast.error("Por favor completa todos los campos obligatorios");
+      let message = "Los campos ";
+      if (!titulo) message += "Título, ";
+      if (!descripcion) message += "Descripción, ";
+      if (!fechaProgramada) message += "Fecha Programada, ";
+      if (!horaProgramada) message += "Hora Programada, ";
+      if (!nombreCliente) message += "Nombre del Cliente, ";
+      if (!apellidoCliente) message += "Apellido del Cliente, ";
+      if (!celularCliente) message += "Celular del Cliente, ";
+      if (!encargado) message += "Encargado, ";
+      if (!ubicacion) message += "Ubicación, ";
+      message += "son obligatorios.";
+      toast.warn(message);
       return;
     }
 
@@ -162,7 +174,7 @@ const AdminCreateInspeccion = () => {
             name="titulo"
             value={formData.titulo}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
@@ -172,7 +184,7 @@ const AdminCreateInspeccion = () => {
             name="descripcion"
             value={formData.descripcion}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
@@ -198,7 +210,17 @@ const AdminCreateInspeccion = () => {
             <button type="button" onClick={verifyLocation}>
               Verificar
             </button>
+
+            
           </div>
+          <label htmlFor="locationLink">Descripcion de la ubicacion</label>
+          <input
+            type="text"
+            id="descripcionUbicacion"
+            name="descripcionUbicacion"
+            value={formData.descripcionUbicacion}
+            onChange={handleInputChange}
+            />
         </div>
         <div className="form-group">
           <label htmlFor="EstadoFinal">Estado Final</label>
@@ -207,7 +229,7 @@ const AdminCreateInspeccion = () => {
             name="EstadoFinal"
             value={formData.EstadoFinal}
             onChange={handleInputChange}
-            required
+            
           >
             <option value="venta">Venta</option>
             <option value="seguimiento">Seguimiento</option>
@@ -222,7 +244,7 @@ const AdminCreateInspeccion = () => {
             name="fechaProgramada"
             value={formData.fechaProgramada}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
@@ -233,7 +255,7 @@ const AdminCreateInspeccion = () => {
             name="horaProgramada"
             value={formData.horaProgramada}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
@@ -244,7 +266,7 @@ const AdminCreateInspeccion = () => {
             name="nombreCliente"
             value={formData.nombreCliente}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
@@ -255,7 +277,7 @@ const AdminCreateInspeccion = () => {
             name="apellidoCliente"
             value={formData.apellidoCliente}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
@@ -266,7 +288,7 @@ const AdminCreateInspeccion = () => {
             name="celularCliente"
             value={formData.celularCliente}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
@@ -277,7 +299,7 @@ const AdminCreateInspeccion = () => {
             name="encargado"
             value={formData.encargado}
             onChange={handleInputChange}
-            required
+            
           />
         </div>
         <div className="form-group">
