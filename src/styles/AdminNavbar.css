@@ -177,3 +177,39 @@
       width: auto;
     }
   }
+
+  /* Estilos para la foto de perfil */
+/* Navbar.css */
+.user-info {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 15px;
+  height: 0px;
+}
+
+.profile-photo {
+  width: 15px; /* Tamaño más grande */
+  height: 15px; /* Tamaño más grande */
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
+}
+
+.user-name {
+  color: white;
+  font-weight: bold;
+  font-size: 1rem; /* Tamaño de fuente responsivo */
+}
+
+/* Ajustes para móvil */
+@media screen and (max-width: 768px) {
+  .profile-photo {
+    width: 30px;
+    height: 30px;
+  }
+
+  .user-name {
+    font-size: 0.9rem;
+  }
+}

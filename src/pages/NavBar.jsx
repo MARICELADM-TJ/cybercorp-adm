@@ -1,40 +1,57 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../styles/Navbar.css";
-
 import logo from "../assets/logo_share.png";
-
-// Importar Bootstrap y JS
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
 import appFirebase from "../firebaseConfig/Firebase";
 import { getAuth, signOut } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebaseConfig/Firebase";
+import defaultAvatar from "../assets/profileD.avif";
 
-const Navbar = ({role}) => {
+const Navbar = ({ role, userId }) => {
   const auth = getAuth(appFirebase);
   const navigate = useNavigate();
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (userId) {
+        const userDoc = doc(db, "users", userId);
+        const userSnap = await getDoc(userDoc);
+
+        if (userSnap.exists()) {
+          setUserData(userSnap.data());
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
 
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        navigate("/"); // Redirige al usuario a la página de inicio de sesión tras cerrar sesión
+        navigate("/");
       })
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
       });
   };
 
+  const getFirstName = (fullName) => {
+    return fullName ? fullName.split(" ")[0] : "Usuario";
+  };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div className="w-100">
-          {/* Logo centrado para móvil */}
           <Link to="/home" className="navbar-brand mx-auto d-lg-none">
             <img src={logo} alt="Logo" className="navbar-logo" />
           </Link>
 
-          {/* Botón del menú móvil */}
           <button
             className="navbar-toggler"
             type="button"
@@ -47,9 +64,7 @@ const Navbar = ({role}) => {
             <span className="navbar-toggler-icon"></span>
           </button>
 
-          {/* Opciones del menú */}
           <div className="collapse navbar-collapse" id="navbarNav">
-            {/* Enlaces alineados a la izquierda */}
             <ul className="navbar-nav me-auto">
               <li className="nav-item">
                 <Link to="/home" className="nav-link">
@@ -62,26 +77,31 @@ const Navbar = ({role}) => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/home" className="nav-link">
-                  ℹ️ Nosotros...
+                <Link to="/nosotros" className="nav-link">
+                  ℹ️ Equipo...
                 </Link>
               </li>
             </ul>
 
-            {/* Logo centrado para pantallas grandes */}
             <Link to="/home" className="navbar-brand mx-auto d-none d-lg-flex">
               <img src={logo} alt="Logo" className="navbar-logo" />
             </Link>
 
-            {/* Botones a la derecha */}
             <div className="navbar-right d-flex align-items-center">
-            {role === "admin"? <Link to="/admin-dashboard" className="logout-button btn btn-danger">
-                Admin
-              </Link> : null}
-              <button
-                className="logout-button btn btn-danger"
-                onClick={handleLogout}
-              >
+              {role === "admin" && (
+                <Link to="/admin-dashboard" className="logout-button btn btn-danger">
+                  Admin
+                </Link>
+              )}
+              <div className="user-info" onClick={() => navigate("/editProfile")}>
+                {/* <img
+                  src={userData?.photoURL || defaultAvatar}
+                  alt="Foto de perfil"
+                  className="profile-photo"
+                /> */}
+                <span className="user-name">{getFirstName(userData?.nombre)}</span>
+              </div>
+              <button className="logout-button btn btn-danger" onClick={handleLogout}>
                 Cerrar Sesión
               </button>
             </div>
@@ -89,7 +109,6 @@ const Navbar = ({role}) => {
         </div>
       </nav>
 
-      {/* Espaciador para compensar el navbar fijo */}
       <div className="navbar-spacer"></div>
     </>
   );

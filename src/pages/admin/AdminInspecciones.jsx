@@ -19,6 +19,12 @@ const AdminInspecciones = () => {
   const [filteredInspections, setFilteredInspections] = useState([]);
   const navigate = useNavigate();
 
+  const formatDate = (isoString) => {
+    if (!isoString) return "N/C";
+    const date = new Date(isoString);
+    return date.toLocaleString();
+  };
+
   // Fetch inspections from Firestore
   useEffect(() => {
 
@@ -252,8 +258,8 @@ const AdminInspecciones = () => {
                 <p><strong>Fecha Programada:</strong> {inspection.fechaProgramada}</p>
                 <p><strong>Hora Programada:</strong> {inspection.horaProgramada}</p>
                 <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion? inspection.descripcionUbicacion : "N/C"}</p>
-                <p><strong>Fecha y Hora de Inicio:</strong> {inspection.fechaInicio || "N/A"}</p>
-                <p><strong>Fecha y Hora de Fin:</strong> {inspection.fechaFin || "N/A"}</p>
+                <p><strong>Fecha y Hora de Inicio:</strong> {formatDate(inspection.fechaInicio) || "N/A"}</p>
+                <p><strong>Fecha y Hora de Fin:</strong> {formatDate(inspection.fechaFin) || "N/A"}</p>
                 <p><strong>Estado Final:</strong> {inspection.EstadoFinal || "N/A"}</p>
                 {inspection.linkCotizacion && ( 
                   <p>

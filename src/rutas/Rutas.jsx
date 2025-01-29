@@ -20,6 +20,8 @@ import UserInspecciones from "../pages/UserInspecciones";
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
 import TaskForm from "../pages/admin/TaskForm";
+import AboutUs from "../pages/AboutUs";
+import EditProfile from "../pages/EditProfile";
 
 const auth = getAuth(appFirebase);
 
@@ -59,6 +61,9 @@ function Rutas() {
   if (loading) {
     return <Loading />;
   }
+  console.log("Usuario en Rutas:", usuario);
+console.log("UID en Rutas:", usuario?.uid);
+  
 
   return (
     <BrowserRouter>
@@ -72,7 +77,7 @@ function Rutas() {
             <ProtectedRoute isAllowed={!!usuario && role === "admin"} redirectPath="/home" />
           }
         >
-          <Route element={<AdminLayout />}>
+          <Route element={<AdminLayout role={role} userId={usuario?.uid} />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/admin-users" element={<AdminUsers />} />
             <Route path="/admin-tareas" element={<AdminTareas />} />
@@ -85,14 +90,15 @@ function Rutas() {
 
         {/* User Routes */}
         <Route element={<ProtectedRoute isAllowed={!!usuario} />}>
-          <Route element={<UserLayout role = {role}  />}>
-            <Route path="/home" element={<Home role={role} name={usuario} />} />
-            <Route path="/inspecciones" element={<UserInspecciones role={role} name={usuario} />} />
-          </Route>
+        <Route element={<UserLayout role={role} userId={usuario?.uid} />}>
+          <Route path="/home" element={<Home role={role} name={usuario} />} />
+          <Route path="/inspecciones" element={<UserInspecciones role={role} name={usuario} />} />
+          <Route path="/nosotros" element={<AboutUs />} />
+          <Route path="/editProfile" element={<EditProfile userId={usuario?.uid} />} />
+        </Route> 
         </Route>
       </Routes>
     </BrowserRouter>
   );
 }
-
 export default Rutas;

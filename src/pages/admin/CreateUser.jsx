@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import { collection, doc, setDoc } from "firebase/firestore";
 import { db } from "../../firebaseConfig/Firebase";
 import { useNavigate } from "react-router-dom";
 import "../../styles/CreateUser.css";
 import { ToastContainer, toast, Bounce } from "react-toastify";
-import logo from '../../assets/logo_share.png';
-import AdminNavbar from "./AdminNavbar";
+import logo from "../../assets/logo_share.png";
 
 const CreateUser = () => {
   const [formData, setFormData] = useState({
@@ -18,6 +21,8 @@ const CreateUser = () => {
     password: "",
     porDefecto: false,
   });
+  const [showModal, setShowModal] = useState(false);
+  const [adminPassword, setAdminPassword] = useState("");
 
   const navigate = useNavigate();
   const auth = getAuth();
@@ -34,7 +39,7 @@ const CreateUser = () => {
       const isChecked = e.target.checked;
       setFormData((prevData) => ({
         ...prevData,
-        password: isChecked ? `${formData.nombre}123` : "",
+        password: isChecked ? "123456" : "",
         porDefecto: isChecked,
       }));
     }
@@ -42,11 +47,44 @@ const CreateUser = () => {
 
   const handleSaveUser = async (e) => {
     e.preventDefault();
-    const { nombre, apellido, celular, role, email, password } = formData;
 
+    let message = "Los campos";
+    let flag = false;
+    if (!formData.nombre) {
+      message += ", nombre ";
+      flag = true;
+    }
+    if (!formData.apellido) {
+      message += ", apellido";
+      flag = true;
+    }
+    if (!formData.celular) {
+      message += ", celular";
+      flag = true;
+    }
+    if (!formData.email) {
+      message += ", email";
+      flag = true;
+    }
+    if (!formData.password) {
+      message += ", contraseña";
+      flag = true;
+    }
+
+    message += " son obligatorios";
+
+    if (flag) {
+      toast.warn(message);
+      return;
+    }
+
+    setShowModal(true); // Abre el modal
+  };
+
+  const confirmSaveUser = async () => {
+    const { nombre, apellido, celular, role, email, password } = formData;
     const currentUser = auth.currentUser;
     const adminEmail = currentUser.email;
-    const adminPassword = prompt("Por favor, ingresa tu contraseña para confirmar:");
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -63,7 +101,6 @@ const CreateUser = () => {
         lastLoginAt: "Nunca",
       });
 
-
       await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
 
       toast.success("Usuario creado exitosamente", {
@@ -74,7 +111,6 @@ const CreateUser = () => {
       });
 
       setTimeout(() => navigate("/admin-users"), 2000);
-      
     } catch (error) {
       toast.error("Error al crear el usuario: " + error.message, {
         position: "top-center",
@@ -82,23 +118,22 @@ const CreateUser = () => {
         theme: "dark",
         transition: Bounce,
       });
+    } finally {
+      setAdminPassword(""); // Limpia la contraseña del modal
+      setShowModal(false); // Cierra el modal
     }
   };
 
   return (
     <div className="create-user-container">
-
       <div className="form-wrapper">
-        <div className="left-panel">
-          
-        </div>
+        <div className="left-panel"></div>
         <div className="right-panel">
-        <div className="centrar">
-          <img src={logo} alt="Logo" className="logo" />
+          <div className="centrar">
+            <img src={logo} alt="Logo" className="logo" />
           </div>
           <h2 className="form-title">Crear Usuario</h2>
-          
-          
+
           <form className="create-user-form" onSubmit={handleSaveUser}>
             <div className="form-row">
               <div className="left-half">
@@ -108,7 +143,6 @@ const CreateUser = () => {
                   name="nombre"
                   value={formData.nombre}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="right-half">
@@ -118,7 +152,6 @@ const CreateUser = () => {
                   name="apellido"
                   value={formData.apellido}
                   onChange={handleChange}
-                  required
                 />
               </div>
             </div>
@@ -131,7 +164,6 @@ const CreateUser = () => {
                   name="celular"
                   value={formData.celular}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="right-half">
@@ -140,11 +172,11 @@ const CreateUser = () => {
                   name="role"
                   value={formData.role}
                   onChange={handleChange}
-                  required
                 >
+                  <option value="invitado">Invitado</option>
+                  <option value="contabilidad">Tecnico</option>
                   <option value="contabilidad">Contabilidad</option>
                   <option value="admin">Admin</option>
-                  <option value="invitado">Invitado</option>
                 </select>
               </div>
             </div>
@@ -157,7 +189,6 @@ const CreateUser = () => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  required
                 />
               </div>
               <div className="right-half">
@@ -168,7 +199,6 @@ const CreateUser = () => {
                   value={formData.password}
                   onChange={handleChange}
                   disabled={formData.porDefecto}
-                  required
                 />
               </div>
             </div>
@@ -199,6 +229,32 @@ const CreateUser = () => {
         </div>
       </div>
       <ToastContainer />
+
+      {showModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h3>Confirmación</h3>
+            <p>Ingresa tu contraseña para confirmar:</p>
+            <input
+              type="password"
+              className="modal-input"
+              value={adminPassword}
+              onChange={(e) => setAdminPassword(e.target.value)}
+            />
+            <div className="modal-buttons">
+              <button onClick={confirmSaveUser}>Confirmar</button>
+              <button
+                onClick={() => {
+                  setAdminPassword("");
+                  setShowModal(false);
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

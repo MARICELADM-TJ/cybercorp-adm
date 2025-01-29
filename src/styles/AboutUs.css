@@ -1,0 +1,103 @@
+/* AboutUs.css */
+.about-us {
+    font-family: "Arial", sans-serif;
+    color: #f0f0f0;
+    background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+    padding: 40px 20px;
+    text-align: center;
+    min-height: 100vh;
+    width: 100vw;
+  }
+  
+  .about-us h1 {
+    font-size: 2.5rem;
+    color: #00ffff;
+    margin-bottom: 10px;
+  }
+  
+  .about-us-description {
+    font-size: 1.2rem;
+    color: #b0c4de;
+    margin-bottom: 40px;
+  }
+  
+  .card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    justify-items: center;
+    padding: 0 10px;
+  }
+  
+  .user-card {
+    background: #1a1a2e;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    max-width: 300px;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .user-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0px 10px 20px rgba(0, 255, 255, 0.5);
+  }
+  
+  .user-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+    border: 3px solid #00ffff;
+    object-fit: cover;
+  }
+  
+  .user-details h3 {
+    font-size: 1.2rem;
+    color: #f0f0f0;
+    margin-bottom: 5px;
+  }
+  
+  .role {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1rem;
+    margin-bottom: 10px;
+  }
+  
+  .role span {
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  .user-phone {
+    font-size: 0.9rem;
+    color: #b0c4de;
+  }
+  
+  /* Estilos por rol */
+  .role-icon {
+    font-size: 1.2rem;
+  }
+  
+  .admin {
+    color: #ffd700;
+  }
+  
+  .tecnico {
+    color: #00ffff;
+  }
+  
+  .contabilidad {
+    color: #8a2be2;
+  }
+  
+  .invitado {
+    color: #32cd32;
+  }
+    

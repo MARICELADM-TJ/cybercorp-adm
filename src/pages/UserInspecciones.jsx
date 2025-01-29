@@ -21,6 +21,12 @@ const UserInspecciones = () => {
   const [newLink, setNewLink] = useState("");
   const [estadoFinal, setEstadoFinal] = useState("");
 
+  const formatDate = (isoString) => {
+    if (!isoString) return "N/C";
+    const date = new Date(isoString);
+    return date.toLocaleString();
+  };
+
   useEffect(() => {
     const fetchInspections = async () => {
       try {
@@ -267,8 +273,8 @@ const UserInspecciones = () => {
                   <p><strong>Fecha Programada:</strong> {inspection.fechaProgramada}</p>
                   <p><strong>Hora Programada:</strong> {inspection.horaProgramada}</p>
                   <p><strong>Descripción de la Ubicación:</strong> {inspection.descripcionUbicacion}</p>
-                  <p><strong>Fecha Inicio:</strong> {inspection.fechaInicio || "N/A"}</p>
-                  <p><strong>Fecha Fin:</strong> {inspection.fechaFin || "N/A"}</p>
+                  <p><strong>Fecha Inicio:</strong> {formatDate(inspection.fechaInicio) || "N/A"}</p>
+                  <p><strong>Fecha Fin:</strong> {formatDate(inspection.fechaFin) || "N/A"}</p>
                   <p><strong>Estado Final:</strong> {inspection.EstadoFinal || "N/A"}</p>
                   <p>
                     <strong>Link de Cotización:</strong>{" "}

@@ -104,7 +104,6 @@ const HomePage = ({ role, name }) => {
 
   return (
     <div className="home-page">
-      <Navbar role={role} />
 
       <div className="search-filters">
         <input
