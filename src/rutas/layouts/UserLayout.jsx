@@ -2,10 +2,10 @@ import React from "react";
 import Navbar from "../../pages/NavBar";
 import { Outlet } from "react-router-dom";
 import '../layouts/Layout.css'
-const UserLayout = ({role, userId}) => {
+const UserLayout = ({ usuario, role }) => {
   return (
     <div>
-      <Navbar role = {role} userId={userId}/>
+      <Navbar usuario={usuario} role={role} />
       <div className="content">
         <Outlet />
       </div>

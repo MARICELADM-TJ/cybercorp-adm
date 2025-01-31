@@ -4,6 +4,7 @@ import { collection, addDoc, updateDoc, deleteDoc, doc, getDocs } from 'firebase
 import TaskList from '../TaskList';
 import '../../styles/AdminTareas.css';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
 
 const AdminTareas = () => {
   const [tasks, setTasks] = useState([]);
@@ -32,17 +33,47 @@ const AdminTareas = () => {
   }, []);
 
   const handleDeleteTask = async (id) => {
-    if (window.confirm('¿Estás seguro de que deseas eliminar esta tarea?')) {
-      const taskRef = doc(db, 'tasks', id);
+    const result = await Swal.fire({
+      title: "¿Estás seguro de eliminar esta tarea?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    });
+  
+    if (result.isConfirmed) {
       try {
-        await deleteDoc(taskRef);
+        await deleteDoc(doc(db, "tasks", id));
         setTasks((prev) => prev.filter((task) => task.id !== id));
-        alert('Tarea eliminada con éxito.');
+        Swal.fire({
+          title: "Eliminado",
+          text: "La tarea ha sido eliminada correctamente.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       } catch (error) {
-        console.error('Error al eliminar tarea:', error);
+        console.error("Error al eliminar tarea:", error);
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo eliminar la tarea. Inténtalo de nuevo.",
+          icon: "error",
+        });
       }
+    } else {
+      Swal.fire({
+        title: "Cancelado",
+        text: "La tarea no fue eliminada.",
+        icon: "info",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     }
   };
+  
 
   const filteredTasks = tasks
     .filter((task) => {
@@ -106,6 +137,7 @@ const AdminTareas = () => {
         onEdit={(task) => navigate('/admin-taskForm', { state: { task } })}
         onDelete={handleDeleteTask}
       />
+      <ToastContainer />
     </div>
   );
 };

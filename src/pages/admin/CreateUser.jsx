@@ -103,20 +103,47 @@ const CreateUser = () => {
 
       await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
 
-      toast.success("Usuario creado exitosamente", {
-        position: "top-center",
-        autoClose: 3000,
-        theme: "dark",
-        transition: Bounce,
-      });
+      // toast.success("Usuario creado exitosamente", {
+      //   position: "top-center",
+      //   autoClose: 3000,
+      //   theme: "dark",
+      //   transition: Bounce,
+      //});
 
-      setTimeout(() => navigate("/admin-users"), 2000);
+      //setTimeout(() => navigate("/admin-users"), 2000);
+      Swal.fire({
+        icon: "success",
+        title: "Usuario creado exitosamente",
+        showClass: {
+          popup: "animate__animated animate__zoomIn",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOut",
+        },
+        showConfirmButton: false,
+        timer: 1000,
+        willClose: () => {
+          navigate("/admin-users");
+        },
+      });
     } catch (error) {
-      toast.error("Error al crear el usuario: " + error.message, {
-        position: "top-center",
-        autoClose: 3000,
-        theme: "dark",
-        transition: Bounce,
+      // toast.error("Error al crear el usuario: " + error.message, {
+      //   position: "top-center",
+      //   autoClose: 3000,
+      //   theme: "dark",
+      //   transition: Bounce,
+      // });
+      Swal.fire({
+        icon: "error",
+        title: "Error al crear usuario",
+        showClass: {
+          popup: "animate__animated animate__zoomIn",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOut",
+        },
+        showConfirmButton: true,
+        timer: 1000,
       });
     } finally {
       setAdminPassword(""); // Limpia la contraseña del modal
@@ -174,7 +201,7 @@ const CreateUser = () => {
                   onChange={handleChange}
                 >
                   <option value="invitado">Invitado</option>
-                  <option value="contabilidad">Tecnico</option>
+                  <option value="tecnico">Tecnico</option>
                   <option value="contabilidad">Contabilidad</option>
                   <option value="admin">Admin</option>
                 </select>

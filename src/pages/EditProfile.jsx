@@ -1,28 +1,32 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebaseConfig/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { getAuth, updatePassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import Swal from "sweetalert2";
 import "../styles/EditProfile.css";
 import defaultAvatar from "../assets/profileD.avif";
 
-const EditProfile = ({ userId }) => {
+const EditProfile = ({ userId, setUsuario }) => {
   const [formData, setFormData] = useState({
     nombre: "",
     apellido: "",
     celular: "",
     email: "",
-    //photoURL: "",
+    newPassword: "", // Nuevo campo para la contraseña
   });
 
-  const [photoPreview, setPhotoPreview] = useState(defaultAvatar); // Foto por defecto
+  const [photoPreview, setPhotoPreview] = useState(defaultAvatar);
   const navigate = useNavigate();
 
-  // Cargar datos del usuario
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        if (!userId) {
+          console.error("userId no está definido");
+          return;
+        }
+
         const docRef = doc(db, "users", userId);
         const userSnap = await getDoc(docRef);
 
@@ -33,16 +37,34 @@ const EditProfile = ({ userId }) => {
             apellido: data.apellido || "",
             celular: data.celular || "",
             email: data.email || "",
-            //photoURL: data.photoURL || "",
+            newPassword: "", // Inicializar sin contraseña
           });
           setPhotoPreview(data.photoURL || defaultAvatar);
         } else {
-          toast.error("Usuario no encontrado");
-          navigate(-1); // Redirige a la página anterior si no se encuentra
+          Swal.fire({
+            icon: "error",
+            title: "Usuario no encontrado",
+            showClass: {
+              popup: "animate__animated animate__fadeInDown",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
+          navigate(-1);
         }
       } catch (error) {
         console.error("Error al obtener datos del usuario:", error);
-        toast.error("Error al cargar datos del usuario");
+        Swal.fire({
+          icon: "error",
+          title: "Error al cargar datos del usuario",
+          showClass: {
+            popup: "animate__animated animate__shakeX",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOutUp",
+          },
+        });
         navigate(-1);
       }
     };
@@ -50,94 +72,112 @@ const EditProfile = ({ userId }) => {
     fetchUserData();
   }, [userId, navigate]);
 
-  // Manejar cambios en los inputs
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Verificar y actualizar la foto de perfil
-  // const handleVerifyPhotoURL = () => {
-  //   if (formData.photoURL) {
-  //     const timeout = 5000; // 5 segundos
-  //     const controller = new AbortController();
-  //     const timeoutId = setTimeout(() => controller.abort(), timeout);
-  
-  //     fetch(formData.photoURL, { signal: controller.signal })
-  //       .then((response) => {
-  //         clearTimeout(timeoutId); // Limpiar el timeout si la respuesta es exitosa
-  //         if (response.ok) {
-  //           const contentType = response.headers.get("Content-Type");
-  //           if (contentType && contentType.startsWith("image")) {
-  //             setPhotoPreview(formData.photoURL);
-  //             toast.success("Foto de perfil actualizada");
-  //           } else {
-  //             throw new Error("El enlace no es una imagen válida");
-  //           }
-  //         } else {
-  //           throw new Error("No se pudo cargar la foto");
-  //         }
-  //       })
-  //       .catch((error) => {
-  //         clearTimeout(timeoutId); // Limpiar el timeout en caso de error
-  //         setPhotoPreview(defaultAvatar);
-  //         toast.error(error.message || "No se pudo cargar la foto, revisa el link");
-  //       });
-  //   } else {
-  //     setPhotoPreview(defaultAvatar);
-  //     toast.error("El campo de la URL está vacío");
-  //   }
-  // };
-
-  // Guardar cambios
   const handleSave = async (e) => {
     e.preventDefault();
 
     try {
-      // if(handleVerifyPhotoURL()){
-        
-      // }
+      if (!userId) {
+        console.error("userId no está definido");
+        return;
+      }
+
       const docRef = doc(db, "users", userId);
       await updateDoc(docRef, {
         nombre: formData.nombre,
         apellido: formData.apellido,
         celular: formData.celular,
-        //photoURL: formData.photoURL,
       });
 
-      toast.success("Perfil actualizado correctamente");
-      navigate(-1); // Redirige a la página anterior
+      // Actualizar la contraseña si se proporcionó una nueva
+      if (formData.newPassword) {
+        const auth = getAuth();
+        const user = auth.currentUser;
+
+        if (user) {
+          await updatePassword(user, formData.newPassword);
+          Swal.fire({
+            icon: "success",
+            title: "Contraseña actualizada correctamente",
+            showClass: {
+              popup: "animate__animated animate__zoomIn",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOut",
+            },
+            showConfirmButton: false,
+            timer: 1000,
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "No se pudo actualizar la contraseña",
+            text: "El usuario no está autenticado.",
+            showClass: {
+              popup: "animate__animated animate__shakeX",
+            },
+            hideClass: {
+              popup: "animate__animated animate__fadeOutUp",
+            },
+          });
+        }
+      }
+
+      if (setUsuario) {
+        setUsuario((prevUsuario) => ({
+          ...prevUsuario,
+          displayName: `${formData.nombre} ${formData.apellido}`,
+        }));
+      }
+
+      Swal.fire({
+        icon: "success",
+        title: "Perfil actualizado correctamente",
+        showClass: {
+          popup: "animate__animated animate__zoomIn",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOut",
+        },
+        showConfirmButton: false,
+        timer: 1000,
+        willClose: () => {
+          navigate(-1);
+        },
+      });
     } catch (error) {
       console.error("Error al guardar el perfil:", error);
-      toast.error("Error al guardar el perfil");
+      Swal.fire({
+        icon: "error",
+        title: "Error al guardar el perfil",
+        text: error.message,
+        showClass: {
+          popup: "animate__animated animate__lightSpeedInRight",
+        },
+        hideClass: {
+          popup: "animate__animated animate__flipOutX",
+        },
+        showConfirmButton: false,
+        timer: 1000,
+      });
     }
   };
 
-  // Cancelar cambios
   const handleCancel = () => {
-    navigate(-1); // Redirige a la página anterior
+    navigate(-1);
   };
 
   return (
     <div className="edit-profile-container">
       <h2>Editar Perfil</h2>
       <form onSubmit={handleSave} className="edit-profile-form">
-        {/* Foto de perfil */}
         <div className="form-group photo-group">
           <img src={photoPreview} alt="Foto de perfil" className="profile-photo" />
-          {/* <label htmlFor="photoURL">Link de la Foto</label>
-          <input
-            type="text"
-            id="photoURL"
-            name="photoURL"
-            value={formData.photoURL}
-            onChange={handleInputChange}
-          />
-          <button type="button" onClick={handleVerifyPhotoURL} className="btn verify">
-            Verificar
-          </button> */}
         </div>
 
-        {/* Nombre */}
         <div className="form-group">
           <label htmlFor="nombre">Nombre</label>
           <input
@@ -150,7 +190,6 @@ const EditProfile = ({ userId }) => {
           />
         </div>
 
-        {/* Apellido */}
         <div className="form-group">
           <label htmlFor="apellido">Apellido</label>
           <input
@@ -163,7 +202,6 @@ const EditProfile = ({ userId }) => {
           />
         </div>
 
-        {/* Celular */}
         <div className="form-group">
           <label htmlFor="celular">Celular</label>
           <input
@@ -176,13 +214,23 @@ const EditProfile = ({ userId }) => {
           />
         </div>
 
-        {/* Correo (solo lectura) */}
         <div className="form-group">
           <label htmlFor="email">Correo Electrónico</label>
           <input type="email" id="email" name="email" value={formData.email} readOnly />
         </div>
 
-        {/* Botones */}
+        <div className="form-group">
+          <label htmlFor="newPassword">Nueva Contraseña</label>
+          <input
+            type="password"
+            id="newPassword"
+            name="newPassword"
+            value={formData.newPassword}
+            onChange={handleInputChange}
+            placeholder="Dejar en blanco para no cambiar"
+          />
+        </div>
+
         <div className="form-buttons">
           <button type="button" className="btn cancel" onClick={handleCancel}>
             Cancelar
@@ -192,7 +240,6 @@ const EditProfile = ({ userId }) => {
           </button>
         </div>
       </form>
-      <ToastContainer />
     </div>
   );
 };

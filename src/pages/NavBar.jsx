@@ -10,15 +10,15 @@ import { doc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig/Firebase";
 import defaultAvatar from "../assets/profileD.avif";
 
-const Navbar = ({ role, userId }) => {
+const Navbar = ({ role, usuario }) => {
   const auth = getAuth(appFirebase);
   const navigate = useNavigate();
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      if (userId) {
-        const userDoc = doc(db, "users", userId);
+      if (usuario?.uid) {
+        const userDoc = doc(db, "users", usuario.uid);
         const userSnap = await getDoc(userDoc);
 
         if (userSnap.exists()) {
@@ -28,7 +28,7 @@ const Navbar = ({ role, userId }) => {
     };
 
     fetchUserData();
-  }, [userId]);
+  }, [usuario]); // Dependencia: usuario
 
   const handleLogout = () => {
     signOut(auth)
@@ -99,7 +99,9 @@ const Navbar = ({ role, userId }) => {
                   alt="Foto de perfil"
                   className="profile-photo"
                 /> */}
-                <span className="user-name">{getFirstName(userData?.nombre)}</span>
+                <span className="user-name">
+                  {getFirstName(userData?.nombre || usuario?.displayName || "Usuario")}
+                </span>
               </div>
               <button className="logout-button btn btn-danger" onClick={handleLogout}>
                 Cerrar Sesión

@@ -141,7 +141,23 @@ const AdminCreateInspeccion = () => {
       if (isEditing) {
         const docRef = doc(db, "inspecciones", inspectionId);
         await updateDoc(docRef, formData);
-        toast.success("Inspección actualizada exitosamente");
+        
+        Swal.fire({
+                icon: "success",
+                title: "Inspeccion actualizada correctamente",
+                showClass: {
+                  popup: "animate__animated animate__zoomIn", // Animación de entrada
+                },
+                hideClass: {
+                  popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+                },
+                showConfirmButton: false, // Oculta el botón "OK"
+                timer: 1000, // Cierra automáticamente después de 1.5 segundos
+                willClose: () => {
+                  navigate("/admin-inspecciones");
+                },
+              });
+
       } else {
         await addDoc(collection(db, "inspecciones"), {
           ...formData,
@@ -150,12 +166,38 @@ const AdminCreateInspeccion = () => {
           fechaFin: null,
           inProgress: false,
         });
-        toast.success("Inspección creada exitosamente");
+        Swal.fire({
+          icon: "success",
+          title: "Inspeccion creada correctamente",
+          showClass: {
+            popup: "animate__animated animate__zoomIn", // Animación de entrada
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+          },
+          showConfirmButton: false, // Oculta el botón "OK"
+          timer: 1000, // Cierra automáticamente después de 1.5 segundos
+          willClose: () => {
+            navigate("/admin-inspecciones");
+          },
+        });
       }
-      navigate("/admin-inspecciones");
+      
     } catch (error) {
       console.error("Error al guardar la inspección:", error);
-      toast.error("Error al guardar la inspección");
+      //toast.error("Error al guardar la inspección");
+      Swal.fire({
+              icon: "error",
+              title: "Error al guardar la inspeccion",
+              showClass: {
+                popup: "animate__animated animate__lightSpeedInRight", // Animación de entrada
+              },
+              hideClass: {
+                popup: "animate__animated animate__flipOutX", // Animación de salida sin movimiento
+              },
+              showConfirmButton: false, // Oculta el botón "OK"
+              timer: 1000, // Cierra automáticamente después de 1.5 segundos
+            });
     }
   };
 

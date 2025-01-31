@@ -3,7 +3,7 @@ import { db } from '../../firebaseConfig/Firebase';
 import { collection, addDoc, updateDoc, doc } from 'firebase/firestore';
 import { useNavigate, useLocation } from 'react-router-dom';
 import '../../styles/TaskForm.css';
-import {toast, ToastContainer} from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 const TaskForm = () => {
   const navigate = useNavigate();
@@ -23,12 +23,14 @@ const TaskForm = () => {
 
   useEffect(() => {
     if (taskToEdit) {
-      const [date, time] = (taskToEdit.dueDate || '').split('T');
+      // Dividir la fecha y hora en partes
+      const [date, timeWithSeconds] = (taskToEdit.dueDate || '').split('T');
+
       setTask({
         title: taskToEdit.title,
         description: taskToEdit.description,
         dueDate: date || '',
-        dueTime: time || '',
+        dueTime: taskToEdit.dueTime || '', // Usar solo HH:MM
         encargado: taskToEdit.encargado,
         nombreCliente: taskToEdit.clientName || '',
         apellidoCliente: taskToEdit.clientLastName || '',
@@ -53,20 +55,67 @@ const TaskForm = () => {
       return;
     }
 
+    // Combinar fecha y hora en formato ISO
     const dueDate = `${task.dueDate}T${task.dueTime}:00`;
 
     try {
       if (taskToEdit) {
         const taskRef = doc(db, 'tasks', taskToEdit.id);
         await updateDoc(taskRef, { ...task, dueDate });
-        toast.update('Tarea actualizada con éxito.');
+        //toast.success('Tarea actualizada con éxito.');
+        Swal.fire({
+          icon: "success",
+          title: "Tarea actualizada correctamente",
+          showClass: {
+            popup: "animate__animated animate__zoomIn", // Animación de entrada
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+          },
+          showConfirmButton: false, // Oculta el botón "OK"
+          timer: 1000, // Cierra automáticamente después de 1.5 segundos
+          willClose: () => {
+            navigate('/admin-tareas');
+          },
+        });
       } else {
         await addDoc(collection(db, 'tasks'), { ...task, dueDate, completed: false });
-        toast.success('Tarea agregada con éxito.');
+        //toast.success('Tarea agregada con éxito.');
+        Swal.fire({
+          icon: "success",
+          title: "tarea creada correctamente",
+          showClass: {
+            popup: "animate__animated animate__zoomIn", // Animación de entrada
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+          },
+          showConfirmButton: false, // Oculta el botón "OK"
+          timer: 1000, // Cierra automáticamente después de 1.5 segundos
+          willClose: () => {
+            navigate("/admin-tareas");
+          },
+        });
       }
       navigate('/admin-tareas');
     } catch (error) {
       console.error('Error al guardar tarea:', error);
+      //toast.error('Error al guardar la tarea.');
+      Swal.fire({
+        icon: "error",
+        title: "Error al guardar la tarea",
+        showClass: {
+          popup: "animate__animated animate__zoomIn", // Animación de entrada
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+        },
+        showConfirmButton: false, // Oculta el botón "OK"
+        timer: 1000, // Cierra automáticamente después de 1.5 segundos
+        willClose: () => {
+          navigate('/admin-tareas');
+        },
+      });
     }
   };
 

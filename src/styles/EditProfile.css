@@ -93,3 +93,22 @@
     opacity: 0.8;
   }
   
+  /*Estilos animacion*/
+  /* Agrega esto en tu archivo de estilos (EditProfile.css o global) */
+.swal2-popup {
+  background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+  color: #fff;
+  border-radius: 15px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.swal2-title {
+  font-family: 'Arial', sans-serif;
+  font-size: 1.5rem;
+  color: #00ffcc;
+}
+
+.swal2-icon {
+  border-color: #00ffcc;
+  color: #00ffcc;
+}

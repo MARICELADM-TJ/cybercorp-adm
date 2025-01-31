@@ -6,7 +6,7 @@ import { db } from "../firebaseConfig/Firebase";
 import { collection, updateDoc, doc, onSnapshot } from "firebase/firestore";
 import TaskList from "./TaskList";
 import "../styles/Home.css";
-import Navbar from "./NavBar";
+import { ToastContainer, toast } from "react-toastify";
 
 const auth = getAuth(appFirebase);
 
@@ -32,6 +32,7 @@ const HomePage = ({ role, name }) => {
         setTasks(tasksArray);
       },
       (error) => {
+        toast.error("Error al obtener las tareas");
         console.error("Error al obtener las tareas:", error);
       }
     );
@@ -45,8 +46,10 @@ const HomePage = ({ role, name }) => {
       const now = new Date().toISOString();
       const taskRef = doc(db, "tasks", id);
       await updateDoc(taskRef, { completed: true, endDate: now });
+      toast.success("Tarea completada");
     } catch (error) {
       console.error("Error al completar la tarea:", error);
+      toast.error("Error al completar la tarea");
     }
   };
 
@@ -61,8 +64,10 @@ const HomePage = ({ role, name }) => {
           task.id === id ? { ...task, startDate: now } : task
         )
       );
+      toast.success("Tarea iniciada");
     } catch (error) {
       console.error("Error al iniciar tarea:", error);
+      toast.error("Error al iniciar tarea");
     }
   };
 
@@ -76,6 +81,7 @@ const HomePage = ({ role, name }) => {
           task.id === id ? { ...task, startDate: null } : task
         )
       );
+      toast.warn("Tarea cancelada");
     } catch (error) {
       console.error("Error al cancelar la tarea:", error);
     }
@@ -154,6 +160,7 @@ const HomePage = ({ role, name }) => {
       ) : (
         <p className="no-tasks-message">No hay tareas completadas.</p>
       )}
+      <ToastContainer />
     </div>
   );
 };

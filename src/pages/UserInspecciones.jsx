@@ -7,11 +7,10 @@ import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import Modal from "react-modal";
 
-import Navbar from "./NavBar";
 
 Modal.setAppElement("#root");
 
-const UserInspecciones = () => {
+const UserInspecciones = ({role}) => {
   const [inspections, setInspections] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterMonth, setFilterMonth] = useState("");
@@ -71,17 +70,28 @@ const UserInspecciones = () => {
       const docRef = doc(db, "inspecciones", id);
       const startTime = new Date().toISOString();
       await updateDoc(docRef, { inProgress: true, fechaInicio: startTime });
+  
       setInspections((prev) =>
         prev.map((insp) => (insp.id === id ? { ...insp, inProgress: true, fechaInicio: startTime } : insp))
       );
-      toast.success("Inspección iniciada correctamente");
-      console.log("inspeccion comenzada");
-      
+  
+      Swal.fire({
+        title: "¡Inspección iniciada!",
+        text: "La inspección ha comenzado correctamente.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error al iniciar inspección:", error);
-      toast.error("Error al iniciar la inspección");
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un problema al iniciar la inspección.",
+        icon: "error",
+      });
     }
   };
+  
 
   const handleFinishInspection = async (id) => {
     try {
@@ -101,12 +111,23 @@ const UserInspecciones = () => {
         )
       );
   
-      toast.success("Inspección finalizada correctamente");
+      Swal.fire({
+        title: "¡Inspección finalizada!",
+        text: "La inspección se ha completado con éxito.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     } catch (error) {
       console.error("Error al finalizar inspección:", error);
-      toast.error("Error al finalizar la inspección");
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un problema al finalizar la inspección.",
+        icon: "error",
+      });
     }
   };
+  
   
 
   const handleUpdateInspection = async () => {
@@ -133,20 +154,46 @@ const UserInspecciones = () => {
   
 
   const handleCancelInspection = async (id) => {
-    try {
-      const docRef = doc(db, "inspecciones", id);
-      await updateDoc(docRef, { inProgress: false, fechaInicio: null });
-      setInspections((prev) =>
-        prev.map((insp) =>
-          insp.id === id ? { ...insp, inProgress: false, fechaInicio: null } : insp
-        )
-      );
-      toast.warn("Inspección cancelada");
-    } catch (error) {
-      console.error("Error al cancelar inspección:", error);
-      toast.error("Error al cancelar la inspección");
+    const result = await Swal.fire({
+      title: "¿Cancelar Inspección?",
+      text: "¿Seguro que quieres cancelar esta inspección?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Sí, cancelar",
+      cancelButtonText: "No",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+    });
+  
+    if (result.isConfirmed) {
+      try {
+        const docRef = doc(db, "inspecciones", id);
+        await updateDoc(docRef, { inProgress: false, fechaInicio: null });
+  
+        setInspections((prev) =>
+          prev.map((insp) =>
+            insp.id === id ? { ...insp, inProgress: false, fechaInicio: null } : insp
+          )
+        );
+  
+        Swal.fire({
+          title: "Inspección cancelada",
+          text: "La inspección ha sido cancelada con éxito.",
+          icon: "info",
+          timer: 1500,
+          showConfirmButton: false,
+        });
+      } catch (error) {
+        console.error("Error al cancelar inspección:", error);
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo cancelar la inspección.",
+          icon: "error",
+        });
+      }
     }
   };
+  
 
   const handleOpenModal = (id, currentLink, currentEstadoFinal) => {
     setCurrentInspectionId(id);
@@ -158,19 +205,46 @@ const UserInspecciones = () => {
   const handleUpdateLink = async () => {
     try {
       const docRef = doc(db, "inspecciones", currentInspectionId);
-      await updateDoc(docRef, { linkCotizacion: newLink });
+      
+      // 🛠️ Actualizamos ambos campos en Firebase
+      await updateDoc(docRef, {
+        linkCotizacion: newLink,
+        EstadoFinal: estadoFinal,  // 🔥 Se asegura de actualizarlo en la DB
+      });
+  
+      // 🔄 Actualizamos el estado local para reflejar los cambios en la UI
       setInspections((prev) =>
         prev.map((insp) =>
-          insp.id === currentInspectionId ? { ...insp, linkCotizacion: newLink, EstadoFinal: estadoFinal } : insp
+          insp.id === currentInspectionId
+            ? { ...insp, linkCotizacion: newLink, EstadoFinal: estadoFinal } // Asegurar ambos cambios
+            : insp
         )
       );
+  
       setModalIsOpen(false);
-      toast.success("Actualizado correctamente");
+  
+      // ✅ Alerta de éxito
+      Swal.fire({
+        title: "¡Actualización exitosa!",
+        text: "El link de cotización y el estado final han sido actualizados.",
+        icon: "success",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+  
     } catch (error) {
-      console.error("Error al actualizar el link:", error);
-      toast.error("Error al actualizar el link");
+      console.error("Error al actualizar la inspección:", error);
+  
+      // ❌ Alerta de error
+      Swal.fire({
+        title: "Error",
+        text: "Hubo un problema al actualizar la inspección.",
+        icon: "error",
+      });
     }
   };
+  
+
 
   const incompletedInspections = filteredInspections.filter((insp) => !insp.completada);
   const completedInspections = filteredInspections.filter((insp) => insp.completada);
@@ -230,27 +304,31 @@ const UserInspecciones = () => {
                 </div>
   
                 {/* Botones */}
-                <div className="inspection-actions">
-                <button
-                    className="map-button"
-                    onClick={() =>
-                    window.open(
-                    `https://www.google.com/maps?q=${inspection.ubicacion[0]},${inspection.ubicacion[1]}`,
-                    "_blank"
-                    )
-                    }
-                >
-                    Ver en Google Maps
-                </button>
-                  {!inspection.inProgress ? (
-                    <button onClick={() => handleStartInspection(inspection.id)}>Iniciar</button>
-                  ) : (
-                    <>
-                      <button onClick={() => handleFinishInspection(inspection.id)}>Terminar</button>
-                      <button onClick={() => handleCancelInspection(inspection.id)}>Cancelar</button>
-                    </>
-                  )}
-                </div>
+<div className="inspection-actions">
+  <button
+    className="map-button"
+    onClick={() =>
+      window.open(
+        `https://www.google.com/maps?q=${inspection.ubicacion[0]},${inspection.ubicacion[1]}`,
+        "_blank"
+      )
+    }
+  >
+    Ver en Google Maps
+  </button>
+  {true && ( // Solo muestra los botones si el rol es "Tecnico"
+    <>
+      {!inspection.inProgress ? (
+        <button onClick={() => handleStartInspection(inspection.id)}>Iniciar</button>
+      ) : (
+        <>
+          <button onClick={() => handleFinishInspection(inspection.id)}>Terminar</button>
+          <button onClick={() => handleCancelInspection(inspection.id)}>Cancelar</button>
+        </>
+      )}
+    </>
+  )}
+</div>
               </div>
             </li>
           ))}

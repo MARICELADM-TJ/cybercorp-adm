@@ -40,16 +40,28 @@ const Login = () => {
       // Verificar si el usuario está desactivado
       if (!userData.active) {
         await signOut(auth); // Desloguear si está desactivado
-        toast.error("Usuario desactivado. Contacte al administrador.", {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: false,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "dark",
-          transition: Bounce,
+        // toast.error("Usuario desactivado. Contacte al administrador.", {
+        //   position: "top-center",
+        //   autoClose: 3000,
+        //   hideProgressBar: false,
+        //   closeOnClick: false,
+        //   pauseOnHover: false,
+        //   draggable: true,
+        //   progress: undefined,
+        //   theme: "dark",
+        //   transition: Bounce,
+        // });
+        Swal.fire({
+          icon: "error",
+          title: "Usuario desactivado. Contacte al administrador.",
+          showClass: {
+            popup: "animate__animated animate__zoomIn",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOut",
+          },
+          showConfirmButton: true,
+          timer: 1000,
         });
         return;
       }
@@ -66,17 +78,51 @@ const Login = () => {
       // Redirigir al home si todo es correcto
       navigate("/home");
     } catch (e) {
+      if(!email || !contrasena){
+        let message = "Ingrese ";
+        if(!email){
+          message += "correo ";
+        }
+        if(!contrasena){
+          message += ",contraseña";
+        }
+        Swal.fire({
+          icon: "error",
+          title: message,
+          showClass: {
+            popup: "animate__animated animate__zoomIn",
+          },
+          hideClass: {
+            popup: "animate__animated animate__fadeOut",
+          },
+          showConfirmButton: true,
+          //timer: 1000,
+        });
+      }
       // Mostrar error si falla el inicio de sesión
-      toast.error("Correo o contraseña incorrectas", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: false,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        transition: Bounce,
+      // toast.error("Correo o contraseña incorrectas", {
+      //   position: "top-center",
+      //   autoClose: 3000,
+      //   hideProgressBar: false,
+      //   closeOnClick: false,
+      //   pauseOnHover: false,
+      //   draggable: true,
+      //   progress: undefined,
+      //   theme: "dark",
+      //   transition: Bounce,
+      // });
+      else
+      Swal.fire({
+        icon: "error",
+        title: "Correo o contraseña incorrectas",
+        showClass: {
+          popup: "animate__animated animate__zoomIn",
+        },
+        hideClass: {
+          popup: "animate__animated animate__fadeOut",
+        },
+        showConfirmButton: true,
+        //timer: 1000,
       });
       console.error("Error al iniciar sesión:", e);
     }

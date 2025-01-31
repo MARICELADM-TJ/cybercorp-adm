@@ -61,9 +61,6 @@ function Rutas() {
   if (loading) {
     return <Loading />;
   }
-  console.log("Usuario en Rutas:", usuario);
-console.log("UID en Rutas:", usuario?.uid);
-  
 
   return (
     <BrowserRouter>
@@ -77,25 +74,25 @@ console.log("UID en Rutas:", usuario?.uid);
             <ProtectedRoute isAllowed={!!usuario && role === "admin"} redirectPath="/home" />
           }
         >
-          <Route element={<AdminLayout role={role} userId={usuario?.uid} />}>
+          <Route element={<AdminLayout usuario={usuario} role={role} />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/admin-users" element={<AdminUsers />} />
             <Route path="/admin-tareas" element={<AdminTareas />} />
             <Route path="/admin-createUser" element={<CreateUser />} />
             <Route path="/admin-inspecciones" element={<AdminInspecciones />} />
             <Route path="/admin-createInspeccion" element={<AdminCreateInspeccion />} />
-            <Route path="/admin-taskForm" element = {<TaskForm />} />
+            <Route path="/admin-taskForm" element={<TaskForm />} />
           </Route>
         </Route>
 
         {/* User Routes */}
         <Route element={<ProtectedRoute isAllowed={!!usuario} />}>
-        <Route element={<UserLayout role={role} userId={usuario?.uid} />}>
-          <Route path="/home" element={<Home role={role} name={usuario} />} />
-          <Route path="/inspecciones" element={<UserInspecciones role={role} name={usuario} />} />
-          <Route path="/nosotros" element={<AboutUs />} />
-          <Route path="/editProfile" element={<EditProfile userId={usuario?.uid} />} />
-        </Route> 
+          <Route element={<UserLayout usuario={usuario} role={role} />}>
+            <Route path="/home" element={<Home role={role} name={usuario} />} />
+            <Route path="/inspecciones" element={<UserInspecciones role={role} name={usuario} />} />
+            <Route path="/nosotros" element={<AboutUs />} />
+            <Route path="/editProfile" element={<EditProfile userId={usuario?.uid} setUsuario={setUsuario} />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

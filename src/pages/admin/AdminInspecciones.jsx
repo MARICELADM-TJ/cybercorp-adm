@@ -78,26 +78,47 @@ const AdminInspecciones = () => {
   // Handle delete inspection
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-      title: '¿Estás seguro de eliminar esta inspección?',
-      icon: 'warning',
+      title: "¿Estás seguro de eliminar esta inspección?",
+      text: "Esta acción no se puede deshacer.",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Sí, eliminar',
-      cancelButtonText: 'Cancelar'
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
     });
   
     if (result.isConfirmed) {
       try {
         await deleteDoc(doc(db, "inspecciones", id));
         setInspections((prev) => prev.filter((inspection) => inspection.id !== id));
-        toast.success("Inspección eliminada correctamente");
+        
+        Swal.fire({
+          title: "Eliminado",
+          text: "La inspección ha sido eliminada correctamente.",
+          icon: "success",
+          timer: 1500,
+          showConfirmButton: false,
+        });
       } catch (error) {
         console.error("Error al eliminar inspección:", error);
-        toast.error("Error al eliminar la inspección");
+        Swal.fire({
+          title: "Error",
+          text: "No se pudo eliminar la inspección. Inténtalo de nuevo.",
+          icon: "error",
+        });
       }
     } else {
-      toast.info("Eliminación cancelada");
+      Swal.fire({
+        title: "Cancelado",
+        text: "La inspección no fue eliminada.",
+        icon: "info",
+        timer: 1500,
+        showConfirmButton: false,
+      });
     }
   };
+  
   
 
 

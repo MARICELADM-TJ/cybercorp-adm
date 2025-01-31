@@ -2,10 +2,10 @@ import React from "react";
 import AdminNavbar from "../../pages/admin/AdminNavbar";
 import { Outlet } from "react-router-dom";
 
-const AdminLayout = ({role, userId}) => {
+const AdminLayout = ({ usuario, role }) => {
   return (
     <div>
-      <AdminNavbar role={role} userId={userId} />
+      <AdminNavbar usuario={usuario} role={role} />
       <div className="content">
         <Outlet />
       </div>

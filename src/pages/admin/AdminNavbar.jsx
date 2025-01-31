@@ -1,5 +1,4 @@
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/AdminNavbar.css';
 import logo from '../../assets/logo_share.png';
@@ -7,31 +6,29 @@ import { FaHome, FaTasks, FaUsers, FaClipboardList, FaBars, FaSignOutAlt } from 
 
 import appFirebase from '../../firebaseConfig/Firebase';
 import { getAuth, signOut } from 'firebase/auth';
-import {doc, getDoc} from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig/Firebase';
 
-
-const AdminNavbar = ({role, userId}) => {
+const AdminNavbar = ({ role, usuario }) => {
   const auth = getAuth(appFirebase);
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const [userData, setUserData] = useState(null);
-  
-    useEffect(() => {
-      const fetchUserData = async () => {
-        if (userId) {
-          const userDoc = doc(db, "users", userId);
-          const userSnap = await getDoc(userDoc);
-  
-          if (userSnap.exists()) {
-            setUserData(userSnap.data());
-          }
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (usuario?.uid) {
+        const userDoc = doc(db, "users", usuario.uid);
+        const userSnap = await getDoc(userDoc);
+
+        if (userSnap.exists()) {
+          setUserData(userSnap.data());
         }
-      };
-  
-      fetchUserData();
-    }, [userId]);
+      }
+    };
+
+    fetchUserData();
+  }, [usuario]); // Dependencia: usuario
 
   const handleLogout = () => {
     signOut(auth)
@@ -45,6 +42,10 @@ const AdminNavbar = ({role, userId}) => {
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const getFirstName = (fullName) => {
+    return fullName ? fullName.split(" ")[0] : "Admin";
   };
 
   return (
@@ -95,14 +96,10 @@ const AdminNavbar = ({role, userId}) => {
         </Link>
 
         <div className="user-info" onClick={() => navigate("/editProfile")}>
-                {/* <img
-                  src={userData?.photoURL || defaultAvatar}
-                  alt="Foto de perfil"
-                  className="profile-photo"
-                /> */}
-                <span className="user-name">{userData?.nombre.split()[0]}</span>
+          <span className="user-name">
+            {getFirstName(userData?.nombre || usuario?.displayName || "Admin")}
+          </span>
         </div>
-        
 
         <button onClick={handleLogout} className="logout-button">
           <FaSignOutAlt /> Cerrar Sesión
