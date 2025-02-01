@@ -4,7 +4,7 @@ import Mapa from "../../components/Mapa";
 import { db } from "../../firebaseConfig/Firebase";
 import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import "../../styles/createInspeccion.css";
+import "../../styles/AdminCreateInspeccion.css";
 import logo from "../../assets/logo_share.png";
 
 
