@@ -1,4 +1,4 @@
-/* Fondo fijo para la página principal */
+
 .home-page {
   width: 100vw;
   min-height: 100vh;
@@ -12,7 +12,6 @@
   padding: 20px;
 }
 
-/* Contenedor para filtros de búsqueda */
 .search-filters {
   display: flex;
   flex-wrap: wrap;
@@ -44,14 +43,12 @@
   text-align: center;
 }
 
-/* Mensaje cuando no hay tareas */
 .no-tasks-message {
   text-align: center;
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.2rem;
 }
 
-/* Media queries para dispositivos pequeños */
 @media (max-width: 768px) {
   .search-filters {
     flex-direction: column;

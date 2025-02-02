@@ -1,24 +1,21 @@
-/* Navbar principal */
+
 .navbar {
     background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(15px);
     box-shadow: 0px 4px 10px rgba(0, 238, 255, 0.3);
-    height: 80px; /* Altura fija */
+    height: 80px;
     z-index: 1000;
   }
   
-  /* Espaciador para compensar el navbar fijo */
   .navbar-spacer {
-    height: 0px; /* Igual a la altura del navbar */
+    height: 0px;
   }
   
-  /* Estilo del logo */
   .navbar-logo {
     height: 50px;
     object-fit: contain;
   }
   
-  /* Centrado del logo */
   .navbar-brand {
     display: flex;
     justify-content: center;
@@ -32,7 +29,7 @@
   }
   
   .navbar-nav {
-    text-align: left; /* Alineación de enlaces a la izquierda */
+    text-align: left;
   }
   
   .navbar-nav .nav-link {
@@ -46,7 +43,6 @@
     color: #00d9ff;
   }
   
-  /* Botón de cerrar sesión */
   .logout-button {
     background: linear-gradient(90deg, #00d9ff, #005bb5);
     border: 2px solid #00d9ff;
@@ -62,7 +58,6 @@
     color: #00d9ff;
   }
   
-  /* Ajustes de diseño en móvil */
   @media screen and (max-width: 768px) {
     .navbar-logo {
       height: 40px;
@@ -70,7 +65,7 @@
     }
   
     .navbar-nav {
-      text-align: left; /* Enlaces alineados a la izquierda */
+      text-align: left;
       padding: 15px;
     }
   
@@ -79,19 +74,18 @@
     }
   
     .navbar-collapse {
-      background: rgba(0, 0, 0, 0.9); /* Fondo oscuro en el desplegable */
+      background: rgba(0, 0, 0, 0.9);
       padding: 15px;
     }
   }
   
-  /* Ajustes de diseño en PC */
   @media screen and (min-width: 769px) {
     .navbar-collapse {
       justify-content: space-between;
     }
   
     .navbar-brand.mx-auto.d-none {
-      display: flex !important; /* Mostrar logo centrado en pantallas grandes */
+      display: flex !important;
     }
   
     .navbar-right .btn {
@@ -99,14 +93,12 @@
     }
   }
   
-  /* Aseguramos que el contenido no se vea comprimido */
   .container {
     max-width: 1200px;
     width: 100%;
   }
 
- /* Estilos para la foto de perfil */
-/* Navbar.css */
+
 .user-info {
   display: flex;
   align-items: center;
@@ -116,20 +108,19 @@
 }
 
 .profile-photo {
-  width: 15px; /* Tamaño más grande */
-  height: 15px; /* Tamaño más grande */
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   margin-right: 10px;
-  object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
+  object-fit: cover;
 }
 
 .user-name {
   color: white;
   font-weight: bold;
-  font-size: 1rem; /* Tamaño de fuente responsivo */
+  font-size: 1rem;
 }
 
-/* Ajustes para móvil */
 @media screen and (max-width: 768px) {
   .profile-photo {
     width: 30px;

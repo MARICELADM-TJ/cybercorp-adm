@@ -19,9 +19,8 @@ const AboutUs = () => {
         const usersSnapshot = await getDocs(collection(db, "users"));
         const usersData = usersSnapshot.docs
           .map((doc) => ({ ...doc.data(), id: doc.id }))
-          .filter((user) => user.active === true); // Filtrar usuarios activos
+          .filter((user) => user.active === true);
 
-        // Ordenar usuarios: Admin -> Contabilidad -> Tecnico -> Invitado
         const roleOrder = { admin: 1, contabilidad: 2, tecnico: 3, invitado: 4 };
         usersData.sort((a, b) => roleOrder[a.role] - roleOrder[b.role]);
 
@@ -34,7 +33,6 @@ const AboutUs = () => {
     fetchUsers();
   }, []);
 
-  // Función para obtener la imagen según el rol
   const getRoleImage = (role) => {
     switch (role) {
       case "admin" || 'Admin':
@@ -67,7 +65,7 @@ const AboutUs = () => {
         {users.map((user) => (
           <div key={user.id} className={`user-card ${user.role.toLowerCase()}`}>
             <img
-              src={user.photoURL || getRoleImage(user.role)} // Usar photoURL o imagen predeterminada según el rol
+              src={user.photoURL || getRoleImage(user.role)}
               alt={`${user.nombre} ${user.apellido}`}
               className="user-photo"
             />

@@ -9,7 +9,7 @@ import { getAuth, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../firebaseConfig/Firebase';
 
-const AdminNavbar = ({ role, usuario }) => {
+const AdminNavbar = ({ usuario }) => {
   const auth = getAuth(appFirebase);
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -28,12 +28,12 @@ const AdminNavbar = ({ role, usuario }) => {
     };
 
     fetchUserData();
-  }, [usuario]); // Dependencia: usuario
+  }, [usuario]);
 
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        navigate('/'); // Redirige al usuario tras cerrar sesión
+        navigate('/');
       })
       .catch((error) => {
         console.error('Error al cerrar sesión:', error);

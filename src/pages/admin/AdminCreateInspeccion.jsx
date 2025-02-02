@@ -20,12 +20,12 @@ const AdminCreateInspeccion = () => {
     celularCliente: "",
     encargado: "",
     linkCotizacion: "",
-    ubicacion: [-21.5355, -64.7295], // Valor predeterminado
+    ubicacion: [-21.5355, -64.7295],
     EstadoFinal: "seguimiento",
   });
 
   const [isEditing, setIsEditing] = useState(false);
-  const [locationLink, setLocationLink] = useState(""); // Link de ubicación para verificar
+  const [locationLink, setLocationLink] = useState("");
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -42,7 +42,6 @@ const AdminCreateInspeccion = () => {
           if (docSnap.exists()) {
             const data = docSnap.data();
 
-            // Configura los datos obtenidos y asegura un valor predeterminado para `ubicacion`
             setFormData({
               ...data,
               ubicacion: data.ubicacion || [-21.5355, -64.7295],
@@ -66,16 +65,14 @@ const AdminCreateInspeccion = () => {
 
   const verifyLocation = () => {
     //console.log("Verificando enlace...");
-    // Regex para extraer coordenadas de enlaces de Google Maps
-    const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/; // Detecta @lat,lng en enlaces
+    const regex = /@(-?\d+\.\d+),(-?\d+\.\d+)/;
     const match = locationLink.match(regex);
   
     if (match) {
-      console.log("Coordenadas encontradas:", match[1], match[2]);
+      //console.log("Coordenadas encontradas:", match[1], match[2]);
       const lat = parseFloat(match[1]);
       const lng = parseFloat(match[2]);
   
-      // Validación básica de latitud y longitud
       if (!isNaN(lat) && !isNaN(lng)) {
         setFormData((prevData) => ({
           ...prevData,
@@ -85,10 +82,7 @@ const AdminCreateInspeccion = () => {
         return;
       }
     }
-
-
     //console.log("No se pudieron extraer coordenadas");
-    // Si el enlace no es válido, muestra un error
     toast.error("No se pudo extraer la ubicación del link. Asegúrate de que sea válido.");
   };
   
@@ -146,13 +140,13 @@ const AdminCreateInspeccion = () => {
                 icon: "success",
                 title: "Inspeccion actualizada correctamente",
                 showClass: {
-                  popup: "animate__animated animate__zoomIn", // Animación de entrada
+                  popup: "animate__animated animate__zoomIn",
                 },
                 hideClass: {
-                  popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+                  popup: "animate__animated animate__fadeOut",
                 },
                 showConfirmButton: false, // Oculta el botón "OK"
-                timer: 1000, // Cierra automáticamente después de 1.5 segundos
+                timer: 1000, //cierra la animacion despues dde 1 segundo
                 willClose: () => {
                   navigate("/admin-inspecciones");
                 },
@@ -170,13 +164,13 @@ const AdminCreateInspeccion = () => {
           icon: "success",
           title: "Inspeccion creada correctamente",
           showClass: {
-            popup: "animate__animated animate__zoomIn", // Animación de entrada
+            popup: "animate__animated animate__zoomIn",
           },
           hideClass: {
-            popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+            popup: "animate__animated animate__fadeOut",
           },
           showConfirmButton: false, // Oculta el botón "OK"
-          timer: 1000, // Cierra automáticamente después de 1.5 segundos
+          timer: 1000, // Cierra la animacion despues de 1 segundo
           willClose: () => {
             navigate("/admin-inspecciones");
           },
@@ -190,13 +184,13 @@ const AdminCreateInspeccion = () => {
               icon: "error",
               title: "Error al guardar la inspeccion",
               showClass: {
-                popup: "animate__animated animate__lightSpeedInRight", // Animación de entrada
+                popup: "animate__animated animate__lightSpeedInRight",
               },
               hideClass: {
-                popup: "animate__animated animate__flipOutX", // Animación de salida sin movimiento
+                popup: "animate__animated animate__flipOutX", 
               },
-              showConfirmButton: false, // Oculta el botón "OK"
-              timer: 1000, // Cierra automáticamente después de 1.5 segundos
+              showConfirmButton: false,
+              timer: 1000,
             });
     }
   };

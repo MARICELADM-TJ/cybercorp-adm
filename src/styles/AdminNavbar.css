@@ -19,12 +19,10 @@
     padding: 0;
   }
   
-  /* Añadir un relleno superior para evitar que el navbar cubra contenido */
   body {
-    padding-top: 0px; /* Ajusta este valor según la altura del navbar */
+    padding-top: 0px; /*Para el navbar pero funicona bien por el moemnto*/
   }
   
-  /* Navbar Sections */
   .navbar-left {
     display: flex;
     align-items: center;
@@ -53,7 +51,6 @@
     transform: scale(1.1);
   }
   
-  /* Centrar el logo en dispositivos móviles */
   .navbar-center {
     position: absolute;
     left: 50%;
@@ -118,7 +115,6 @@
     color: #00d9ff;
   }
   
-  /* Estilos para dispositivos móviles */
   .mobile-open {
     display: flex;
     position: absolute;
@@ -138,7 +134,6 @@
     display: none;
   }
   
-  /* Ajustes en móviles */
   @media (max-width: 768px) {
     .navbar-links {
       display: none;
@@ -162,7 +157,6 @@
       gap: 1rem;
     }
   
-    /* Centrar el logo en dispositivos móviles */
     .navbar-center {
       position: absolute;
       left: 50%;
@@ -174,13 +168,12 @@
     }
   
     .navbar-logo {
-      height: 40px; /* Ajustar tamaño del logo en móviles */
+      height: 40px;
       width: auto;
     }
   }
 
-  /* Estilos para la foto de perfil */
-/* Navbar.css */
+/*estilos para la foto del perfil */
 .user-info {
   display: flex;
   align-items: center;
@@ -190,20 +183,19 @@
 }
 
 .profile-photo {
-  width: 15px; /* Tamaño más grande */
-  height: 15px; /* Tamaño más grande */
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
   margin-right: 10px;
-  object-fit: cover; /* Asegura que la imagen se ajuste correctamente */
+  object-fit: cover;
 }
 
 .user-name {
   color: white;
   font-weight: bold;
-  font-size: 1rem; /* Tamaño de fuente responsivo */
+  font-size: 1rem;
 }
 
-/* Ajustes para móvil */
 @media screen and (max-width: 768px) {
   .profile-photo {
     width: 30px;

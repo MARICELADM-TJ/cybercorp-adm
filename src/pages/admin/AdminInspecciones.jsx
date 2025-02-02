@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../../firebaseConfig/Firebase";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
 import "../../styles/AdminInspecciones.css";
-import AdminNavbar from "./AdminNavbar";
 import { toast, ToastContainer } from "react-toastify";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
@@ -25,7 +24,6 @@ const AdminInspecciones = () => {
     return date.toLocaleString();
   };
 
-  // Fetch inspections from Firestore
   useEffect(() => {
 
     const fetchInspections = async () => {
@@ -44,7 +42,7 @@ const AdminInspecciones = () => {
     fetchInspections();
   }, []);
 
-  // Filter and sort inspections
+  // Filtrar y ordenar las inspecciones
   useEffect(() => {
     const lowercasedTerm = searchTerm.toLowerCase();
     const filtered = inspections.filter(
@@ -67,12 +65,11 @@ const AdminInspecciones = () => {
     }
   }, [searchTerm, filterMonth, inspections]);
 
-  // Sort inspections
   const sortedInspections = [...filteredInspections].sort((a, b) => {
     if (a.completada === b.completada) {
       return new Date(b.fechaProgramada) - new Date(a.fechaProgramada);
     }
-    return a.completada ? 1 : -1; // Completadas al final
+    return a.completada ? 1 : -1;
   });
 
   // Handle delete inspection
@@ -122,14 +119,13 @@ const AdminInspecciones = () => {
   
 
 
-  // Generate PDF Report
+  // Generar reporte en PDF
   const generatePDFReport = () => {
     if (!reportYear || !reportMonth) {
       toast.error("Debe seleccionar año y mes para generar el reporte");
       return;
     }
 
-    // Filter inspections for the selected month and year
     const reportInspections = inspections.filter(inspection => {
       const inspectionDate = new Date(inspection.fechaProgramada);
       return (
@@ -150,6 +146,8 @@ const AdminInspecciones = () => {
     //pdf generation with custom size
     const doc = new jsPDF('l', 'mm', 'a4');
 
+    //otra forma de hacerlo con custom size
+    //--->
     // Custom page width and height (in millimeters) custom size
     // const doc = new jsPDF({
     //   orientation: 'landscape', // or 'portrait'
@@ -269,7 +267,6 @@ const AdminInspecciones = () => {
             className={`inspection-item ${inspection.inProgress ? "in-progress" : inspection.completada ? "completed" : ""}`}
           >
             <div className="inspection-content">
-              {/* Datos */}
               <div className="inspection-details">
                 <h3>{inspection.titulo}</h3>
                 <p><strong>Descripción:</strong> {inspection.descripcion}</p>

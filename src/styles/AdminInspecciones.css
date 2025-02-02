@@ -54,7 +54,7 @@ h2 {
   border-radius: 8px;
   transition: transform 0.3s ease;
   display: flex;
-  flex-wrap: wrap; /* Para que sea adaptable */
+  flex-wrap: wrap;
   gap: 20px;
 }
 
@@ -72,11 +72,11 @@ h2 {
 .inspection-details,
 .inspection-map,
 .inspection-actions {
-  flex: 1 1 100%; /* Por defecto, ocupa todo el ancho */
+  flex: 1 1 100%;
 }
 
 .inspection-details {
-  flex: 1 1 auto; /* Adapta el espacio */
+  flex: 1 1 auto;
 }
 
 .inspection-map {
@@ -93,7 +93,7 @@ h2 {
   .inspection-details,
   .inspection-map,
   .inspection-actions {
-    flex: 1 1 auto; /* En pantallas más grandes, distribución horizontal */
+    flex: 1 1 auto;
   }
 }
 

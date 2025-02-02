@@ -34,7 +34,7 @@
   
   .inspection-item {
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se reorganicen en columnas */
+    flex-wrap: wrap;
     gap: 20px;
     background: #333;
     margin-bottom: 15px;
@@ -53,15 +53,15 @@
   .inspection-details,
   .inspection-map,
   .inspection-actions {
-    flex: 1 1 100%; /* Por defecto ocupa todo el ancho */
+    flex: 1 1 100%;
   }
   
   .inspection-details {
-    flex: 1 1 100%; /* En pantallas grandes, ocupa la mitad */
+    flex: 1 1 100%;
   }
   
   .inspection-map {
-    flex: 1 1 30%; /* En pantallas grandes, ocupa un tercio */
+    flex: 1 1 30%;
     /*height: 80%;*/
   }
   
@@ -76,7 +76,7 @@
     .inspection-details,
     .inspection-map,
     .inspection-actions {
-      flex: 1 1 auto; /* En pantallas grandes, mantienen distribución horizontal */
+      flex: 1 1 auto;
     }
   }
   
@@ -97,13 +97,13 @@
   }
   
   .modal {
-    display: block !important; /* Forza que se muestre */
+    display: block !important;
     position: fixed !important;
     top: 50% !important;
     left: 50% !important;
     transform: translate(-50%, -50%) !important;
     background: #2e2e3e !important;
-    z-index: 10000 !important; /* Súper alto para que no quede detrás */
+    z-index: 10000 !important;
     width: 400px !important;
     height: auto !important;
     padding: 20px !important;

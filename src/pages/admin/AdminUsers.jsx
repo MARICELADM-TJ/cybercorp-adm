@@ -133,6 +133,7 @@ const AdminUsers = () => {
                 >
                   {user.active ? "Desactivar" : "Activar"}
                 </button>
+                {/*Posible funcion de editar usuarios para un super Administrador, pero innesesaria */}
                 {/* <button className="edit-button">Editar</button> */}
               </td>
             </tr>

@@ -5,9 +5,9 @@
   justify-content: center;
   height: 95vh;
   width: 100vw;
-  background: linear-gradient(45deg, #1e2a47, #1c3c56, #0e4a69, #084c7a); /* Fondo oscuro con tonos azules */
-  background-size: 400% 400%; /* Aumenta el área de fondo para la animación */
-  animation: gradientBackground 10s ease infinite; /* Animación para cambiar el fondo */
+  background: linear-gradient(45deg, #1e2a47, #1c3c56, #0e4a69, #084c7a);
+  background-size: 400% 400%;
+  animation: gradientBackground 10s ease infinite;
 }
 
 .form-wrapper {
@@ -15,22 +15,21 @@
   padding: 2rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px; /* Incremento del ancho máximo */
-  min-width: 450px; /* Ancho mínimo */
-  text-align: left; /* Alineación a la izquierda */
+  max-width: 600px;
+  min-width: 450px;
+  text-align: left; 
 }
 
 .form-title {
   font-size: 1.5rem;
   margin-bottom: 1rem;
-  color: #00bcd4; /* Azul brillante */
+  color: #00bcd4;
   text-shadow: 0 0 10px rgba(0, 188, 212, 0.8), 0 0 20px rgba(0, 188, 212, 0.6), 0 0 30px rgba(0, 188, 212, 0.4);
 }
 
 .logo {
   max-width: 150px;
   margin: 1rem auto;
-  /* Esto mantiene la imagen centrada en el formulario */
 }
 
 .right-panel {
@@ -47,8 +46,8 @@
 }
 
 .form-title {
-  text-align: center; /* El título sigue centrado */
-  color: #00bcd4; /* Azul brillante */
+  text-align: center;
+  color: #00bcd4;
   font-size: 1.8rem;
   font-weight: bold;
   margin-bottom: 20px;
@@ -74,7 +73,7 @@
 
 .form-row {
   display: flex;
-  justify-content: space-between; /* Divide las columnas */
+  justify-content: space-between; 
   gap: 20px;
 }
 
@@ -117,12 +116,12 @@
 
 .field input:valid, 
 .field select:valid {
-  background-color: #1d2a45; /* Color más oscuro cuando el campo está lleno */
+  background-color: #1d2a45;
 }
 
 .checkbox-container {
   display: flex;
-  justify-content: center; /* Centra el texto y el cuadro de selección */
+  justify-content: center;
   align-items: center;
   gap: 10px;
   width: 100%;
@@ -151,7 +150,6 @@
   gap: 10px;
 }
 
-/* Animations */
 @keyframes fadeIn {
   from {
     opacity: 0;

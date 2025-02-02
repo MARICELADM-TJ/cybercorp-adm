@@ -1,38 +1,34 @@
-/* Contenedor principal */
+
 .login-container {
     position: relative;
     height: 100vh;
-    width: 100vw; /* El contenedor ocupará todo el ancho de la pantalla */
+    width: 100vw;
     display: flex;
-    justify-content: center; /* Centrar horizontalmente */
-    align-items: center; /* Centrar verticalmente */
-    background: #0e122b; /* Fondo oscuro */
-    overflow: hidden; /* Ocultar cualquier desbordamiento */
-    overflow-x: hidden; /* Prevenir desplazamiento horizontal */
+    justify-content: center;
+    align-items: center;
+    background: #0e122b;
+    overflow: hidden;
+    overflow-x: hidden;
   }
   
-  /* Ajustar el formulario */
   .login-form-container {
     position: relative;
     z-index: 10;
-    background: rgba(0, 0, 0, 0.589); /* Fondo translúcido */
-    /*background: rgba(0, 0, 0, 0.589); */
+    background: rgba(0, 0, 0, 0.589);
     padding: 30px;
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 217, 255, 0.5), 0 0 40px rgba(0, 217, 255, 0.3);
     text-align: center;
-    width: 90%; /* Ocupa el 90% del ancho del contenedor en dispositivos pequeños */
-    max-width: 400px; /* Límite máximo para pantallas grandes */
+    width: 90%;
+    max-width: 400px;
   }
   
   
-  /* Estilo del logo */
   .login-logo {
     width: 100px;
     margin-bottom: 20px;
   }
   
-  /* Estilo de los inputs */
   .login-input {
     width: 100%;
     padding: 12px;
@@ -50,7 +46,6 @@
     border-color: #005bb5;
   }
   
-  /* Estilo del botón */
   .login-button {
     background: linear-gradient(90deg, #00d9ff, #005bb5);
     border: 2px solid #00d9ff;
@@ -68,7 +63,6 @@
     background: linear-gradient(90deg, #005bb5, #00d9ff);
   }
   
-  /* Partículas detrás del contenido */
   .particles-container {
     position: absolute;
     top: 0;

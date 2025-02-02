@@ -206,24 +206,21 @@ const UserInspecciones = ({role}) => {
     try {
       const docRef = doc(db, "inspecciones", currentInspectionId);
       
-      // 🛠️ Actualizamos ambos campos en Firebase
       await updateDoc(docRef, {
         linkCotizacion: newLink,
-        EstadoFinal: estadoFinal,  // 🔥 Se asegura de actualizarlo en la DB
+        EstadoFinal: estadoFinal, 
       });
   
-      // 🔄 Actualizamos el estado local para reflejar los cambios en la UI
       setInspections((prev) =>
         prev.map((insp) =>
           insp.id === currentInspectionId
-            ? { ...insp, linkCotizacion: newLink, EstadoFinal: estadoFinal } // Asegurar ambos cambios
+            ? { ...insp, linkCotizacion: newLink, EstadoFinal: estadoFinal }
             : insp
         )
       );
   
       setModalIsOpen(false);
   
-      // ✅ Alerta de éxito
       Swal.fire({
         title: "¡Actualización exitosa!",
         text: "El link de cotización y el estado final han sido actualizados.",
@@ -235,7 +232,6 @@ const UserInspecciones = ({role}) => {
     } catch (error) {
       console.error("Error al actualizar la inspección:", error);
   
-      // ❌ Alerta de error
       Swal.fire({
         title: "Error",
         text: "Hubo un problema al actualizar la inspección.",
@@ -316,7 +312,7 @@ const UserInspecciones = ({role}) => {
   >
     Ver en Google Maps
   </button>
-  {true && ( // Solo muestra los botones si el rol es "Tecnico"
+  {true && ( //posible validacion para solo mostrar botones a usuarios con ciertos permisos, por el momento cualquier usuario
     <>
       {!inspection.inProgress ? (
         <button onClick={() => handleStartInspection(inspection.id)}>Iniciar</button>

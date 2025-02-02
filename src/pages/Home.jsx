@@ -15,7 +15,6 @@ const HomePage = ({ role, name }) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchDate, setSearchDate] = useState({ month: "", year: "" });
 
-  // Obtener tareas en tiempo real desde Firebase
   useEffect(() => {
     const tasksCollection = collection(db, "tasks");
     const unsubscribe = onSnapshot(
@@ -24,7 +23,7 @@ const HomePage = ({ role, name }) => {
         const tasksArray = snapshot.docs.map((doc) => ({
           ...doc.data(),
           id: doc.id,
-          clientName: doc.data().clientName || "", // Asegura valores predeterminados
+          clientName: doc.data().clientName || "", 
           clientLastName: doc.data().clientLastName || "",
           encargado: doc.data().encargado || "",
           dueDate: doc.data().dueDate || null,
@@ -37,10 +36,9 @@ const HomePage = ({ role, name }) => {
       }
     );
 
-    return () => unsubscribe(); // Limpia el listener al desmontar el componente
+    return () => unsubscribe();
   }, []);
 
-  // Completar tarea: actualiza estado local y Firebase
   const handleCompleteTask = async (id) => {
     try {
       const now = new Date().toISOString();
@@ -53,7 +51,6 @@ const HomePage = ({ role, name }) => {
     }
   };
 
-  // Iniciar tarea: actualiza estado local y Firebase
   const handleStartTask = async (id) => {
     const now = new Date().toISOString();
     const taskRef = doc(db, "tasks", id);
@@ -71,7 +68,6 @@ const HomePage = ({ role, name }) => {
     }
   };
 
-  // Cancelar tarea en progreso
   const handleCancelTask = async (id) => {
     const taskRef = doc(db, "tasks", id);
     try {
@@ -87,15 +83,12 @@ const HomePage = ({ role, name }) => {
     }
   };
 
-  // Filtrar tareas por búsqueda
   const filteredTasks = tasks.filter((task) => {
-    // Filtro por nombre, apellido o encargado
     const matchesText =
       task.clientName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       task.clientLastName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       task.encargado.toLowerCase().includes(searchTerm.toLowerCase());
 
-    // Filtro por mes y año
     const taskDate = task.dueDate ? new Date(task.dueDate) : null;
     const matchesDate =
       (!searchDate.month || (taskDate && taskDate.getMonth() + 1 === Number(searchDate.month))) &&
@@ -104,7 +97,6 @@ const HomePage = ({ role, name }) => {
     return matchesText && matchesDate;
   });
 
-  // Filtrar tareas pendientes y completadas
   const pendingTasks = filteredTasks.filter((task) => !task.completed);
   const completedTasks = filteredTasks.filter((task) => task.completed);
 

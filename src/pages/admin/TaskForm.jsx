@@ -23,14 +23,13 @@ const TaskForm = () => {
 
   useEffect(() => {
     if (taskToEdit) {
-      // Dividir la fecha y hora en partes
       const [date, timeWithSeconds] = (taskToEdit.dueDate || '').split('T');
 
       setTask({
         title: taskToEdit.title,
         description: taskToEdit.description,
         dueDate: date || '',
-        dueTime: taskToEdit.dueTime || '', // Usar solo HH:MM
+        dueTime: taskToEdit.dueTime || '',
         encargado: taskToEdit.encargado,
         nombreCliente: taskToEdit.clientName || '',
         apellidoCliente: taskToEdit.clientLastName || '',
@@ -55,7 +54,6 @@ const TaskForm = () => {
       return;
     }
 
-    // Combinar fecha y hora en formato ISO
     const dueDate = `${task.dueDate}T${task.dueTime}:00`;
 
     try {
@@ -67,13 +65,13 @@ const TaskForm = () => {
           icon: "success",
           title: "Tarea actualizada correctamente",
           showClass: {
-            popup: "animate__animated animate__zoomIn", // Animación de entrada
+            popup: "animate__animated animate__zoomIn",
           },
           hideClass: {
-            popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+            popup: "animate__animated animate__fadeOut",
           },
-          showConfirmButton: false, // Oculta el botón "OK"
-          timer: 1000, // Cierra automáticamente después de 1.5 segundos
+          showConfirmButton: false,
+          timer: 1000,
           willClose: () => {
             navigate('/admin-tareas');
           },
@@ -85,13 +83,13 @@ const TaskForm = () => {
           icon: "success",
           title: "tarea creada correctamente",
           showClass: {
-            popup: "animate__animated animate__zoomIn", // Animación de entrada
+            popup: "animate__animated animate__zoomIn", 
           },
           hideClass: {
-            popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+            popup: "animate__animated animate__fadeOut",
           },
-          showConfirmButton: false, // Oculta el botón "OK"
-          timer: 1000, // Cierra automáticamente después de 1.5 segundos
+          showConfirmButton: false,
+          timer: 1000,
           willClose: () => {
             navigate("/admin-tareas");
           },
@@ -105,13 +103,13 @@ const TaskForm = () => {
         icon: "error",
         title: "Error al guardar la tarea",
         showClass: {
-          popup: "animate__animated animate__zoomIn", // Animación de entrada
+          popup: "animate__animated animate__zoomIn",
         },
         hideClass: {
-          popup: "animate__animated animate__fadeOut", // Animación de salida sin movimiento
+          popup: "animate__animated animate__fadeOut",
         },
-        showConfirmButton: false, // Oculta el botón "OK"
-        timer: 1000, // Cierra automáticamente después de 1.5 segundos
+        showConfirmButton: false,
+        timer: 1000,
         willClose: () => {
           navigate('/admin-tareas');
         },

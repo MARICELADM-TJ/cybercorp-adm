@@ -13,7 +13,7 @@ const EditProfile = ({ userId, setUsuario }) => {
     apellido: "",
     celular: "",
     email: "",
-    newPassword: "", // Nuevo campo para la contraseña
+    newPassword: "",
   });
 
   const [photoPreview, setPhotoPreview] = useState(defaultAvatar);
@@ -37,7 +37,7 @@ const EditProfile = ({ userId, setUsuario }) => {
             apellido: data.apellido || "",
             celular: data.celular || "",
             email: data.email || "",
-            newPassword: "", // Inicializar sin contraseña
+            newPassword: "",
           });
           setPhotoPreview(data.photoURL || defaultAvatar);
         } else {
@@ -92,7 +92,7 @@ const EditProfile = ({ userId, setUsuario }) => {
         celular: formData.celular,
       });
 
-      // Actualizar la contraseña si se proporcionó una nueva
+      
       if (formData.newPassword) {
         const auth = getAuth();
         const user = auth.currentUser;

@@ -28,7 +28,7 @@ const Navbar = ({ role, usuario }) => {
     };
 
     fetchUserData();
-  }, [usuario]); // Dependencia: usuario
+  }, [usuario]);
 
   const handleLogout = () => {
     signOut(auth)
@@ -95,6 +95,7 @@ const Navbar = ({ role, usuario }) => {
               )}
               <div className="user-info" onClick={() => navigate("/editProfile")}>
                 {/* <img
+                  foto para el usuario, innesesario, la personalizacion no importa demaciado :v
                   src={userData?.photoURL || defaultAvatar}
                   alt="Foto de perfil"
                   className="profile-photo"

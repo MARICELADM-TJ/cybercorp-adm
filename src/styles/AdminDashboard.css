@@ -2,7 +2,7 @@
 .admin-panel {
     position: relative;
     min-height: 100vh;
-    width: 100vw; /* Usar viewport width para asegurarse de que ocupe toda la pantalla */
+    width: 100vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -15,7 +15,6 @@
 }
 
   
-  /* Fondo animado */
   .animated-background {
     position: absolute;
     top: 0;
@@ -27,7 +26,6 @@
     animation: moveBackground 10s linear infinite;
   }
   
-  /* Movimiento del fondo */
   @keyframes moveBackground {
     0% {
       background-position: 0% 0%;
@@ -37,7 +35,6 @@
     }
   }
   
-  /* Contenido del dashboard */
   .admin-content {
     margin-top: 30vh;
     max-width: 800px;
@@ -54,14 +51,12 @@
     box-shadow: 0px 8px 30px rgba(0, 238, 255, 0.5);
   }
   
-  /* Logo del dashboard */
   .dashboard-logo {
     width: 300px;
     margin-top: 20px;
     animation: float 3s ease-in-out infinite;
   }
   
-  /* Efecto flotante del logo */
   @keyframes float {
     0% {
       transform: translateY(0px);
@@ -74,7 +69,6 @@
     }
   }
   
-  /* Títulos y párrafos */
   .admin-content h1 {
     font-size: 2.5rem;
     font-weight: bold;
@@ -89,7 +83,6 @@
     margin-top: 10px;
   }
   
-  /* Estilo responsivo */
   @media screen and (max-width: 768px) {
     .admin-content {
       width: 90%;

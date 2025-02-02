@@ -78,7 +78,7 @@ const CreateUser = () => {
       return;
     }
 
-    setShowModal(true); // Abre el modal
+    setShowModal(true);
   };
 
   const confirmSaveUser = async () => {
@@ -146,8 +146,8 @@ const CreateUser = () => {
         timer: 1000,
       });
     } finally {
-      setAdminPassword(""); // Limpia la contraseña del modal
-      setShowModal(false); // Cierra el modal
+      setAdminPassword("");
+      setShowModal(false);
     }
   };
 
