@@ -7,6 +7,7 @@ import appFirebase from "../firebaseConfig/Firebase";
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig/Firebase";
+import { Link } from "react-router-dom";
 
 import { useNavigate } from "react-router-dom";
 //alerta
@@ -61,7 +62,7 @@ const Login = () => {
             popup: "animate__animated animate__fadeOut",
           },
           showConfirmButton: true,
-          timer: 1000,
+          //timer: 1000,
         });
         return;
       }
@@ -147,8 +148,11 @@ const Login = () => {
             id="password"
           />
           <button className="login-button">Ingresar</button>
+          
         </form>
+        <Link to="/register">¿No tienes cuenta? Regístrate aquí</Link>
       </div>
+      
       <ToastContainer />
     </div>
   );

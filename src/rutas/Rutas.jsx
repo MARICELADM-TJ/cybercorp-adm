@@ -22,6 +22,9 @@ import UserLayout from "./layouts/UserLayout";
 import TaskForm from "../pages/admin/TaskForm";
 import AboutUs from "../pages/AboutUs";
 import EditProfile from "../pages/EditProfile";
+import RegisterUser from "../login/RegisterUser";
+
+import Layout from "./layouts/Layout";
 
 const auth = getAuth(appFirebase);
 
@@ -67,6 +70,7 @@ function Rutas() {
       <Routes>
         <Route index element={<Login />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<RegisterUser />} />
 
         {/* Admin Routes */}
         <Route
@@ -74,24 +78,31 @@ function Rutas() {
             <ProtectedRoute isAllowed={!!usuario && role === "admin"} redirectPath="/home" />
           }
         >
-          <Route element={<AdminLayout usuario={usuario} role={role} />}>
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route element={<Layout usuario={usuario} role={role} />}>
+            {/* <Route path="/admin-dashboard" element={<AdminDashboard />} /> */}
             <Route path="/admin-users" element={<AdminUsers />} />
-            <Route path="/admin-tareas" element={<AdminTareas />} />
+            {/* <Route path="/admin-tareas" element={<AdminTareas />} /> */}
             <Route path="/admin-createUser" element={<CreateUser />} />
-            <Route path="/admin-inspecciones" element={<AdminInspecciones />} />
+            {/* <Route path="/admin-inspecciones" element={<AdminInspecciones />} />
             <Route path="/admin-createInspeccion" element={<AdminCreateInspeccion />} />
-            <Route path="/admin-taskForm" element={<TaskForm />} />
+            <Route path="/admin-taskForm" element={<TaskForm />} /> */}
           </Route>
         </Route>
 
         {/* User Routes */}
         <Route element={<ProtectedRoute isAllowed={!!usuario} />}>
-          <Route element={<UserLayout usuario={usuario} role={role} />}>
+          <Route element={<Layout usuario={usuario} role={role} />}>
             <Route path="/home" element={<Home role={role} name={usuario} />} />
             <Route path="/inspecciones" element={<UserInspecciones role={role} name={usuario} />} />
             <Route path="/nosotros" element={<AboutUs />} />
             <Route path="/editProfile" element={<EditProfile userId={usuario?.uid} setUsuario={setUsuario} />} />
+
+            <Route path="/admin-inspecciones" element={<AdminInspecciones />} />
+            <Route path="/admin-createInspeccion" element={<AdminCreateInspeccion />} />
+            <Route path="/admin-taskForm" element={<TaskForm />} />
+            <Route path="/admin-tareas" element={<AdminTareas />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
           </Route>
         </Route>
       </Routes>

@@ -2,17 +2,31 @@ import React, { useEffect, useState } from "react";
 import { collection, getDocs, updateDoc, doc } from "firebase/firestore";
 import { db } from "../../firebaseConfig/Firebase";
 import "../../styles/AdminUsers.css";
-import { useNavigate } from "react-router-dom";
-
-import AdminNavbar from "./AdminNavbar";
+import Swal from "sweetalert2";
+import { FaCog } from "react-icons/fa";
 
 const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [showPermissionsModal, setShowPermissionsModal] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
 
-  const navigate = useNavigate();
-  // Obtener usuarios desde Firestore
+  // Definición de permisos disponibles
+  const availablePermissions = [
+    { id: 'view_inspections', label: 'Ver Inspecciones' },
+    { id: 'manage_tasks', label: 'Administrar Tareas' },
+    { id: 'manage_inspections', label: 'Administrar Inspecciones' },
+    { id: 'view_calendar', label: 'Ver Calendario' }
+  ];
+
+  // Roles disponibles
+  const availableRoles = [
+    { value: 'invitado', label: 'Invitado' },
+    { value: 'tecnico', label: 'Técnico' },
+    { value: 'contabilidad', label: 'Contabilidad' }
+  ];
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
@@ -20,6 +34,7 @@ const AdminUsers = () => {
         const usersData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
+          permissions: doc.data().permissions || []
         }));
         setUsers(usersData);
         setLoading(false);
@@ -31,39 +46,97 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
-  // Manejar la activación/desactivación de usuarios
   const handleToggleActive = async (userId, isActive) => {
     try {
       const userRef = doc(db, "users", userId);
       await updateDoc(userRef, { active: !isActive });
-      // Actualizar estado local
       setUsers((prevUsers) =>
         prevUsers.map((user) =>
           user.id === userId ? { ...user, active: !isActive } : user
         )
       );
+      
+      Swal.fire({
+        icon: "success",
+        title: `Usuario ${!isActive ? 'activado' : 'desactivado'} exitosamente`,
+        showConfirmButton: false,
+        timer: 1500
+      });
     } catch (error) {
-      console.error("Error al actualizar el estado del usuario: ", error);
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudo actualizar el estado del usuario"
+      });
     }
   };
 
-  // Filtrar usuarios (solo usuarios, no administradores)
+  const openPermissionsModal = (user) => {
+    setSelectedUser(user);
+    setShowPermissionsModal(true);
+  };
+
+  const handlePermissionsUpdate = async () => {
+    try {
+      const userRef = doc(db, "users", selectedUser.id);
+      await updateDoc(userRef, {
+        permissions: selectedUser.permissions,
+        role: selectedUser.role
+      });
+
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === selectedUser.id ? selectedUser : user
+        )
+      );
+
+      setShowPermissionsModal(false);
+      
+      Swal.fire({
+        icon: "success",
+        title: "Permisos actualizados",
+        showConfirmButton: false,
+        timer: 1500
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "No se pudieron actualizar los permisos"
+      });
+    }
+  };
+
+  const handlePermissionToggle = (permissionId) => {
+    setSelectedUser(prev => ({
+      ...prev,
+      permissions: prev.permissions.includes(permissionId)
+        ? prev.permissions.filter(p => p !== permissionId)
+        : [...prev.permissions, permissionId]
+    }));
+  };
+
+  const handleRoleChange = (newRole) => {
+    setSelectedUser(prev => ({
+      ...prev,
+      role: newRole
+    }));
+  };
+
   const filteredUsers = users.filter(
-    (user) => user.role !== "admin" && `${user.nombre} ${user.apellido}`
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase())
+    (user) => 
+      user.role !== "admin" && 
+      `${user.nombre} ${user.apellido}`
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase())
   );
 
-  // Administradores y usuarios regulares
   const admins = users.filter((user) => user.role === "admin");
   const regularUsers = filteredUsers;
 
   return (
     <div className="admin-users">
       <h1>Gestión de Usuarios</h1>
-      <div className="actions-container">
-        <button className="add-button" onClick={() => navigate('/admin-createUser')} >Agregar</button>
-      </div>
 
       <h2>Administradores</h2>
       {loading ? (
@@ -77,7 +150,6 @@ const AdminUsers = () => {
               <th>Correo</th>
               <th>Celular</th>
               <th>Último acceso</th>
-              
             </tr>
           </thead>
           <tbody>
@@ -112,7 +184,8 @@ const AdminUsers = () => {
             <th>Rol</th>
             <th>Celular</th>
             <th>Último acceso</th>
-            <th>Acciones</th>
+            <th>Estado</th>
+            <th>Permisos</th>
           </tr>
         </thead>
         <tbody>
@@ -126,20 +199,75 @@ const AdminUsers = () => {
               <td>{user.lastLoginAt || "No disponible"}</td>
               <td>
                 <button
-                  className={`toggle-button ${
-                    user.active ? "active" : "inactive"
-                  }`}
+                  className={`toggle-button ${user.active ? "active" : "inactive"}`}
                   onClick={() => handleToggleActive(user.id, user.active)}
                 >
                   {user.active ? "Desactivar" : "Activar"}
                 </button>
-                {/*Posible funcion de editar usuarios para un super Administrador, pero innesesaria */}
-                {/* <button className="edit-button">Editar</button> */}
+              </td>
+              <td>
+                <button
+                  className="permissions-button"
+                  onClick={() => openPermissionsModal(user)}
+                >
+                  <FaCog /> Permisos
+                </button>
               </td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {showPermissionsModal && selectedUser && (
+        <div className="modal-overlay">
+          <div className="modal-content permissions-modal">
+            <h3>Gestionar Permisos y Rol</h3>
+            
+            <div className="role-section">
+              <h4>Rol del Usuario</h4>
+              <select
+                value={selectedUser.role}
+                onChange={(e) => handleRoleChange(e.target.value)}
+                className="role-select"
+              >
+                {availableRoles.map(role => (
+                  <option key={role.value} value={role.value}>
+                    {role.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="permissions-section">
+              <h4>Permisos</h4>
+              {availablePermissions.map(permission => (
+                <div key={permission.id} className="permission-item">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedUser.permissions.includes(permission.id)}
+                      onChange={() => handlePermissionToggle(permission.id)}
+                    />
+                    {permission.label}
+                  </label>
+                </div>
+              ))}
+            </div>
+
+            <div className="modal-buttons">
+              <button onClick={handlePermissionsUpdate} className="save-button">
+                Guardar
+              </button>
+              <button 
+                onClick={() => setShowPermissionsModal(false)} 
+                className="cancel-button"
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

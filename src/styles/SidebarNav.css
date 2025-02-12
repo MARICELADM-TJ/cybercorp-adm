@@ -1,0 +1,265 @@
+/* TopNav.css */
+.top-nav {
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+    box-shadow: 0 2px 20px rgba(0, 255, 255, 0.1);
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 3.5rem;
+  }
+  
+  .nav-items {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: #f0f0f0;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .nav-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: #00ffff;
+    transition: width 0.3s ease;
+  }
+  
+  .nav-item:hover::before {
+    width: 100%;
+  }
+  
+  .nav-item:hover {
+    background-color: rgba(0, 255, 255, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .nav-item.active {
+    color: #00ffff;
+    background-color: rgba(0, 255, 255, 0.15);
+  }
+  
+  .nav-icon {
+    font-size: 1.1rem;
+    color: #00ffff;
+  }
+  
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .user-info, .logout-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    border: 1px solid rgba(0, 255, 255, 0.2);
+    background: rgba(0, 255, 255, 0.05);
+    color: #f0f0f0;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+  }
+  
+  .user-info:hover, .logout-button:hover {
+    background-color: rgba(0, 255, 255, 0.15);
+    border-color: rgba(0, 255, 255, 0.4);
+    transform: translateY(-2px);
+  }
+  
+  .mobile-menu-button {
+    display: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: #00ffff;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .mobile-menu-button {
+      display: block;
+    }
+  
+    .nav-items {
+      position: absolute;
+      top: 3.5rem;
+      left: 0;
+      right: 0;
+      background: rgba(26, 26, 46, 0.98);
+      flex-direction: column;
+      padding: 1rem;
+      gap: 0.5rem;
+      display: none;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 255, 255, 0.1);
+    }
+  
+    .nav-items.mobile-open {
+      display: flex;
+    }
+  
+    .nav-item {
+      width: 100%;
+      padding: 0.75rem;
+    }
+  
+    .nav-actions {
+      gap: 0.5rem;
+    }
+  
+    .nav-label {
+      display: none;
+    }
+  
+    .user-info, .logout-button {
+      padding: 0.5rem;
+      border: none;
+    }
+  }
+  
+  /* Add margin to main content to prevent it from hiding under the fixed navbar */
+  main {
+    margin-top: 3.5rem;
+  }
+  
+  /* Animation for mobile menu */
+  @keyframes slideDown {
+    from { transform: translateY(-10px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .nav-items.mobile-open {
+    animation: slideDown 0.3s ease forwards;
+  }
+
+  /* TopNav.css */
+.top-nav {
+    background: rgba(26, 26, 46, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+    box-shadow: 0 2px 20px rgba(0, 255, 255, 0.1);
+    height: 3.5rem; /* Altura fija del navbar */
+  }
+  
+  .nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%; /* Usa toda la altura del navbar */
+  }
+  
+  /* ... (resto de los estilos permanecen igual hasta el media query) ... */
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .mobile-menu-button {
+      display: block;
+    }
+  
+    .nav-items {
+      position: absolute;
+      top: 3.5rem;
+      left: 0;
+      right: 0;
+      background: rgba(26, 26, 46, 0.98);
+      flex-direction: column;
+      padding: 1rem;
+      gap: 0.5rem;
+      display: none;
+      border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+      box-shadow: 0 4px 20px rgba(0, 255, 255, 0.1);
+    }
+  
+    .nav-items.mobile-open {
+      display: flex;
+    }
+  
+    .nav-item {
+      width: 100%;
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+  
+    .nav-label {
+      display: block !important; /* Fuerza la visualización del texto */
+      color: #f0f0f0;
+      opacity: 1 !important; /* Asegura que el texto sea visible */
+    }
+  
+    .nav-actions {
+      gap: 0.5rem;
+    }
+  
+    .user-info, .logout-button {
+      padding: 0.5rem;
+      border: none;
+    }
+  
+    .user-info .nav-label,
+    .logout-button .nav-label {
+      display: none !important; /* Solo ocultamos el texto en los botones de acción */
+    }
+  }
+  
+  /* Ajusta el margen del contenido principal para que coincida exactamente con la altura del navbar */
+  body {
+    padding-top: 3.5rem; /* Exactamente la misma altura que el navbar */
+  }
+  
+  /* Elimina cualquier margen adicional que pudiera estar causando espacios */
+  main {
+    margin-top: 0 !important;
+  }
+  
+  /* Asegura que no haya espacios adicionales en el contenedor principal */
+  #root, 
+  .app-container, 
+  .main-content {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
-import "react-big-calendar/lib/css/react-big-calendar.css"; // Estilos del calendario
+import "react-big-calendar/lib/css/react-big-calendar.css";
 import { db } from "../../firebaseConfig/Firebase";
 import { collection, getDocs } from "firebase/firestore";
 import Swal from "sweetalert2";
-import "../../styles/AdminDashboard.css"; // Asegúrate de que los estilos sigan cargando
+import "../../styles/AdminDashboard.css"; // Mantiene los estilos
 
 const localizer = momentLocalizer(moment);
 
@@ -35,8 +35,8 @@ const AdminDashboard = () => {
             inProgress: data.inProgress,
             fechaprog: fechaProgramada,
             fechaAsignacion: data.fechaAsignacion,
-            start: fechaInicio || fechaProgramada, // Si hay fecha de inicio, mostrarla, sino la programada
-            end: fechaFin || fechaProgramada, // Si hay fecha de fin, mostrarla, sino la programada
+            start: fechaInicio || fechaProgramada,
+            end: fechaFin || fechaProgramada,
           };
         });
 
@@ -56,28 +56,73 @@ const AdminDashboard = () => {
     fechaProgramada.setHours(0, 0, 0, 0);
 
     if (event.completada) {
-      return { style: { backgroundColor: "green", color: "white" } }; // Completada ✅
+      return { 
+        className: "event-completed",
+        style: { background: "rgba(72, 187, 120, 0.9)", borderColor: "rgba(72, 187, 120, 0.2)" }
+      };
     } else if (fechaProgramada < hoy) {
-      return { style: { backgroundColor: "red", color: "white" } }; // Pasada ❌
+      return { 
+        className: "event-overdue",
+        style: { background: "rgba(245, 101, 101, 0.9)", borderColor: "rgba(245, 101, 101, 0.2)" }
+      };
     } else {
-      return { style: { backgroundColor: "yellow", color: "black" } }; // Futura 🟡
+      return { 
+        className: "event-upcoming",
+        style: { background: "rgba(236, 201, 75, 0.9)", borderColor: "rgba(236, 201, 75, 0.2)" }
+      };
     }
   };
 
+  // Personalización de SweetAlert
+  const customSwal = Swal.mixin({
+    background: "#1a1a2e",
+    color: "#f0f0f0",
+    confirmButtonColor: "#00ffff",
+  });
+
   const handleEventClick = (event) => {
-    Swal.fire({
+    customSwal.fire({
       title: event.title,
       html: `
-        <p><b>Encargado:</b> ${event.encargado}</p>
-        <p><b>Cliente:</b> ${event.cliente}</p>
-        <p><b>Fecha Asignación:</b> ${moment(event.fechaAsignacion).format("YYYY-MM-DD HH:mm")}</p>
-        <p><b>fecha Programada: :</b> ${moment(event.fechaprog).format("YYYY-MM-DD HH:mm")}</p>
-        ${event.completada ? `<p><b>Fecha Iniciada:</b> ${moment(event.start).format("YYYY-MM-DD HH:mm")}</p>` : ""}
-        ${event.completada ? `<p><b>Fecha Finalizada:</b> ${moment(event.end).format("YYYY-MM-DD HH:mm")}</p>` : ""}
-        <p><b>Completada:</b> ${event.completada ? "Sí ✅" : event.inProgress ? "En progreso ⏳" : "No ❌"}</p>
+        <div style="text-align: left; color: #f0f0f0;">
+          <p><b style="color: #00ffff;">Encargado:</b> ${event.encargado}</p>
+          <p><b style="color: #00ffff;">Cliente:</b> ${event.cliente}</p>
+          <p><b style="color: #00ffff;">Fecha Asignación:</b> ${moment(event.fechaAsignacion).format("DD/MM/YYYY HH:mm")}</p>
+          <p><b style="color: #00ffff;">Fecha Programada:</b> ${moment(event.fechaprog).format("DD/MM/YYYY HH:mm")}</p>
+          ${event.completada ? `<p><b style="color: #00ffff;">Fecha Iniciada:</b> ${moment(event.start).format("DD/MM/YYYY HH:mm")}</p>` : ""}
+          ${event.completada ? `<p><b style="color: #00ffff;">Fecha Finalizada:</b> ${moment(event.end).format("DD/MM/YYYY HH:mm")}</p>` : ""}
+          <p><b style="color: #00ffff;">Estado:</b> ${
+            event.completada 
+              ? '<span style="color: #48bb78">Completada ✅</span>' 
+              : event.inProgress 
+                ? '<span style="color: #ecc94b">En progreso ⏳</span>' 
+                : '<span style="color: #f56565">Pendiente ❌</span>'
+          }</p>
+        </div>
       `,
       icon: "info",
+      showConfirmButton: true,
+      confirmButtonText: "Cerrar",
+      backdrop: `rgba(26, 26, 46, 0.8)`,
     });
+  };
+
+  // Función para cambiar la altura de los días con varias inspecciones
+  const dayPropGetter = (date) => {
+    const eventCount = events.filter(event =>
+      moment(event.start).isSame(date, "day")
+    ).length;
+
+    if (eventCount > 1) {
+      return {
+        className: "day-multiple-events",
+        style: {
+          height: `${50 + eventCount * 10}px`, // Aumenta la altura según la cantidad de eventos
+        }
+      };
+    }
+
+    return {};
   };
 
   return (
@@ -88,9 +133,10 @@ const AdminDashboard = () => {
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "80vh", margin: "20px", color: 'white' }}
+        style={{ height: "100vh", margin: "20px", color: "white" }}
         eventPropGetter={getEventStyle}
         onSelectEvent={handleEventClick}
+        dayPropGetter={dayPropGetter} // Aquí aplicamos la personalización
       />
     </div>
   );

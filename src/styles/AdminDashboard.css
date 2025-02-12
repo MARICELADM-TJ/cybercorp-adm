@@ -1,18 +1,168 @@
+/* AdminDashboard.css */
 .dashboard-container {
   padding: 20px;
-  font-family: "Arial", sans-serif;
+  font-family: "SF Pro Display", "Arial", sans-serif;
   background: #1a1a2e;
   color: #f0f0f0;
   width: 100vw;
+  min-height: 100vh;
 }
 
 h2 {
   text-align: center;
   color: #00ffff;
+  font-weight: 500;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
 }
 
+/* Estilos generales del calendario */
+.rbc-calendar {
+  background: rgba(26, 26, 46, 0.6);
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+/* Barra de herramientas */
+.rbc-toolbar {
+  padding: 15px;
+  margin-bottom: 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.rbc-toolbar button {
+  color: #f0f0f0;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 8px 16px;
+  transition: all 0.3s ease;
+}
+
+.rbc-toolbar button:hover {
+  background: rgba(0, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
+}
+
+.rbc-toolbar button.rbc-active {
+  background: rgba(0, 255, 255, 0.3);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+/* Encabezados */
+.rbc-header {
+  padding: 12px;
+  font-weight: 500;
+  background: rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  color: #00ffff;
+}
+
+/* Celdas */
+.rbc-date-cell {
+  padding: 8px;
+  color: #f0f0f0;
+}
+
+.rbc-today {
+  background: rgba(0, 255, 255, 0.05);
+}
+
+/* Eventos */
 .rbc-event {
-  border-radius: 5px;
-  font-size: 14px;
-  text-align: center;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 0.9rem;
+  border: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Estilos personalizados para los estados de los eventos */
+.rbc-event.event-completed {
+  background: rgba(72, 187, 120, 0.9) !important;
+  box-shadow: 0 0 15px rgba(72, 187, 120, 0.3);
+}
+
+.rbc-event.event-overdue {
+  background: rgba(245, 101, 101, 0.9) !important;
+  box-shadow: 0 0 15px rgba(245, 101, 101, 0.3);
+}
+
+.rbc-event.event-upcoming {
+  background: rgba(236, 201, 75, 0.9) !important;
+  box-shadow: 0 0 15px rgba(236, 201, 75, 0.3);
+  color: #1a1a2e !important;
+}
+
+.rbc-event:hover {
+  transform: translateY(-2px) scale(1.02);
+}
+
+/* Vista mes */
+.rbc-month-view {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.rbc-month-row {
+  border-color: rgba(0, 255, 255, 0.1);
+}
+
+/* Vista semana/día */
+.rbc-time-view {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+.rbc-time-header {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.rbc-time-content {
+  border-top: 1px solid rgba(0, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+  
+  .rbc-toolbar {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .rbc-toolbar button {
+    padding: 6px 12px;
+  }
+}
+
+/* SweetAlert customization */
+.swal2-popup {
+  background: #1a1a2e !important;
+  border: 1px solid rgba(0, 255, 255, 0.2) !important;
+  border-radius: 15px !important;
+}
+
+.swal2-title {
+  color: #00ffff !important;
+}
+
+.swal2-html-container {
+  color: #f0f0f0 !important;
+}
+
+.swal2-icon.swal2-info {
+  border-color: #00ffff !important;
+  color: #00ffff !important;
 }
