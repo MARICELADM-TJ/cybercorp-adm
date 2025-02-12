@@ -1,6 +1,0 @@
-{
-    "redirects": [
-      { "source": "/(.*)", "destination": "/", "statusCode": 200 }
-    ]
-}
-  
