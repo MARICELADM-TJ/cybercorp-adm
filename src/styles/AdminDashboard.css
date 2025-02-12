@@ -1,104 +1,18 @@
-/* Panel de Administración */
-.admin-panel {
-    position: relative;
-    min-height: 100vh;
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    overflow: hidden;
-    /* background: linear-gradient(135deg, #0f2027, #203a43, #2c5364); */
-    background: linear-gradient(135deg, #0f2027, #202e43, #2c4464);
-    color: white;
-    text-align: center;
+.dashboard-container {
+  padding: 20px;
+  font-family: "Arial", sans-serif;
+  background: #1a1a2e;
+  color: #f0f0f0;
+  width: 100vw;
 }
 
-  
-  .animated-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background: linear-gradient(90deg, rgba(0, 217, 255, 0.2), rgba(0, 91, 181, 0.3));
-    animation: moveBackground 10s linear infinite;
-  }
-  
-  @keyframes moveBackground {
-    0% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 200% 200%;
-    }
-  }
-  
-  .admin-content {
-    margin-top: 30vh;
-    max-width: 800px;
-    padding: 20px;
-    box-shadow: 0px 4px 20px rgba(0, 238, 255, 0.3);
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-    transition: transform 0.3s ease;
-  }
-  
-  .admin-content:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 8px 30px rgba(0, 238, 255, 0.5);
-  }
-  
-  .dashboard-logo {
-    width: 300px;
-    margin-top: 20px;
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-    100% {
-      transform: translateY(0px);
-    }
-  }
-  
-  .admin-content h1 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #00d9ff;
-    text-shadow: 0px 2px 10px rgba(0, 217, 255, 0.8);
-  }
-  
-  .admin-content p {
-    font-size: 1.2rem;
-    line-height: 1.6;
-    color: #f0f0f0;
-    margin-top: 10px;
-  }
-  
-  @media screen and (max-width: 768px) {
-    .admin-content {
-      width: 90%;
-      padding: 15px;
-    }
-  
-    .admin-content h1 {
-      font-size: 2rem;
-    }
-  
-    .admin-content p {
-      font-size: 1rem;
-    }
-  
-    .dashboard-logo {
-      width: 80px;
-    }
-  }
-  
+h2 {
+  text-align: center;
+  color: #00ffff;
+}
+
+.rbc-event {
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+}
