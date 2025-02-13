@@ -26,7 +26,9 @@ const TaskList = ({ tasks, onDelete, onEdit, onStart, onComplete, onCancel }) =>
             <p>{task.description}</p>
             <p>{`Fecha para realizar: ${formatDate(task.dueDate)}`}</p>
             <p>{`Encargado: ${task.encargado}`}</p>
-            {(task.clientName && task.clientLastName && task.clientPhone) ? <p>{`Cliente: ${task.clientName} ${task.clientLastName} (${task.clientPhone})`}</p> : "Cliente: N/C"}
+            {(task.clientName && task.clientLastName && task.clientPhone) ? <p>{`Cliente: ${task.clientName} ${task.clientLastName}`}</p> : "Cliente: N/C"}
+            {task.clientPhone && <p>{`Teléfono: ${task.clientPhone || 'N/C'}`}</p>}
+            
             {task.startDate && <p>{`Fecha de inicio: ${formatDate(task.startDate)}`}</p>}
             {task.endDate && <p>{`Fecha de fin: ${formatDate(task.endDate)}`}</p>}
           </div>
