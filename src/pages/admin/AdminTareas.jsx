@@ -20,8 +20,10 @@ const AdminTareas = () => {
           tasksSnapshot.docs.map((doc) => ({
             ...doc.data(),
             id: doc.id,
-            clientName: doc.data().clientName || '',
-            clientLastName: doc.data().clientLastName || '',
+            // Unificar los campos del cliente usando los nuevos nombres
+            clientName: doc.data().nombreCliente || doc.data().clientName || '',
+            clientLastName: doc.data().apellidoCliente || doc.data().clientLastName || '',
+            clientPhone: doc.data().celularCliente || doc.data().clientPhone || '',
             encargado: doc.data().encargado || '',
           }))
         );
@@ -31,6 +33,8 @@ const AdminTareas = () => {
     };
     fetchTasks();
   }, []);
+
+  // Resto del código permanece igual...
 
   const handleDeleteTask = async (id) => {
     const result = await Swal.fire({
