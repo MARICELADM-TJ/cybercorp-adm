@@ -16,24 +16,27 @@ const TaskForm = () => {
     dueDate: '',
     dueTime: '',
     encargado: '',
-    nombreCliente: '',
-    apellidoCliente: '',
-    celularCliente: '',
+    clientName: '',
+    clientLastName: '',
+    clientPhone: '',
   });
 
   useEffect(() => {
     if (taskToEdit) {
-      const [date, timeWithSeconds] = (taskToEdit.dueDate || '').split('T');
+      // Extraer fecha y hora del dueDate
+      const dueDateTime = new Date(taskToEdit.dueDate);
+      const date = dueDateTime.toISOString().split('T')[0];
+      const time = dueDateTime.toTimeString().slice(0, 5); // Obtiene HH:MM
 
       setTask({
-        title: taskToEdit.title,
-        description: taskToEdit.description,
-        dueDate: date || '',
-        dueTime: taskToEdit.dueTime || '',
-        encargado: taskToEdit.encargado,
-        nombreCliente: taskToEdit.clientName || '',
-        apellidoCliente: taskToEdit.clientLastName || '',
-        celularCliente: taskToEdit.clientPhone || '',
+        title: taskToEdit.title || '',
+        description: taskToEdit.description || '',
+        dueDate: date,
+        dueTime: time,
+        encargado: taskToEdit.encargado || '',
+        clientName: taskToEdit.clientName || taskToEdit.nombreCliente || '',
+        clientLastName: taskToEdit.clientLastName || taskToEdit.apellidoCliente || '',
+        clientPhone: taskToEdit.clientPhone || taskToEdit.celularCliente || '',
       });
     }
   }, [taskToEdit]);
@@ -48,19 +51,34 @@ const TaskForm = () => {
       if (!task.dueTime) message += 'Hora, ';
       if (!task.encargado) message += 'Encargado, ';
 
-      message += 'son obligatorios.';
-
+      message = message.slice(0, -2) + ' son obligatorios.';
       toast.warn(message);
       return;
     }
 
-    const dueDate = `${task.dueDate}T${task.dueTime}:00`;
+    // Crear una fecha correcta combinando fecha y hora
+    const dueDate = new Date(`${task.dueDate}T${task.dueTime}`).toISOString();
+
+    const taskData = {
+      title: task.title,
+      description: task.description,
+      dueDate: dueDate,
+      dueTime: task.dueTime,
+      encargado: task.encargado,
+      // Guardar la información del cliente con nombres de campo consistentes
+      clientName: task.clientName || '',
+      clientLastName: task.clientLastName || '',
+      clientPhone: task.clientPhone || '',
+      // También guardar con los nombres alternativos para compatibilidad
+      nombreCliente: task.clientName || '',
+      apellidoCliente: task.clientLastName || '',
+      celularCliente: task.clientPhone || '',
+    };
 
     try {
       if (taskToEdit) {
         const taskRef = doc(db, 'tasks', taskToEdit.id);
-        await updateDoc(taskRef, { ...task, dueDate });
-        //toast.success('Tarea actualizada con éxito.');
+        await updateDoc(taskRef, taskData);
         Swal.fire({
           icon: "success",
           title: "Tarea actualizada correctamente",
@@ -77,13 +95,15 @@ const TaskForm = () => {
           },
         });
       } else {
-        await addDoc(collection(db, 'tasks'), { ...task, dueDate, completed: false });
-        //toast.success('Tarea agregada con éxito.');
+        await addDoc(collection(db, 'tasks'), { 
+          ...taskData,
+          completed: false 
+        });
         Swal.fire({
           icon: "success",
-          title: "tarea creada correctamente",
+          title: "Tarea creada correctamente",
           showClass: {
-            popup: "animate__animated animate__zoomIn", 
+            popup: "animate__animated animate__zoomIn",
           },
           hideClass: {
             popup: "animate__animated animate__fadeOut",
@@ -91,14 +111,12 @@ const TaskForm = () => {
           showConfirmButton: false,
           timer: 1000,
           willClose: () => {
-            navigate("/admin-tareas");
+            navigate('/admin-tareas');
           },
         });
       }
-      navigate('/admin-tareas');
     } catch (error) {
       console.error('Error al guardar tarea:', error);
-      //toast.error('Error al guardar la tarea.');
       Swal.fire({
         icon: "error",
         title: "Error al guardar la tarea",
@@ -110,9 +128,6 @@ const TaskForm = () => {
         },
         showConfirmButton: false,
         timer: 1000,
-        willClose: () => {
-          navigate('/admin-tareas');
-        },
       });
     }
   };
@@ -151,20 +166,20 @@ const TaskForm = () => {
         <input
           type="text"
           placeholder="Nombre del Cliente (opcional)"
-          value={task.nombreCliente}
-          onChange={(e) => setTask({ ...task, nombreCliente: e.target.value })}
+          value={task.clientName}
+          onChange={(e) => setTask({ ...task, clientName: e.target.value })}
         />
         <input
           type="text"
           placeholder="Apellido del Cliente (opcional)"
-          value={task.apellidoCliente}
-          onChange={(e) => setTask({ ...task, apellidoCliente: e.target.value })}
+          value={task.clientLastName}
+          onChange={(e) => setTask({ ...task, clientLastName: e.target.value })}
         />
         <input
           type="text"
           placeholder="Celular del Cliente (opcional)"
-          value={task.celularCliente}
-          onChange={(e) => setTask({ ...task, celularCliente: e.target.value })}
+          value={task.clientPhone}
+          onChange={(e) => setTask({ ...task, clientPhone: e.target.value })}
         />
         <div className="buttons">
           <button type="submit">Guardar</button>
