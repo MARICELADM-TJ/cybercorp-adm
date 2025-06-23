@@ -7,11 +7,13 @@ import { getAuth, signOut } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebaseConfig/Firebase';
 import '../styles/SidebarNav.css';
+import { FaSackDollar } from 'react-icons/fa6';
 
 const PERMISSIONS = {
   VIEW_INSPECTIONS: 'view_inspections',
   MANAGE_TASKS: 'manage_tasks',
   MANAGE_INSPECTIONS: 'manage_inspections',
+  MANAGE_SALES: 'manage_sales',
   VIEW_CALENDAR: 'view_calendar',
   MANAGE_USERS: 'manage_users',
 };
@@ -64,6 +66,8 @@ const SidebarNav = ({ usuario }) => {
       permission: PERMISSIONS.MANAGE_TASKS },
     { to: '/admin-inspecciones', icon: FaClipboardList, label: 'Administrar Inspecciones', 
       permission: PERMISSIONS.MANAGE_INSPECTIONS },
+    { to: '/admin-ventas', icon: FaSackDollar, label: 'Administrar Ventas', 
+      permission: PERMISSIONS.MANAGE_SALES },
     { to: '/admin-dashboard', icon: FaCalendarAlt, label: 'Calendario', 
       permission: PERMISSIONS.VIEW_CALENDAR },
     { to: '/admin-users', icon: FaUsers, label: 'Gestionar Usuarios', 
