@@ -17,7 +17,8 @@ const AdminUsers = () => {
     { id: 'view_inspections', label: 'Ver Inspecciones' },
     { id: 'manage_tasks', label: 'Administrar Tareas' },
     { id: 'manage_inspections', label: 'Administrar Inspecciones' },
-    { id: 'view_calendar', label: 'Ver Calendario' }
+    { id: 'view_calendar', label: 'Ver Calendario' },
+    { id: 'manage_sales', label: 'Administrar Ventas' }
   ];
 
   // Roles disponibles

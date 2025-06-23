@@ -97,7 +97,7 @@ const TaskForm = () => {
       } else {
         await addDoc(collection(db, 'tasks'), { 
           ...taskData,
-          completed: false 
+          completed: false
         });
         Swal.fire({
           icon: "success",

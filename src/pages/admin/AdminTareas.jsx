@@ -5,11 +5,15 @@ import TaskList from '../TaskList';
 import '../../styles/AdminTareas.css';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
+import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 const AdminTareas = () => {
   const [tasks, setTasks] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [monthFilter, setMonthFilter] = useState('');
+  const [reportYear, setReportYear] = useState("");
+  const [reportMonth, setReportMonth] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -47,7 +51,7 @@ const AdminTareas = () => {
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
     });
-  
+
     if (result.isConfirmed) {
       try {
         await deleteDoc(doc(db, "tasks", id));
@@ -77,7 +81,7 @@ const AdminTareas = () => {
       });
     }
   };
-  
+
 
   const filteredTasks = tasks
     .filter((task) => {
@@ -106,7 +110,88 @@ const AdminTareas = () => {
     .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
 
   const completedTasks = filteredTasks.filter((task) => task.completed);
+  // Generar reporte en PDF
+  const generatePDFReport = () => {
+    if (!reportYear || !reportMonth) {
+      toast.error("Debe seleccionar año y mes para generar el reporte");
+      return;
+    }
 
+    const reportTasks = tasks.filter(tasks => {
+      const taskDate = new Date(tasks.dueDate);
+      return (
+        taskDate.getFullYear() === parseInt(reportYear) &&
+        taskDate.getMonth() === parseInt(reportMonth) - 1
+      );
+    });
+
+    if (reportTasks.length === 0) {
+      toast.info("No hay tareas para el mes y año seleccionados");
+      return;
+    }
+
+    //simple pdf generation
+    //const doc = new jsPDF();
+    //doc.setFontSize(18);
+
+    //pdf generation with custom size
+    const doc = new jsPDF('l', 'mm', 'a4');
+
+    //otra forma de hacerlo con custom size
+    //--->
+    // Custom page width and height (in millimeters) custom size
+    // const doc = new jsPDF({
+    //   orientation: 'landscape', // or 'portrait'
+    //   unit: 'mm',              // measurement unit
+    //   format: [297, 210]       // custom width and height
+    // });
+
+    doc.text(`Reporte de Tareas - ${reportMonth}/${reportYear}`, 14, 22);
+
+    const tableColumn = [
+      "Título",
+      "Descripción",
+      "Fecha Programada",
+      "Hora Programada",
+      "Encargado",
+      "Cliente",
+      "Celular del Cliente",
+      "Fecha Completada",
+      "Completada",
+    ];
+
+    const formatDate = (dateStr) => {
+      if (!dateStr) return "";
+      const date = new Date(dateStr);
+      const day = String(date.getDate()).padStart(2, '0');
+      const month = String(date.getMonth() + 1).padStart(2, '0');
+      const year = date.getFullYear();
+      return `${month}/${day}/${year}`;
+    };
+
+    const tableRows = reportTasks.map(task => [
+      task.title,
+      task.description,
+      formatDate(task.dueDate),
+      task.dueTime,
+      task.encargado,
+      `${task.clientName} ${task.clientLastName}`,
+      task.clientPhone,
+      formatDate(task.endDate),
+      task.completed ? 'Si' : 'No',
+    ]);
+
+
+    doc.autoTable({
+      startY: 30,
+      head: [tableColumn],
+      body: tableRows,
+      theme: 'striped',
+      styles: { fontSize: 8 }
+    });
+
+    doc.save(`Reporte_Tareas_${reportMonth}_${reportYear}.pdf`);
+  };
   return (
     <div className="edit-page">
       <h2>Administrar Tareas</h2>
@@ -129,6 +214,47 @@ const AdminTareas = () => {
       >
         Agregar Tarea
       </button>
+      {/* Generación de Reportes */}
+      <div className="report-generation">
+        <h3>Generar Reportes</h3>
+        <div className="report-controls">
+          <select
+            value={reportMonth}
+            onChange={(e) => setReportMonth(e.target.value)}
+            required
+          >
+            <option value="">Seleccionar Mes</option>
+            {[...Array(12)].map((_, index) => (
+              <option key={index + 1} value={index + 1}>
+                {new Date(0, index).toLocaleString('default', { month: 'long' })}
+              </option>
+            ))}
+          </select>
+          <select
+            value={reportYear}
+            onChange={(e) => setReportYear(e.target.value)}
+            required
+          >
+            <option value="">Seleccionar Año</option>
+            {[...Array(5)].map((_, index) => {
+              const year = new Date().getFullYear() - 2 + index;
+              return (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              );
+            })}
+          </select>
+          <button
+            className="download-report-button"
+            onClick={generatePDFReport}
+          //para desactivsrlo si no hay mes y año seleccionado
+          // disabled={!reportMonth || !reportYear}
+          >
+            Descargar Reporte
+          </button>
+        </div>
+      </div>
       <h3>Tareas Pendientes</h3>
       <TaskList
         tasks={pendingTasks}
