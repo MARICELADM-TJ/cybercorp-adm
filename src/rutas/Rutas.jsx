@@ -16,6 +16,8 @@ import AdminTareas from "../pages/admin/AdminTareas";
 import CreateUser from "../pages/admin/CreateUser";
 import AdminInspecciones from "../pages/admin/AdminInspecciones";
 import AdminCreateInspeccion from "../pages/admin/AdminCreateInspeccion";
+import AdminCreateVenta from "../pages/admin/AdminCreateVenta";
+import AdminVentas from "../pages/admin/AdminVentas";
 import UserInspecciones from "../pages/UserInspecciones";
 import AdminLayout from "./layouts/AdminLayout";
 import UserLayout from "./layouts/UserLayout";
@@ -23,6 +25,7 @@ import TaskForm from "../pages/admin/TaskForm";
 import AboutUs from "../pages/AboutUs";
 import EditProfile from "../pages/EditProfile";
 import RegisterUser from "../login/RegisterUser";
+
 
 import Layout from "./layouts/Layout";
 
@@ -98,7 +101,9 @@ function Rutas() {
             <Route path="/editProfile" element={<EditProfile userId={usuario?.uid} setUsuario={setUsuario} />} />
 
             <Route path="/admin-inspecciones" element={<AdminInspecciones />} />
+            <Route path="/admin-ventas" element={<AdminVentas />} />
             <Route path="/admin-createInspeccion" element={<AdminCreateInspeccion />} />
+            <Route path="/admin-createVenta" element={<AdminCreateVenta />} />
             <Route path="/admin-taskForm" element={<TaskForm />} />
             <Route path="/admin-tareas" element={<AdminTareas />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
