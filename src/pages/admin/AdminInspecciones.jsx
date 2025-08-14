@@ -35,7 +35,7 @@ const AdminInspecciones = () => {
         }));
         setInspections(inspectionsData);
       } catch (error) {
-        console.error("Error al obtener inspecciones:", error);
+        console.error("Error al obtener inspecciones/instalaciones:", error);
       }
     };
 
@@ -75,7 +75,7 @@ const AdminInspecciones = () => {
   // Handle delete inspection
   const handleDelete = async (id) => {
     const result = await Swal.fire({
-      title: "¿Estás seguro de eliminar esta inspección?",
+      title: "¿Estás seguro de eliminar esta inspección/instalación?",
       text: "Esta acción no se puede deshacer.",
       icon: "warning",
       showCancelButton: true,
@@ -98,17 +98,17 @@ const AdminInspecciones = () => {
           showConfirmButton: false,
         });
       } catch (error) {
-        console.error("Error al eliminar inspección:", error);
+        console.error("Error al eliminar inspección/instalación:", error);
         Swal.fire({
           title: "Error",
-          text: "No se pudo eliminar la inspección. Inténtalo de nuevo.",
+          text: "No se pudo eliminar la inspección/instalación. Inténtalo de nuevo.",
           icon: "error",
         });
       }
     } else {
       Swal.fire({
         title: "Cancelado",
-        text: "La inspección no fue eliminada.",
+        text: "La inspección/instalación no fue eliminada.",
         icon: "info",
         timer: 1500,
         showConfirmButton: false,
@@ -135,7 +135,7 @@ const AdminInspecciones = () => {
     });
 
     if (reportInspections.length === 0) {
-      toast.info("No hay inspecciones para el mes y año seleccionados");
+      toast.info("No hay inspecciones o instalaciones para el mes y año seleccionados");
       return;
     }
 
@@ -155,7 +155,7 @@ const AdminInspecciones = () => {
     //   format: [297, 210]       // custom width and height
     // });
 
-    doc.text(`Reporte de Inspecciones - ${reportMonth}/${reportYear}`, 14, 22);
+    doc.text(`Reporte de Inspecciones/instalaciones - ${reportMonth}/${reportYear}`, 14, 22);
 
     const tableColumn = [
       "Título", 
@@ -187,19 +187,19 @@ const AdminInspecciones = () => {
       styles: { fontSize: 8 }
     });
 
-    doc.save(`Reporte_Inspecciones_${reportMonth}_${reportYear}.pdf`);
+    doc.save(`Reporte_Inspecciones_Instalaciones_${reportMonth}_${reportYear}.pdf`);
   };
 
 
   return (
     <div className="admin-inspecciones">
-      <h2>Administrar Inspecciones</h2>
+      <h2>Administrar Inspecciones e Instalaciones</h2>
   
       <button
         className="futuristic-button"
         onClick={() => navigate("/admin-createInspeccion")}
       >
-        Agregar Inspección
+        Agregar Inspección/Instalación
       </button>
   
       {/* Buscadores */}

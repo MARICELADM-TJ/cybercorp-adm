@@ -1,13 +1,34 @@
 import React, { useEffect, useState } from "react";
 import { Calendar, momentLocalizer } from "react-big-calendar";
 import moment from "moment";
+import "moment/locale/es"; // Importar locale español para moment
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { db } from "../../firebaseConfig/Firebase";
 import { collection, getDocs } from "firebase/firestore";
 import Swal from "sweetalert2";
 import "../../styles/AdminDashboard.css"; // Mantiene los estilos
 
+// Configurar moment en español
+moment.locale('es');
+
 const localizer = momentLocalizer(moment);
+
+// Mensajes personalizados en español para React Big Calendar
+const messages = {
+  allDay: 'Todo el día',
+  previous: 'Anterior',
+  next: 'Siguiente',
+  today: 'Hoy',
+  month: 'Mes',
+  week: 'Semana',
+  day: 'Día',
+  agenda: 'Agenda',
+  date: 'Fecha',
+  time: 'Hora',
+  event: 'Evento',
+  noEventsInRange: 'No hay eventos en este rango.',
+  showMore: total => `+ Ver más (${total})`
+};
 
 const AdminDashboard = () => {
   const [events, setEvents] = useState([]);
@@ -42,7 +63,7 @@ const AdminDashboard = () => {
 
         setEvents(inspections);
       } catch (error) {
-        console.error("Error al obtener inspecciones:", error);
+        console.error("Error al obtener inspecciones/instalaciones:", error);
       }
     };
 
@@ -117,7 +138,7 @@ const AdminDashboard = () => {
       return {
         className: "day-multiple-events",
         style: {
-          height: `${50 + eventCount * 10}px`, // Aumenta la altura según la cantidad de eventos
+          minHeight: `${50 + eventCount * 15}px`, // Aumenta la altura según la cantidad de eventos
         }
       };
     }
@@ -127,7 +148,7 @@ const AdminDashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <h2>Calendario de Inspecciones</h2>
+      <h2>Calendario de Inspecciones/Instalaciones</h2>
       <Calendar
         localizer={localizer}
         events={events}
@@ -136,7 +157,9 @@ const AdminDashboard = () => {
         style={{ height: "100vh", margin: "20px", color: "white" }}
         eventPropGetter={getEventStyle}
         onSelectEvent={handleEventClick}
-        dayPropGetter={dayPropGetter} // Aquí aplicamos la personalización
+        dayPropGetter={dayPropGetter}
+        messages={messages} // Aplicar mensajes en español
+        culture="es" // Establecer cultura española
       />
     </div>
   );

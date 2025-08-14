@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import Mapa from "../../components/Mapa";
 import { db } from "../../firebaseConfig/Firebase";
-import { collection, addDoc, doc, getDoc, updateDoc } from "firebase/firestore";
+import { query, where, collection, addDoc, doc, getDoc, updateDoc, getDocs } from "firebase/firestore";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import "../../styles/AdminCreateInspeccion.css";
 import logo from "../../assets/logo_share.png";
@@ -47,11 +47,11 @@ const AdminCreateInspeccion = () => {
               ubicacion: data.ubicacion || [-21.5355, -64.7295],
             });
           } else {
-            toast.error("Inspección no encontrada");
+            toast.error("Inspección/Instalación no encontrada");
           }
         } catch (error) {
-          console.error("Error al cargar la inspección:", error);
-          toast.error("Error al cargar la inspección");
+          console.error("Error al cargar la inspección/instalación:", error);
+          toast.error("Error al cargar la inspección/instalación");
         }
       }
     };
@@ -103,6 +103,7 @@ const AdminCreateInspeccion = () => {
       celularCliente,
       encargado,
       ubicacion,
+      EstadoFinal
     } = formData;
 
     if (
@@ -132,13 +133,45 @@ const AdminCreateInspeccion = () => {
     }
 
     try {
+    const inspeccionesRef = collection(db, "inspecciones");
+    const q = query(
+      inspeccionesRef,
+      where("fechaProgramada", "==", fechaProgramada),
+      where("horaProgramada", "==", horaProgramada),
+      where("EstadoFinal", "==", "seguimiento")
+    );
+
+    const querySnapshot = await getDocs(q);
+
+    if (!isEditing) {
+      if (!querySnapshot.empty) {
+        Swal.fire({
+          icon: "warning",
+          title: "Conflicto de inspección/instalación",
+          text: "Ya existe una inspección o instalación pendiente para esa fecha y hora.",
+          showConfirmButton: true,
+        });
+        return;
+      }
+    } else {
+      const conflictos = querySnapshot.docs.filter(doc => doc.id !== inspectionId);
+      if (conflictos.length > 0) {
+        Swal.fire({
+          icon: "warning",
+          title: "Conflicto de inspección/instalación",
+          text: "Ya existe otra inspección o instalación pendiente para esa fecha y hora.",
+          showConfirmButton: true,
+        });
+        return;
+      }
+    }
       if (isEditing) {
         const docRef = doc(db, "inspecciones", inspectionId);
         await updateDoc(docRef, formData);
         
         Swal.fire({
                 icon: "success",
-                title: "Inspeccion actualizada correctamente",
+                title: "Inspeccion/Instalación actualizada correctamente",
                 showClass: {
                   popup: "animate__animated animate__zoomIn",
                 },
@@ -162,7 +195,7 @@ const AdminCreateInspeccion = () => {
         });
         Swal.fire({
           icon: "success",
-          title: "Inspeccion creada correctamente",
+          title: "Inspeccion/Instalación creada correctamente",
           showClass: {
             popup: "animate__animated animate__zoomIn",
           },
@@ -178,11 +211,11 @@ const AdminCreateInspeccion = () => {
       }
       
     } catch (error) {
-      console.error("Error al guardar la inspección:", error);
+      console.error("Error al guardar la inspección/instalación:", error);
       //toast.error("Error al guardar la inspección");
       Swal.fire({
               icon: "error",
-              title: "Error al guardar la inspeccion",
+              title: "Error al guardar la inspeccion/instalación",
               showClass: {
                 popup: "animate__animated animate__lightSpeedInRight",
               },
@@ -199,7 +232,7 @@ const AdminCreateInspeccion = () => {
     <div className="form-container">
       <div className="header">
         <img src={logo} alt="Logo" className="logo" />
-        <h2>{isEditing ? "Editar Inspección" : "Crear Inspección"}</h2>
+        <h2>{isEditing ? "Editar Inspección/Instalación" : "Crear Inspección/Instalación"}</h2>
       </div>
       <form onSubmit={handleSave} className="form">
         <div className="form-group">
@@ -328,7 +361,7 @@ const AdminCreateInspeccion = () => {
           />
         </div>
         <div className="form-group">
-          <label htmlFor="encargado">Encargado de la Inspección</label>
+          <label htmlFor="encargado">Encargado</label>
           <input
             type="text"
             id="encargado"
