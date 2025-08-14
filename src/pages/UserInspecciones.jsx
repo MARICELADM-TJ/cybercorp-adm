@@ -36,7 +36,7 @@ const UserInspecciones = ({role}) => {
         }));
         setInspections(inspectionsData);
       } catch (error) {
-        console.error("Error al obtener inspecciones:", error);
+        console.error("Error al obtener inspecciones/instalaciones:", error);
       }
     };
 
@@ -76,17 +76,17 @@ const UserInspecciones = ({role}) => {
       );
   
       Swal.fire({
-        title: "¡Inspección iniciada!",
-        text: "La inspección ha comenzado correctamente.",
+        title: "¡Inspección/Instalación iniciada!",
+        text: "La inspección/instalación ha comenzado correctamente.",
         icon: "success",
         timer: 1500,
         showConfirmButton: false,
       });
     } catch (error) {
-      console.error("Error al iniciar inspección:", error);
+      console.error("Error al iniciar inspección/instalación:", error);
       Swal.fire({
         title: "Error",
-        text: "Hubo un problema al iniciar la inspección.",
+        text: "Hubo un problema al iniciar la inspección/instalación.",
         icon: "error",
       });
     }
@@ -112,17 +112,17 @@ const UserInspecciones = ({role}) => {
       );
   
       Swal.fire({
-        title: "¡Inspección finalizada!",
-        text: "La inspección se ha completado con éxito.",
+        title: "¡Inspección/Instalación finalizada!",
+        text: "La inspección/instalación se ha completado con éxito.",
         icon: "success",
         timer: 1500,
         showConfirmButton: false,
       });
     } catch (error) {
-      console.error("Error al finalizar inspección:", error);
+      console.error("Error al finalizar inspección/instalación:", error);
       Swal.fire({
         title: "Error",
-        text: "Hubo un problema al finalizar la inspección.",
+        text: "Hubo un problema al finalizar la inspección/instalación.",
         icon: "error",
       });
     }
@@ -145,18 +145,18 @@ const UserInspecciones = ({role}) => {
         )
       );
       setModalIsOpen(false);
-      toast.success("Inspección actualizada correctamente");
+      toast.success("Inspección/Instalación actualizada correctamente");
     } catch (error) {
-      console.error("Error al actualizar inspección:", error);
-      toast.error("Error al actualizar la inspección");
+      console.error("Error al actualizar inspección/instalación:", error);
+      toast.error("Error al actualizar la inspección/instalación");
     }
   };
   
 
   const handleCancelInspection = async (id) => {
     const result = await Swal.fire({
-      title: "¿Cancelar Inspección?",
-      text: "¿Seguro que quieres cancelar esta inspección?",
+      title: "¿Cancelar Inspección/Instalación?",
+      text: "¿Seguro que quieres cancelar esta inspección/instalación?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Sí, cancelar",
@@ -177,17 +177,17 @@ const UserInspecciones = ({role}) => {
         );
   
         Swal.fire({
-          title: "Inspección cancelada",
-          text: "La inspección ha sido cancelada con éxito.",
+          title: "Inspección/Instalación cancelada",
+          text: "La inspección/instalación ha sido cancelada con éxito.",
           icon: "info",
           timer: 1500,
           showConfirmButton: false,
         });
       } catch (error) {
-        console.error("Error al cancelar inspección:", error);
+        console.error("Error al cancelar inspección/instalación:", error);
         Swal.fire({
           title: "Error",
-          text: "No se pudo cancelar la inspección.",
+          text: "No se pudo cancelar la inspección/instalación.",
           icon: "error",
         });
       }
@@ -230,11 +230,11 @@ const UserInspecciones = ({role}) => {
       });
   
     } catch (error) {
-      console.error("Error al actualizar la inspección:", error);
+      console.error("Error al actualizar la inspección/instalación:", error);
   
       Swal.fire({
         title: "Error",
-        text: "Hubo un problema al actualizar la inspección.",
+        text: "Hubo un problema al actualizar la inspección/instalación.",
         icon: "error",
       });
     }
@@ -247,7 +247,7 @@ const UserInspecciones = ({role}) => {
 
   return (
     <div className="user-inspecciones">
-      <h2>Inspecciones</h2>
+      <h2>Inspecciones e Instalaciones</h2>
   
       <div className="search-container">
         <input
@@ -265,7 +265,7 @@ const UserInspecciones = ({role}) => {
   
       {/* Inspecciones no completadas */}
       <section>
-        <h3>Inspecciones Pendientes</h3>
+        <h3>Inspecciones e Instalaciones Pendientes</h3>
         <ul className="inspection-list">
           {incompletedInspections.map((inspection) => (
             <li key={inspection.id} className={`inspection-item ${inspection.inProgress ? "in-progress" : ""}`}>
@@ -333,7 +333,7 @@ const UserInspecciones = ({role}) => {
   
       {/* Inspecciones completadas */}
       <section>
-        <h3>Inspecciones Completadas</h3>
+        <h3>Inspecciones e Instalaciones Completadas</h3>
         <ul className="inspection-list">
           {completedInspections.map((inspection) => (
             <li key={inspection.id} className="inspection-item completed">
