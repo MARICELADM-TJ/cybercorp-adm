@@ -1,168 +1,477 @@
-/* AdminDashboard.css */
+/* AdminDashboard.css - Versión Mejorada */
 .dashboard-container {
   padding: 20px;
-  font-family: "SF Pro Display", "Arial", sans-serif;
-  background: #1a1a2e;
+  font-family: "SF Pro Display", "Inter", "Segoe UI", sans-serif;
+  background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
   color: #f0f0f0;
   width: 100vw;
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Efecto de partículas de fondo */
+.dashboard-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 255, 255, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 h2 {
   text-align: center;
   color: #00ffff;
-  font-weight: 500;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  font-weight: 600;
+  margin-bottom: 2.5rem;
+  font-size: 2.5rem;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  letter-spacing: -0.025em;
+  position: relative;
+  z-index: 1;
+}
+
+/* Línea decorativa debajo del título */
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #00ffff, transparent);
+  border-radius: 2px;
 }
 
 /* Estilos generales del calendario */
 .rbc-calendar {
-  background: rgba(26, 26, 46, 0.6);
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 255, 255, 0.1);
+  background: rgba(26, 26, 46, 0.8);
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(0, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
 }
 
-/* Barra de herramientas */
+.rbc-calendar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, rgba(0, 255, 255, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Barra de herramientas mejorada */
 .rbc-toolbar {
-  padding: 15px;
-  margin-bottom: 20px;
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
-  border: 1px solid rgba(0, 255, 255, 0.1);
+  padding: 20px;
+  margin-bottom: 25px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.3), rgba(0, 20, 40, 0.3));
+  border-radius: 15px;
+  border: 1px solid rgba(0, 255, 255, 0.15);
+  position: relative;
+  backdrop-filter: blur(10px);
+}
+
+.rbc-toolbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 255, 255, 0.05) 20%, 
+    rgba(0, 255, 255, 0.05) 80%, 
+    transparent 100%);
+  pointer-events: none;
+  border-radius: 15px;
 }
 
 .rbc-toolbar button {
   color: #f0f0f0;
-  background: rgba(0, 255, 255, 0.1);
-  border: 1px solid rgba(0, 255, 255, 0.2);
-  border-radius: 8px;
-  padding: 8px 16px;
-  transition: all 0.3s ease;
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 200, 255, 0.1));
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 12px;
+  padding: 12px 20px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.025em;
+  position: relative;
+  overflow: hidden;
+}
+
+.rbc-toolbar button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .rbc-toolbar button:hover {
-  background: rgba(0, 255, 255, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 200, 255, 0.2));
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 10px 25px rgba(0, 255, 255, 0.3),
+    0 0 0 1px rgba(0, 255, 255, 0.4);
+  border-color: rgba(0, 255, 255, 0.5);
+}
+
+.rbc-toolbar button:hover::before {
+  left: 100%;
 }
 
 .rbc-toolbar button.rbc-active {
-  background: rgba(0, 255, 255, 0.3);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 200, 255, 0.3));
+  box-shadow: 
+    0 0 25px rgba(0, 255, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(0, 255, 255, 0.6);
+  transform: translateY(-2px);
 }
 
-/* Encabezados */
+/* Encabezados mejorados */
 .rbc-header {
-  padding: 12px;
-  font-weight: 500;
-  background: rgba(0, 0, 0, 0.2);
-  border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+  padding: 16px 12px;
+  font-weight: 600;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 20, 40, 0.2));
+  border-bottom: 2px solid rgba(0, 255, 255, 0.2);
   color: #00ffff;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  position: relative;
 }
 
-/* Celdas */
+.rbc-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #00ffff, transparent);
+}
+
+/* Celdas mejoradas */
 .rbc-date-cell {
   padding: 8px;
   color: #f0f0f0;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 255, 255, 0.05);
+  position: relative;
+}
+
+.rbc-date-cell:hover {
+  background: rgba(0, 255, 255, 0.05);
+  border-color: rgba(0, 255, 255, 0.2);
 }
 
 .rbc-today {
-  background: rgba(0, 255, 255, 0.05);
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(0, 200, 255, 0.1));
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  position: relative;
 }
 
-/* Eventos */
+.rbc-today::before {
+  content: '';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 8px;
+  height: 8px;
+  background: #00ffff;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.6);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+/* Eventos mejorados */
 .rbc-event {
-  border-radius: 8px;
-  padding: 4px 8px;
-  font-size: 0.9rem;
+  border-radius: 12px;
+  padding: 2px 6px;
+  font-size: 0.88rem;
   border: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+
+.rbc-event::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rbc-event:hover::before {
+  left: 100%;
 }
 
 /* Estilos personalizados para los estados de los eventos */
 .rbc-event.event-completed {
-  background: rgba(72, 187, 120, 0.9) !important;
-  box-shadow: 0 0 15px rgba(72, 187, 120, 0.3);
+  background: linear-gradient(135deg, rgba(72, 187, 120, 0.9), rgba(56, 178, 172, 0.9)) !important;
+  box-shadow: 
+    0 8px 25px rgba(72, 187, 120, 0.4),
+    0 0 0 1px rgba(72, 187, 120, 0.3);
+  border-left: 4px solid rgba(72, 187, 120, 1);
 }
 
 .rbc-event.event-overdue {
-  background: rgba(245, 101, 101, 0.9) !important;
-  box-shadow: 0 0 15px rgba(245, 101, 101, 0.3);
+  background: linear-gradient(135deg, rgba(245, 101, 101, 0.9), rgba(231, 76, 60, 0.9)) !important;
+  box-shadow: 
+    0 8px 25px rgba(245, 101, 101, 0.4),
+    0 0 0 1px rgba(245, 101, 101, 0.3);
+  border-left: 4px solid rgba(245, 101, 101, 1);
+  animation: warning-pulse 3s infinite;
+}
+
+@keyframes warning-pulse {
+  0%, 100% { box-shadow: 0 8px 25px rgba(245, 101, 101, 0.4), 0 0 0 1px rgba(245, 101, 101, 0.3); }
+  50% { box-shadow: 0 8px 25px rgba(245, 101, 101, 0.6), 0 0 0 2px rgba(245, 101, 101, 0.5); }
 }
 
 .rbc-event.event-upcoming {
-  background: rgba(236, 201, 75, 0.9) !important;
-  box-shadow: 0 0 15px rgba(236, 201, 75, 0.3);
+  background: linear-gradient(135deg, rgba(236, 201, 75, 0.9), rgba(241, 196, 15, 0.9)) !important;
+  box-shadow: 
+    0 8px 25px rgba(236, 201, 75, 0.4),
+    0 0 0 1px rgba(236, 201, 75, 0.3);
   color: #1a1a2e !important;
+  border-left: 4px solid rgba(236, 201, 75, 1);
+  font-weight: 600;
 }
 
 .rbc-event:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-3px) scale(1.03);
+  filter: brightness(1.1);
 }
 
-/* Vista mes */
+/* Vista mes mejorada */
 .rbc-month-view {
-  border-radius: 12px;
+  border-radius: 15px;
   overflow: hidden;
-  border: 1px solid rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .rbc-month-row {
   border-color: rgba(0, 255, 255, 0.1);
 }
 
-/* Vista semana/día */
+.rbc-date-cell > a {
+  color: #f0f0f0;
+  font-weight: 500;
+}
+
+.rbc-off-range {
+  color: rgba(240, 240, 240, 0.4);
+}
+
+/* Vista semana/día mejorada */
 .rbc-time-view {
-  border-radius: 12px;
+  border-radius: 15px;
   overflow: hidden;
-  border: 1px solid rgba(0, 255, 255, 0.1);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .rbc-time-header {
-  background: rgba(0, 0, 0, 0.2);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 20, 40, 0.2));
+  border-bottom: 2px solid rgba(0, 255, 255, 0.2);
 }
 
 .rbc-time-content {
   border-top: 1px solid rgba(0, 255, 255, 0.1);
 }
 
-/* Responsive */
+.rbc-timeslot-group {
+  border-bottom: 1px solid rgba(0, 255, 255, 0.05);
+}
+
+.rbc-time-slot {
+  border-top: 1px solid rgba(0, 255, 255, 0.03);
+}
+
+/* Días con múltiples eventos */
+.day-multiple-events {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.05), rgba(0, 200, 255, 0.05));
+  border: 1px solid rgba(0, 255, 255, 0.1) !important;
+  position: relative;
+}
+
+.day-multiple-events::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 6px;
+  height: 6px;
+  background: #00ffff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px rgba(0, 255, 255, 0.8);
+}
+
+/* Responsive mejorado */
 @media (max-width: 768px) {
   .dashboard-container {
-    padding: 10px;
+    padding: 15px;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .rbc-calendar {
+    padding: 15px;
+    border-radius: 15px;
   }
   
   .rbc-toolbar {
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
+    padding: 15px;
   }
   
   .rbc-toolbar button {
-    padding: 6px 12px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+  
+  .rbc-event {
+    font-size: 0.8rem;
+    padding: 6px 10px;
   }
 }
 
-/* SweetAlert customization */
+@media (max-width: 480px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+  
+  h2 {
+    font-size: 1.75rem;
+  }
+  
+  .rbc-calendar {
+    padding: 12px;
+  }
+  
+  .rbc-toolbar {
+    padding: 12px;
+  }
+}
+
+/* SweetAlert customization mejorado */
 .swal2-popup {
-  background: #1a1a2e !important;
-  border: 1px solid rgba(0, 255, 255, 0.2) !important;
-  border-radius: 15px !important;
+  background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+  border: 1px solid rgba(0, 255, 255, 0.3) !important;
+  border-radius: 20px !important;
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(0, 255, 255, 0.1) !important;
+  backdrop-filter: blur(20px) !important;
 }
 
 .swal2-title {
   color: #00ffff !important;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.3) !important;
+  font-weight: 600 !important;
 }
 
 .swal2-html-container {
   color: #f0f0f0 !important;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  padding: 15px !important;
+  border: 1px solid rgba(0, 255, 255, 0.1);
 }
 
 .swal2-icon.swal2-info {
   border-color: #00ffff !important;
   color: #00ffff !important;
+}
+
+.swal2-confirm {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(0, 200, 255, 0.2)) !important;
+  border: 1px solid rgba(0, 255, 255, 0.4) !important;
+  border-radius: 10px !important;
+  transition: all 0.3s ease !important;
+}
+
+.swal2-confirm:hover {
+  background: linear-gradient(135deg, rgba(0, 255, 255, 0.3), rgba(0, 200, 255, 0.3)) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 20px rgba(0, 255, 255, 0.3) !important;
+}
+
+/* Efectos de carga y animaciones adicionales */
+@keyframes slideInUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.rbc-calendar {
+  animation: slideInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rbc-event {
+  animation: slideInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto glassmorphism para eventos */
+.rbc-event {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Mejora en la selección de texto */
+::selection {
+  background: rgba(0, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(0, 255, 255, 0.3);
+  color: #ffffff;
 }
