@@ -60,11 +60,11 @@ const SidebarNav = ({ usuario }) => {
   const navItems = [
     { to: '/home', icon: FaHome, label: 'Home', alwaysShow: true },
     { to: '/nosotros', icon: FaUserFriends, label: 'Equipo', alwaysShow: true },
-    { to: '/inspecciones', icon: FaClipboardList, label: 'Inspecciones', 
+    { to: '/inspecciones', icon: FaClipboardList, label: 'Inspecciones e Instalaciones', 
       permission: PERMISSIONS.VIEW_INSPECTIONS },
     { to: '/admin-tareas', icon: FaTasks, label: 'Administrar Tareas', 
       permission: PERMISSIONS.MANAGE_TASKS },
-    { to: '/admin-inspecciones', icon: FaClipboardList, label: 'Administrar Inspecciones', 
+    { to: '/admin-inspecciones', icon: FaClipboardList, label: 'Administrar Inspecciones e Instalaciones', 
       permission: PERMISSIONS.MANAGE_INSPECTIONS },
     { to: '/admin-ventas', icon: FaSackDollar, label: 'Administrar Ventas', 
       permission: PERMISSIONS.MANAGE_SALES },
